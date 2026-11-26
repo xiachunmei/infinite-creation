@@ -628,7 +628,7 @@ export default function ProjectsPage({ onOpen, type = '', showTypeFilter = false
               <Input
                 value={form.customStyle}
                 onChange={(e) => setForm({ ...form, customStyle: e.target.value })}
-                placeholder="描述自定义风格，例如：水墨写意、低饱和胶片颗粒"
+                placeholder="描述自定义风格，例如：Western cinematic、低饱和胶片颗粒"
               />
             ) : null}
           </FormSection>

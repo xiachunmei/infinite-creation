@@ -10,8 +10,8 @@
 > 官方背书：H3 的 `H3-Context-IR` 就是把多模态上下文转成结构化提示词的模块，官方明言 *"对最终输出质量至关重要，我们强烈建议将其纳入你的生成流水线，或按照提示词指导构建自己的上下文处理系统"*——**本包适配层就是那个"自建上下文处理系统"**。
 
 > ## ⚠️ 2026-10-02 官方复核修订（对照 MiniMax-AI/MiniMax-H3 官方仓库 live 文件逐字重验）
-> ① **正文语言（根因级修正）**：官方指南 base-en/ref-en 明文 "**Write all six rewrite sections in English**"——六段正文一律英文，只有 `<d>` 内台词/歌词与双引号内画内文字保留原语言（中文台词写 `<d>[Chinese] …</d>`）。本文件旧口径"跟随内容主语言（中文项目写中文）"即日起废止。实测佐证：中文正文属模型重写格式的域外输入，切点/说话人/字幕执行率全线劣化。
-> ② **切镜动词官方绑定短语**：`the camera cuts to` / `the shot cuts to` / `the shot transitions to` / `the shot changes to` / `the shot switches to`；**cross-dissolve / fade / wipe 仅在用户明确要求时使用**；"若只是距离或角度微变，优先用运镜不切镜"（base-en §4.2）。实测：中文"镜头切至"不被绑定，模型自由发挥成叠化 + 过渡融脸。
+> ① **正文语言（根因级修正）**：官方指南 base-en/ref-en 明文 "**Write all six rewrite sections in English**"——六段正文一律英文，只有 `<d>` 内台词/歌词与双引号内画内文字保留原语言（English dialogue写 `<d>[English] …</d>`）。本文件旧口径"跟随内容主语言（中文项目写中文）"即日起废止。实测佐证：source text in other languages属模型重写格式的域外输入，切点/说话人/字幕执行率全线劣化。
+> ② **切镜动词官方绑定短语**：`the camera cuts to` / `the shot cuts to` / `the shot transitions to` / `the shot changes to` / `the shot switches to`；**cross-dissolve / fade / wipe 仅在用户明确要求时使用**；"若只是距离或角度微变，优先用运镜不切镜"（base-en §4.2）。实测：Chinese cut-phrase equivalents不被绑定，模型自由发挥成叠化 + 过渡融脸。
 > ③ **画外声官方公式**（base-en §4.4）：`<Subject N> (Sx) says in an off-screen voiceover: <d>[Language] …</d> while his/her lips remain completely closed.`——固定短语 + `(Sx)` + 闭口证据紧跟 `</d>` 之后。实测：中文自创措辞 + 无 `(Sx)` 压不住口型（画面角色照样张嘴）。
 > ④ **多说话人声音互串 = 官方已知缺陷**（issue #17，open 未修复）：**同性别多说话人必崩**（付费闭源版同样复现）；模型按粗声学特征（音高/共振峰）分人而非按提示词绑定。缓解四条：说话人首次出现给足 age / gender / on-screen / **pitch / timbre / rate / accent** 且同场景声学画像拉满对比、一段一开口者、清理非对白人声词（轻笑/抽气/窃语类，实测因一句未格式化的 chuckle 打乱全段路由）、声音只前进不回头（A→B→A 恢复旧声必翻车）。
 > ⑤ **机检同步**：`validate_prompt.py` H4 新增"正文出现中文（`<d>` 与双引号内除外）→ WARN"、H9 新增"缺官方固定短语 `says in an off-screen voiceover` → WARN"、H11 声学提示词表补英文词。
@@ -61,8 +61,8 @@ L2VA:  How the reference pictures align with the target video — <Picture 1> (f
 | 【站位声明】（四要素 + 轴线 + 位移） | **无对应栏** | **必须转写成画面语言句**并入对应 `[Shot N]`（"三步外停住""身子半侧向庭院""两人之间"）；禁坐标表、禁 ASCII 布局、禁 `@` 锚点。⚠️ **摆位必入画（法则 20）在 H3 侧照旧成立**：站位里摆了位的每个人，转换后**必须在至少一个 `[Shot N]` 出现**（正拍/焦外身影/全景群像/反应镜头均算），否则写明"已出画/已退场·去向"——H3 没有站位栏可查，这条只能由转换者守住（机检 H5 兜底：定义了却全文未引用 → 告警） |
 | 【时间轴分镜】镜行 | `[Shot 1]`（无时间戳）/ `[Shot N] At MM:SS.mmm,` + 切点 | 首镜**不带时间戳**；后续镜以 `At 00:04.000,` **严格递增**且 ≤ 段时长（英文正文用官方格式；中文"在…处"仅旧稿兼容）。**切镜动词用官方绑定短语**：`the camera cuts to` / `the shot cuts to` / `the shot transitions to` / `the shot changes to` / `the shot switches to`；**cross-dissolve / fade / wipe 仅在用户明确要求时使用**；景别/角度微变优先用运镜不切镜（base-en §4.2）。⚠️ **首镜锚定（法则 21）照旧成立**：`[Shot 1]` 必须带**一个具名主体**（`<Subject N>` 或注明归属的部位，如 "her right hand"）；空镜开场须在镜行首写明「空镜：…」且每段至多 1 镜（机检 H12a） |
 | 镜行 `声音：…` | 拆三层 | 环境音/物理音/非语言人声 → `overall_soundscape`；BGM → `non_diegetic_music`；对白/歌唱 → 留在正文 `<d>` |
-| **镜行 `台词：【角色（语气）："…"】`（法则 19）** | `(Sx)` + 说话人身份短语写在 `<d>` **外面** + `<d>[Chinese] 原文</d>` | **语气位必须继承，且用英文合成说话人短语**（官方 base-en §4.4：首次出现要给足 character type / age / gender / on-screen 与否 / **pitch / timbre / speaking rate / accent**）——`The young woman with a low, flat, cool voice (S1) says at an even pace: <d>[Chinese] …</d>`；`<d>` 内**只放语言标签 + 台词原文**，逐字不改（含标点）；**语气词禁写进画面段**（写了会被当视觉信息渲染，同 C16a 判据）。⚠️ **同性别多说话人高危**（官方 issue #17，open 未修复）：声音身份会互串、同性别必崩——同场景说话人声学画像**拉满对比**（音高/音质反着写）、优先"一段一开口者"、非对白人声词（轻笑/窃语/抽气类）清理成群杂环境音、声音只前进不回头（A→B→A 恢复旧声必翻车） |
-| `（OS·音色）/（VO·音色）` 画外声（`vo-os-weaving.md`） | `<Subject N> (Sx) says in an off-screen voiceover: <d>[Chinese] …</d> while his/her lips remain completely closed.` | **官方固定公式**（base-en §4.4）：固定短语 `says in an off-screen voiceover` + 画外声源自具体人物时**必须给 `(Sx)`** + 闭口证据 `while … lips remain completely closed` **紧跟 `</d>` 之后**。⚠️ 实测（本包两轮抽卡）：中文自创措辞 + 无 `(Sx)` 时该通道**压不住口型**（画面角色照样张嘴）——按官方公式英文书写，或摘出正文走后期贴声；与本包声画分离红线同款；`{}` 锁口型通道**不得**用于画外声 |
+| **镜行 `台词：【角色（语气）："…"】`（法则 19）** | `(Sx)` + 说话人身份短语写在 `<d>` **外面** + `<d>[English] 原文</d>` | **语气位必须继承，且用英文合成说话人短语**（官方 base-en §4.4：首次出现要给足 character type / age / gender / on-screen 与否 / **pitch / timbre / speaking rate / accent**）——`The young woman with a low, flat, cool voice (S1) says at an even pace: <d>[English] …</d>`；`<d>` 内**只放语言标签 + 台词原文**，逐字不改（含标点）；**语气词禁写进画面段**（写了会被当视觉信息渲染，同 C16a 判据）。⚠️ **同性别多说话人高危**（官方 issue #17，open 未修复）：声音身份会互串、同性别必崩——同场景说话人声学画像**拉满对比**（音高/音质反着写）、优先"一段一开口者"、非对白人声词（轻笑/窃语/抽气类）清理成群杂环境音、声音只前进不回头（A→B→A 恢复旧声必翻车） |
+| `（OS·音色）/（VO·音色）` 画外声（`vo-os-weaving.md`） | `<Subject N> (Sx) says in an off-screen voiceover: <d>[English] …</d> while his/her lips remain completely closed.` | **官方固定公式**（base-en §4.4）：固定短语 `says in an off-screen voiceover` + 画外声源自具体人物时**必须给 `(Sx)`** + 闭口证据 `while … lips remain completely closed` **紧跟 `</d>` 之后**。⚠️ 实测（本包两轮抽卡）：中文自创措辞 + 无 `(Sx)` 时该通道**压不住口型**（画面角色照样张嘴）——按官方公式英文书写，或摘出正文走后期贴声；与本包声画分离红线同款；`{}` 锁口型通道**不得**用于画外声 |
 | 画内文字 / 字幕【】 | 双引号内保原文 | `木牌写着"静心"`；用**英文直角双引号**，不用中文引号/书名号 |
 | FACS 微表情（AU 配方） | 可见肌肉语言 | `眼周皮肤绷紧、眉心一蹙、下唇内抿`；**AU 编号/强度档/kernel 不进正文**（同 C12 口径） |
 | **抽象形态形容（法则 23）** | **具象可见形态** | 成线/成串/如注/轻蜷/微蜷 这类抽象副词一律换掉——"雨滴砸在手背上溅开"（机检 H12 同族；与 C20c 同口径） |
@@ -82,7 +82,7 @@ L2VA:  How the reference pictures align with the target video — <Picture 1> (f
 2. **参考素材上限（Ref2VA）**：图像 **≤9 张**；视频 ≤3 段（每段 2–15s、总 ≤15s）；音频 ≤3 段（**必须与图像或视频同时使用，不能作为唯一输入**，每段 2–15s、总 ≤15s）；**混合输入文件总数 ≤12 个**。超限走 §四 取材策略。
 3. **画幅六档**：`21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16`（比 B 锁多 **4:3 / 3:4**）；参考类模式用 `auto` / `adaptive`（等同本包参考模式②的自适应）。
 4. **输出规格**：24 FPS、32 kHz 立体声、默认短边 768；2K 走 `H3-Regenerate-2K` 重生成（可选）。
-5. **语言（2026-10-02 按官方指南修正）**：**六段正文一律英文**——官方 base-en/ref-en 明文 "Write all six rewrite sections in English"；**只有 `<d>` 内台词/歌词与双引号内画内文字保留原语言**（中文台词写 `<d>[Chinese] …</d>`；中文是其稳定支持的 11 种对话语言之一，台词无障碍）。固定英文的还有：字段名、保留度标记、标签、`(Sx)`、时间码 `MM:SS.mmm`、**切镜动词（官方绑定短语）**、`says in an off-screen voiceover` 等官方绑定短语。旧口径"跟随内容主语言（中文项目写中文）"**已废止**。机检 H4 对 `<d>` 外中文字符告警。
+5. **语言（2026-10-02 按官方指南修正）**：**六段正文一律英文**——官方 base-en/ref-en 明文 "Write all six rewrite sections in English"；**只有 `<d>` 内台词/歌词与双引号内画内文字保留原语言**（English dialogue写 `<d>[English] …</d>`；中文是其稳定支持的 11 种对话语言之一，台词无障碍）。固定英文的还有：字段名、保留度标记、标签、`(Sx)`、时间码 `MM:SS.mmm`、**切镜动词（官方绑定短语）**、`says in an off-screen voiceover` 等官方绑定短语。旧口径"跟随内容主语言（中文项目写中文）"**已废止**。机检 H4 对 `<d>` 外中文字符告警。
 6. **正文只写"有什么"**：禁否定式指导（"不要出现 X"）、禁 `@` 锚点、禁七段式栏名（【画幅风格】【站位声明】【强制禁止项】等；**【接续状态】已全包废止，同样不进正文**）、禁工作流规则词（末态继承/拼接节点/换机位）、禁坐标/ASCII 布局。
 7. **保留度标记是固定英文值**：画面 `fully_preserved` / `partially_preserved` / `attribute_transfer` / `weak_reference`；音频 `fully_copy` / `partially_copy` / `reference` / `weak_reference`。**`retention_analysis` 里不写 `(Sx)`。**
 8. **说话人编号**：按**本段实际发声顺序**从 `(S1)` 起编，未发声角色**不给 ID**；同段内一致。一集拆多段分别生成时，每段独立重编即可（H3 每段零记忆）。
@@ -155,7 +155,7 @@ POST {MINIMAX_API_BASE}/v2/h3_context_ir
 | 门 | 检查 |
 |---|---|
 | H1 | 字段集完整：T2VA/I2VA/FL2VA/L2VA → 三字段；Ref2VA → 六段式且**顺序正确** |
-| H2 | `[Shot 1]` 无时间戳；后续切点 `[Shot N] At MM:SS.mmm,` 严格递增且 ≤ 段时长；**切镜动词须用官方绑定短语**（the camera/shot cuts to…，中文"镜头切至"→ 会被做成叠化融脸） |
+| H2 | `[Shot 1]` 无时间戳；后续切点 `[Shot N] At MM:SS.mmm,` 严格递增且 ≤ 段时长；**切镜动词须用官方绑定短语**（the camera/shot cuts to…，Chinese cut-phrase equivalents→ 会被做成叠化融脸） |
 | H3 | 时长落在 **4–15s**，且与载荷 `duration_seconds` 一致 |
 | H4 | **正文应为英文**（官方 base-en/ref-en；`<d>` 与双引号画内文字之外出现中文 → WARN）；`<d>` 必须有语言标签、台词保原语言未被翻译 |
 | H5 | 标签先定义后引用（Ref2VA）；无未定义标签；`summary` 不引入新标签；**定义项 >9 告警**；**定义了却在正文一次未引用 → 告警**（别白占 9 张额度 / 人物凭空消失） |
@@ -180,4 +180,4 @@ POST {MINIMAX_API_BASE}/v2/h3_context_ir
 
 > **2026-10-02 官方复核增补**：重拉官方仓库 live 文件逐字比对（`skills/h3-prompt-writing/references/base-en.txt` / `ref-en.txt` / `README.zh-CN.md`，与 HuggingFace `docs/VIDEO_PROMPT_WRITING_GUIDE_*.md` diff 逐字一致），修正正文语言口径——旧"跟随内容主语言（中文项目写中文）"与官方 "**Write all six rewrite sections in English**" 冲突，以官方为准；新增官方 issue #17（多说话人声音身份互串，open，同性别必崩）、切镜动词官方绑定短语表、`says in an off-screen voiceover` 画外声公式；机检 H4/H9/H11 同步升级。
 
-> 参考样片（本包配套示例，非规则；⚠️ 旧中文正文格式——正文语言与切镜动词以本文件 §上方 2026-10-02 修订为准）：`projects/H3-样片/H3-文戏样片.md`、`H3-打戏样片.md`。
+> 参考样片（本包配套示例，非规则；⚠️ 旧source text in other languages格式——正文语言与切镜动词以本文件 §上方 2026-10-02 修订为准）：`projects/H3-样片/H3-文戏样片.md`、`H3-打戏样片.md`。

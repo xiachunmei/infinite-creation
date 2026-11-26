@@ -49,8 +49,8 @@ Alias / codename: "Light Chaser"
 ### Front full-body sheet
 ```text
 Lin Chen, 19-year-old male, slim athletic build, 175cm,
-tanned skin, short messy black hair with side bangs covering right eye,
-single eyelid dark brown eyes, small scar on left cheekbone,
+tanned skin, short messy light brown hair with side bangs covering right eye,
+double eyelid dark brown eyes, small scar on left cheekbone,
 wearing dark gray hoodie with worn hood, black cargo pants,
 black worn military boots, red string bracelet on left wrist,
 silver chain necklace, standing with slight slouch hands in pockets,
@@ -76,4 +76,4 @@ Lin Chen, [sheet description above], [action]:
 ```
 
 ## Multi-Character Prompt
-`Lin Chen (dark hoodie, black hair) talking with Mei (white coat, short silver hair), two characters face to face, tense conversation, abandoned laboratory background, anime style, consistent character design, medium shot`
+`Lin Chen (dark hoodie, light brown hair) talking with Mei (white coat, short silver hair), two characters face to face, tense conversation, abandoned laboratory background, anime style, consistent character design, medium shot`

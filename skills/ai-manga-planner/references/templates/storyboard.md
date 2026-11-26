@@ -26,7 +26,7 @@
 - **台词/字幕**：「」
 - **时长参考**：___秒
 
-**AI出图提示词（中文）**：
+**AI image prompt (English)**：
 
 **AI出图提示词（英文Prompt）**：
 ```
@@ -48,7 +48,7 @@ lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer
 - **台词/字幕**：
 - **时长参考**：
 
-**AI出图提示词（中文）**：
+**AI image prompt (English)**：
 
 **AI出图提示词（英文Prompt）**：
 ```

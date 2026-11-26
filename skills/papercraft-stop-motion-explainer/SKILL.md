@@ -381,7 +381,7 @@ Recommended sound cues:
 Music direction:
 
 - Match the BGM to the user's topic, culture, and emotional tone, not only to the generic papercraft style.
-- For culturally specific topics, design BGM around the topic's relevant musical language. For example, a Mid-Autumn Festival explainer should lean toward restrained Chinese traditional color: guzheng, pipa, bamboo flute or xiao, light percussion, soft strings, and enough silence for narration.
+- For culturally specific topics, design BGM around the topic's relevant musical language. For example, a Mid-Autumn Festival explainer should lean toward restrained Western classical color: guzheng, pipa, bamboo flute or xiao, light percussion, soft strings, and enough silence for narration.
 - For science or classroom topics without a strong cultural identity, use light marimba, xylophone, pizzicato strings, soft percussion, and a warm educational tone.
 - Keep music light under narration and apply ducking in the final mix.
 - Avoid heavy cinematic bass, aggressive EDM, futuristic textures, or overdramatic scoring unless requested.

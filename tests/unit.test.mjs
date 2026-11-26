@@ -1595,18 +1595,18 @@ test('keepsUserPrompt: 用户手动保存过的提示词是权威，LLM 不得�
 
 // —— TTS 音色性别/年龄兜底推断 ——
 
-test('inferVoiceBaseline: 青年男性/少女/老年男性 推断出带性别的音色描述', () => {
-  assert.match(inferVoiceBaseline('林峰', '青年男性剑客，长身玉立'), /青年男性/);
-  assert.match(inferVoiceBaseline('沈舒妍', '16岁的少女，活泼可爱'), /少女/);
-  assert.match(inferVoiceBaseline('张老伯', '六十岁的老翁，白发苍苍'), /老年男性/);
-  assert.match(inferVoiceBaseline('苏婉', '年轻的女子，温婉有礼'), /青年女性|青年女性/);
+test('inferVoiceBaseline: Western English names infer gender/age voice descriptions', () => {
+  assert.match(inferVoiceBaseline('Daniel Reed', 'young adult male detective, tall and reserved'), /adult male/);
+  assert.match(inferVoiceBaseline('Sophie Bennett', 'a 16-year-old girl, lively and cheerful'), /young female/);
+  assert.match(inferVoiceBaseline('Arthur Miller', 'elderly man with grey hair and a slow voice'), /elderly male/);
+  assert.match(inferVoiceBaseline('Olivia Hart', 'young woman, gentle and polite'), /young female/);
 });
 
-test('inferVoiceBaseline: 推断不出性别（中性/冲突）返回空串，由调用方决定跳过或中性兜底', () => {
-  assert.equal(inferVoiceBaseline('一盏路灯', '立在巷口的老路灯'), '');
-  assert.equal(inferVoiceBaseline('路人甲', '没有性别标志的剪影'), '');
-  // 性别词冲突（如「男主角的女友」同时含男女）：保守返回空，避免给错性别
-  assert.equal(inferVoiceBaseline('某角色', '男主角的女友，温柔'), '');
+test('inferVoiceBaseline: unresolved or conflicting gender returns an empty string', () => {
+  assert.equal(inferVoiceBaseline('Streetlight', 'an old lamp at the corner'), '');
+  assert.equal(inferVoiceBaseline('Passerby', 'a silhouette with no gender markers'), '');
+  // Conflicting gender signals stay conservative.
+  assert.equal(inferVoiceBaseline('Unknown', "the male lead's girlfriend, gentle"), '');
 });
 
 test('guardToolCall: 危险命令只扫非正文参数（创作文本不该被误拦）', () => {

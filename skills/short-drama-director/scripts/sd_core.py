@@ -130,7 +130,7 @@ def default_project_state():
             "era_anchor": "2026年现代都市",
             "region": "东亚沿海城市",
             "tech_level": "现代科技",
-            "forbidden_elements": ["马车", "长衫", "发髻", "煤油灯"],
+            "forbidden_elements": ["carriage", "tailcoat", "updo", "oil lamp"],
             "required_elements": ["混凝土地面", "冷白日光灯管"],
         },
         "characters": {

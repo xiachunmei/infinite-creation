@@ -33,7 +33,7 @@ SUITE_DIR = os.path.dirname(BASE_DIR)
 # 10 张满配主力导演卡正主短语与关键指纹（与 style-bible/director-param-library.md & style-prefix-blocks.md 同源）
 CANONICAL_DIRECTOR_CARDS = {
     "01": {"name": "张艺谋", "keywords": ("浓烈色块", "高饱和", "仪式对称", "大远景", "1:8", "冷暖对冲")},
-    "03": {"name": "王家卫", "keywords": ("霓虹", "抽帧", "前景遮挡", "浅景深", "1:6", "暗绿", "暖黄")},
+    "03": {"name": "Western stylized auteur", "keywords": ("霓虹", "抽帧", "前景遮挡", "浅景深", "1:6", "暗绿", "暖黄")},
     "04": {"name": "徐克", "keywords": ("广角", "斜角", "高速", "急推", "1:8", "冷青", "16mm", "18mm")},
     "06": {"name": "乌尔善", "keywords": ("神话", "重工业", "金青", "火光", "1:8", "图腾", "厚重")},
     "07": {"name": "路阳", "keywords": ("冷青", "暖橙", "烛火", "火折", "浅景深", "1:8", "1:10", "硬切", "冷峻")},
@@ -42,10 +42,10 @@ CANONICAL_DIRECTOR_CARDS = {
     "39": {"name": "大卫·芬奇", "keywords": ("冷黄绿", "青灰", "阴郁", "机械", "定焦", "1:6", "1:8", "精准")},
     "52": {"name": "罗杰·狄金斯", "keywords": ("单源", "实用光", "剪影", "冷青灰", "阴影侧", "1:6", "1:8", "35~85mm")},
     "64": {"name": "MAPPA", "keywords": ("高对比", "粗黑边", "速度线", "冲击帧", "广角透视", "粒子")},
-    "65": {"name": "国漫3D仙侠", "keywords": ("国漫3D", "半写实", "PBR", "丝绸", "丁达尔", "流光剑气")},
+    "65": {"name": "Western 3D high fantasy", "keywords": ("Western 3D animation", "半写实", "PBR", "丝绸", "丁达尔", "流光剑气")},
     "66": {"name": "暗黑神话游戏CG", "keywords": ("虚幻5", "游戏CG", "PBR", "甲胄", "暗黑", "丁达尔")},
-    "71": {"name": "国漫3D进阶水墨", "keywords": ("三渲二", "水墨", "枯笔", "飞白", "墨韵", "朱砂")},
-    "72": {"name": "东方神话3D奇幻", "keywords": ("东方神话", "3D", "次表面散射", "青绿", "赤金", "法相")},
+    "71": {"name": "Western painterly 3D fantasy", "keywords": ("三渲二", "水墨", "枯笔", "飞白", "墨韵", "朱砂")},
+    "72": {"name": "Western mythology 3D fantasy", "keywords": ("东方神话", "3D", "次表面散射", "青绿", "赤金", "法相")},
 }
 
 CONTRACT_ITEMS_FULL = [

@@ -24,7 +24,7 @@
 
 每一版提示词都必须强制包含以下要素，缺一不可：
 
-| 要素 | 中文描述 | 英文描述 |
+| 要素 | English description |
 |---|---|---|
 | 背景 | 纯白色背景，无任何杂物 | pure white background, isolated, clean background, studio backdrop |
 | 构图 | 全身像，完整呈现从头到脚 | full body shot, full body portrait, head to toe, entire body visible |
@@ -45,7 +45,7 @@
 | 真人/写实/摄影/博主/模特 | **仿真人 Photorealistic** |
 | 3D/C4D/皮克斯/盲盒/手办/泡泡玛特 | **3D 渲染 3D Render** |
 | 二次元/动漫/番剧/萌系/JK | **日系二次元 Anime** |
-| 国风/古风/仙侠/水墨 | **国风插画 Chinese Style** |
+| 国风/Western period/high fantasy/水墨 | **国风插画 Chinese Style** |
 | Q版/卡通/chibi | **卡通插画 Cartoon** |
 | 未指定 | **默认仿真人写实风格** |
 
@@ -65,8 +65,8 @@
 
 ---
 
-【📱 即梦 / 可灵 / 通义万相 · 中文自然语言版】
-（200-300 字流畅中文段落。描述顺序：风格定位 → 基础信息+外貌 → 完整服装含鞋子 → 三视图标准要素 → 气质收尾）
+【Western image tools · English natural-language version】
+（200–300 word fluent English paragraph。描述顺序：风格定位 → 基础信息+外貌 → 完整服装含鞋子 → 三视图标准要素 → 气质收尾）
 
 ---
 
@@ -138,7 +138,7 @@ lowres, bad anatomy, cropped, cut off, partial body, missing limbs, missing shoe
 · 仿真人 → "真实摄影、电影级画面、35mm镜头、自然光影、超高细节、8K画质"
 
 # 输出格式
-末尾必须有「✅ 一键复制版」（将四段整合为一段流畅中文描述，方便直接粘贴生图）
+End with an ✅ English copy-paste version combining the four sections into one fluent English paragraph for direct image generation
 
 ---
 
@@ -154,7 +154,7 @@ lowres, bad anatomy, cropped, cut off, partial body, missing limbs, missing shoe
 🚫 不出现"一只手握着""有人拿着"等表述
 ✅ 背景必须是纯白色（#FFFFFF），便于抠图与素材化
 ✅ 道具居中或符合产品摄影构图，占画面主体
-✅ 全程中文描述
+✅ English throughout
 
 # 输出五维度
 【外形/结构】整体形状、轮廓、比例；各组成部件；尺寸感与摆放姿态
@@ -169,5 +169,5 @@ lowres, bad anatomy, cropped, cut off, partial body, missing limbs, missing shoe
 · 仿真人 → "产品级摄影、真实材质、微距特写、电影级光影、8K超高细节"
 
 # 输出格式
-末尾必须有「✅ 一键复制版」（整合为一段流畅中文描述，方便直接粘贴生图）
-描述词总长度 200-400 字
+End with an ✅ English copy-paste version combining the sections into one fluent English paragraph for direct image generation
+Prompt length 200–400 words

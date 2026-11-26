@@ -104,7 +104,7 @@
          ㊾ 由「查『自称 68 条』字符串在不在」改为**真校验**（条数自洽 + 脚本/注册清单/手册三方集合双向相等）；
          ㉛ 新增「总控 SKILL 子码清单完整覆盖注册块（含 `C18a~n` 类范围展开）」断言，堵住「手册有、总控无」
 [E*36] 画风锁三方对账域（2026-10-15 Agent 修复 · 治「加卡顶掉老卡 / 漏族 / 数字漂移」）：
-       ◔ 病灶：`n` 版补 4 张国漫3D卡时**顶掉了原有 4 张卡**（皮克斯/迪士尼经典/皮埃尔·孔切·平面插画/
+       ◔ 病灶：`n` 版补 4 张Western 3D animation卡时**顶掉了原有 4 张卡**（皮克斯/迪士尼经典/皮埃尔·孔切·平面插画/
          Nelagraphs·长条漫画风），T8 家族缩编致 宫崎骏/京阿尼 掉队，参数库章节号重复、「其余 N 组」算错——
          **全程零断言覆盖**。本域把 12 项全部变成真断言：
          选卡表卡数自洽（◔1）/ 编号唯一（◔2）/ 停用号位声明（◔3）/ 补回卡在位（◔4）/ 移除卡不在选项卡内（◔5）/
@@ -517,7 +517,7 @@ for name in SUB_SKILLS:
 
 tr = read(os.path.join(refs_dir, "track-routing.md"))
 check("⑳ track-routing 含〇·0 锁与四赛道定义",
-      "〇·0" in tr and all(k in tr for k in ("国内剧", "海外剧", "解说类", "其他")))
+      "〇·0" in tr and all(k in tr for k in ("Western drama", "Western overseas drama", "解说类", "其他")))
 rce = sub_skill_path("sd-recon-engine")
 if rce:
     rce_s = read(os.path.join(rce, "SKILL.md"))
@@ -1065,7 +1065,7 @@ check("㉞ style-bible 知识库 8 份齐备（锁规程/六原型/74组/适配�
 _ex_dir = os.path.join(_sb_dir, "examples")
 _missing_ex = [f for f in ("demo-feed-wkw-15s.md", "demo-feed-xuke-15s.md")
                if not os.path.isfile(os.path.join(_ex_dir, f))]
-check("㉞ style-bible/examples 成稿示例 2 份在位（王家卫 15s / 徐克 10s）",
+check("㉞ style-bible/examples 成稿示例 2 份在位（Western stylized auteur 15s / 徐克 10s）",
       not _missing_ex, "缺: " + ", ".join(_missing_ex))
 
 _missing_sl = [f for f in ("style-lock-ladder.py", "style-lock-recommend.py")
@@ -2400,8 +2400,8 @@ check("◓15 D锁首项独立弹出「① 末帧定格承接」且清零旧「�
       "① 末帧定格承接" in skill and "①+② 为连续剧情多段的默认组合" not in skill and "禁止合并为①+②" in skill)
 _dpl = read(os.path.join(_sb_dir, "director-param-library.md"))
 _spb = read(os.path.join(_sb_dir, "style-prefix-blocks.md"))
-check("◓16 画风锁参数库与成品块已补齐路阳+国漫3D仙侠/游戏CG/3D进阶水墨/东方神话3D等 14 张主力卡完整 11 槽位",
-      all(k in _dpl and k in _spb for k in ("徐克", "王家卫", "路阳", "袁和平", "乌尔善", "张艺谋", "朴赞郁", "大卫·芬奇", "罗杰·狄金斯", "MAPPA", "国漫3D仙侠", "暗黑神话游戏CG", "国漫3D进阶水墨", "东方神话3D奇幻")))
+check("◓16 画风锁参数库与成品块已补齐路阳+Western 3D high fantasy/游戏CG/3D进阶水墨/Western fantasy 3D等 14 张主力卡完整 11 槽位",
+      all(k in _dpl and k in _spb for k in ("徐克", "Western stylized auteur", "路阳", "袁和平", "乌尔善", "张艺谋", "朴赞郁", "大卫·芬奇", "罗杰·狄金斯", "MAPPA", "Western 3D high fantasy", "暗黑神话游戏CG", "Western painterly 3D fantasy", "Western mythology 3D fantasy")))
 _sbl_txt = read(os.path.join(BASE, "references", "storyboard-board-lite.md"))
 check("◓17 看板契约与 model-adapters 已清除「不另写文字描述/P2.5空壳占位」误导并强制挂接 sd-asset-engine 三模板",
       "character-portrait-templates.md" in _sbl_txt and "scene-grid-template.md" in _sbl_txt and "prop-template.md" in _sbl_txt
@@ -2448,7 +2448,7 @@ check("◓24 火山方舟官方（Seedance 2.0/2.5）与 GitHub 五大深水区�
 # ================================================================
 # [E*36] 画风锁「选卡表 / 引擎 / 参数库」三方对账域（2026-10-15 Agent 修复）
 # ================================================================
-# 动机：2026-10-14 的 n 版用「加 4 张国漫3D 卡」的方式补卡，却**顶掉了原有 4 张卡**
+# 动机：2026-10-14 的 n 版用「加 4 张Western 3D animation 卡」的方式补卡，却**顶掉了原有 4 张卡**
 #       （皮克斯 / 迪士尼经典 / 皮埃尔·孔切·平面插画 / Nelagraphs·长条漫画风），
 #       并把 T8 家族缩编（宫崎骏 / 京阿尼 掉出家族）、参数库重复编号 + 「其余 N 组」算错。
 #       **全程无任何断言覆盖** —— 换卡 / 漏族 / 数字漂移全靠人工体检才发现。
@@ -2463,7 +2463,7 @@ _par = read(os.path.join(_sb, "director-param-library.md"))
 _mtx = read(os.path.join(_sb, "style-fit-and-combat-matrix.md"))
 
 # ---- ① 选卡表：卡数自洽 + 编号唯一 + 停用号位声明 ----
-# ⚠️ 卡名单元格可能形如 `**国漫3D仙侠**（玄机/凡人/仙逆系）`，故只强约束「行首是编号 + 至少有第 2 列」，
+# ⚠️ 卡名单元格可能形如 `**Western 3D high fantasy**（玄机/凡人/仙逆系）`，故只强约束「行首是编号 + 至少有第 2 列」，
 #    不把卡名内部结构写进正则（写死了会漏掉带括号/斜杠的卡，误报「表头 N 实际 M-7」）。
 _cat_rows = re.findall(r"^\|\s*(\d{1,2})\s*\|\s*([^|]+?)\s*\|", _cat, re.M)
 _cat_nos = [int(n) for n, _ in _cat_rows]

@@ -9,23 +9,23 @@
 | 暗黑猎奇漫 | dark grotesque manga style | 悬疑、恐怖、病娇 | 高对比度、扭曲透视、阴影强烈 |
 | 复古昭和漫画 | retro Showa era manga style | 年代、怀旧、生活纪实 | 粗糙线稿、网点纸质感、黑白为主 |
 | 赛博朋克漫画 | cyberpunk comic style | 科幻、都市、反乌托邦 | 霓虹色调、机械纹理、发光线条 |
-| 水墨国风漫画 | Chinese ink wash manga style | 古风、仙侠、江湖 | 墨色渲染、留白构图、毛笔质感 |
+| Western watercolor comic | Chinese ink wash manga style | Western period、high fantasy、江湖 | 墨色渲染、留白构图、毛笔质感 |
 | 美式超级英雄漫画 | American superhero comic style | 超能力、正义对抗 | 粗轮廓线、强色块、夸张肌肉 |
 | 美式复古地下漫画 | American underground retro comic | 朋克、反叛、街头 | 粗糙线稿、复古色调、夸张变形 |
 | 欧漫写实水彩 | European realistic watercolor comic | 写实叙事、成人向 | 水彩渲染、柔和色调、精细线条 |
 | Q版萌系漫画 | chibi cute manga style | 轻喜剧、萌系、儿童向 | 大头小身、圆润线条、饱和色 |
 | 厚涂写实漫画 | thick paint realistic manga style | 奇幻、写实冒险 | 厚涂质感、光影强烈、近3D效果 |
 | 平涂二次元漫画 | flat color 2D anime manga style | 校园、日常、轻松 | 平涂无渐变、细线条、明亮色 |
-| 黑白线稿漫画 | black and white lineart manga | 悬疑、武侠、经典 | 纯线稿、无色彩、网点阴影 |
+| 黑白线稿漫画 | black and white lineart manga | 悬疑、swashbuckler、经典 | 纯线稿、无色彩、网点阴影 |
 | 像素漫画 | pixel art manga style | 复古游戏、科幻 | 马赛克方块、8bit色调 |
-| 蒸汽朋克漫画 | steampunk comic style | 维多利亚科幻、机械 | 棕褐色调、齿轮纹理、蒸汽烟雾 |
-| 古风仙侠漫画 | Chinese xianxia fairy tale manga style | 修仙、异能、古代 | 飘逸线条、仙气光效、古典纹样 |
-| 韩式条漫 | Korean webtoon style | 现代都市、恋爱、悬疑 | 竖向分格、鲜艳色块、细腻表情 |
+| Steampunk漫画 | steampunk comic style | 维多利亚科幻、机械 | 棕褐色调、齿轮纹理、蒸汽烟雾 |
+| Western periodhigh fantasy漫画 | Chinese xianxia fairy tale manga style | 修仙、异能、古代 | 飘逸线条、仙气光效、古典纹样 |
+| Western webcomic | Korean webtoon style | 现代都市、恋爱、悬疑 | 竖向分格、鲜艳色块、细腻表情 |
 | 恐怖惊悚漫画 | horror thriller manga style | 惊悚、灵异、黑暗 | 变形线条、阴暗色调、扭曲构图 |
 | 治愈清新漫画 | healing fresh manga style | 日常、治愈、温情 | 淡彩、清新色调、简洁线条 |
 | 机能潮酷漫画 | techwear cool manga style | 都市潮流、反派组织、谍战 | 黑灰主色、机能线条、冷调色 |
-| 国漫3D写实 | Chinese 3D realistic animation style | 史诗冒险、国产动漫 | 3D渲染、精细纹理、影视级光影 |
-| 国风工笔漫画 | Chinese gongbi painting manga style | 宫廷、历史、精致 | 细腻工笔、矿物色彩、精细描线 |
+| Western 3D animation写实 | Chinese 3D realistic animation style | 史诗冒险、国产动漫 | 3D渲染、精细纹理、影视级光影 |
+| Western fine-line comic | Chinese gongbi painting manga style | 宫廷、历史、精致 | 细腻工笔、矿物色彩、精细描线 |
 | 废土漫画 | post-apocalyptic wasteland manga style | 末日、废土、求生 | 破败纹理、泥土色调、粗糙线条 |
 | 奇幻魔幻漫画 | fantasy magic manga style | 奇幻冒险、异世界 | 魔法光效、瑰丽色彩、史诗构图 |
 | 极简线条漫画 | minimalist line art manga style | 文艺、哲学、冥想 | 极简线条、大量留白、单色为主 |
@@ -43,15 +43,15 @@
 | 好莱坞大片 | Hollywood blockbuster cinematic style | 冷暖对比分级、饱和色 | 动作、冒险、特效 |
 | 法式文艺片 | French New Wave art film style | 自然光、低饱和、米白色调 | 文艺、恋爱、哲思 |
 | 韩式悬疑犯罪 | Korean crime thriller film style | 冷灰蓝、强对比阴影 | 犯罪、追杀、反转 |
-| 中式古风仙侠 | Chinese xianxia fantasy film style | 青绿金色、仙气光晕 | 仙侠、修真、古风 |
-| 中式年代纪实 | Chinese period documentary film style | 暖黄褪色、胶片颗粒 | 年代、纪实、历史 |
+| Western high fantasy | Chinese xianxia fantasy film style | 青绿金色、仙气光晕 | high fantasy、修真、Western period |
+| Western period documentary | Chinese period documentary film style | 暖黄褪色、胶片颗粒 | 年代、纪实、历史 |
 | 赛博朋克影视 | cyberpunk neon film style | 霓虹紫青、深夜城市、雨雾 | 科幻、都市、反乌 |
-| 蒸汽朋克影视 | steampunk film style | 棕铜色调、蒸汽雾气 | 机械、维多利亚、幻想 |
+| Steampunk影视 | steampunk film style | 棕铜色调、蒸汽雾气 | 机械、维多利亚、幻想 |
 | 废土末日 | post-apocalyptic wasteland film style | 橙黄沙尘、去饱和 | 末日、废土、生存 |
 | 低成本短剧写实 | low-budget realistic drama style | 自然光、无色彩分级 | 现代都市、日常 |
 | 哥特暗黑 | Gothic dark film style | 深紫黑、烛光暖点光 | 哥特、恐怖、吸血鬼 |
 | 青春校园纪实 | youth campus documentary style | 明亮自然光、淡暖色 | 校园、青春、成长 |
-| 武侠江湖 | wuxia martial arts film style | 暖褐 + 水墨飞溅 | 武侠、功夫、江湖 |
+| Western swashbuckler | wuxia martial arts film style | 暖褐 + 水墨飞溅 | swashbuckler、功夫、江湖 |
 | 谍战冷峻 | spy thriller cold film style | 冷灰蓝、强方向光 | 谍战、特工、冷峻 |
 | 胶片复古颗粒感 | film grain retro style | 胶片颗粒、暖黄褪色 | 复古、年代、怀旧 |
 | 冷调悬疑 | cold tone suspense film style | 冷青蓝、低照度、侧逆光 | 悬疑、追逃、对峙 |
@@ -59,8 +59,8 @@
 | 史诗奇幻 | epic fantasy film style | 金色光晕、深蓝夜空、HDR | 奇幻、神话、史诗 |
 | 手持纪实伪纪录片 | handheld mockumentary style | 自然光、手持抖动、无色分 | 纪录、真实感、惊悚 |
 | 霓虹都市 | neon city night film style | 霓虹紫红蓝、雨夜反光 | 都市夜晚、爱情、科幻 |
-| 水墨国风影视 | Chinese ink wash film style | 黑白水墨、淡彩点缀 | 古风、水墨、极简 |
-| 复古90年代电视电影 | retro 1990s TV movie style | 低分辨率颗粒、暖黄偏色 | 年代、童年、怀旧 |
+| Western watercolor cinematic | Chinese ink wash film style | 黑白水墨、淡彩点缀 | Western period、水墨、极简 |
+| 复古American 90s电视电影 | retro 1990s TV movie style | 低分辨率颗粒、暖黄偏色 | 年代、童年、怀旧 |
 | 惊悚恐怖 | horror thriller film style | 冷绿灰、强阴影、闪烁光 | 恐怖、灵异、惊悚 |
 | 公路电影 | road movie film style | 大景别、暖黄日落、天空 | 旅途、成长、自由 |
 | 轻喜剧明亮风 | light comedy bright film style | 饱和暖色、均匀柔光 | 喜剧、轻松、搞笑 |

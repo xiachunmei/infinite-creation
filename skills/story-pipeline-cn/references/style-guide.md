@@ -72,7 +72,7 @@ All three modes share this script/storyboard language. Read it before writing sc
 ```text
 anime style, 2D animation, cel shading, vibrant colors —
 dark abandoned factory interior, evening light through broken windows, dusty atmosphere —
-young male character with black hair wearing dark hoodie, holding flashlight, full body —
+young male character with light brown hair wearing dark hoodie, holding flashlight, full body —
 slowly walking forward scanning walls, cautious expression —
 tracking shot following character —
 dramatic chiaroscuro lighting —

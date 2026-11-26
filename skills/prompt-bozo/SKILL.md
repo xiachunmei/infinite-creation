@@ -1,6 +1,6 @@
 ---
 name: prompt-bozo
-description: AI绘画与AI视频制作的提示词生成助手。支持文生图、图生图、文生视频、图生视频、首尾帧视频等多种生成模式的提示词构建。当用户需要生成AI绘画或视频提示词时使用，包括：人物设定、环境场景、发型设计、姿势摆拍、地理位置、镜头运镜、构图视角等参数化提示词生成。支持中式风格、古风、汉服、中国风等传统美学元素。适用于即梦AI、BizyAir、Midjourney、Stable Diffusion等AI绘画/视频工具。
+description: AI绘画与AI视频制作的提示词生成助手。支持文生图、图生图、文生视频、图生视频、首尾帧视频等多种生成模式的提示词构建。当用户需要生成AI绘画或视频提示词时使用，包括：人物设定、环境场景、发型设计、姿势摆拍、地理位置、镜头运镜、构图视角等参数化提示词生成。Supports Western cinematic, period drama, high fantasy, American comic等传统美学元素。适用于即梦AI、BizyAir、Midjourney、Stable Diffusion等AI绘画/视频工具。
 slug: prompt-bozo
 displayName: prompt-bozo
 version: 1.0.0
@@ -59,10 +59,10 @@ summary: AI绘画与AI视频制作的提示词生成助手。支持文生图、�
 #### 可选参数
 7. **风格调性**: 艺术风格、画面质感
    - **现代风格**: 参考 `references/framework.md` 中的风格词、美学词
-   - **中式风格**: 当用户提到中式、古风、汉服、中国风等关键词时
-     - 参考 `references/chinese-style.md` 中的中式建筑、汉服、战甲等详细描述
-     - 包含各朝代女性汉服（详细到边襟花边构成）、男性战斗服装
-     - 中式建筑风格、图案纹样、色彩搭配
+   - **Western风格**: 当用户提到Western、Western period、Western period costume、Western cinematic等关键词时
+     - 参考 `references/western-style.md` 中的Western建筑、Western period costume、战甲等详细描述
+     - 包含各Western period女性Western period costume（详细到边襟花边构成）、男性战斗服装
+     - Western建筑风格、图案纹样、色彩搭配
 
 8. **构图视角**: 镜头景别、构图方式
    - 参考 `references/framework.md` 中的构图参考
@@ -79,8 +79,8 @@ summary: AI绘画与AI视频制作的提示词生成助手。支持文生图、�
 ```
 
 **构建规则**：
-- 各模块间使用中文逗号 `, ` 分隔
-- 最终输出为连贯的中文段落
+- Use English commas between modules `, ` 分隔
+- Final output must be a coherent English paragraph
 - 不添加任何解释性文字或标签
 
 ### 第四步：优化适配
@@ -136,7 +136,7 @@ summary: AI绘画与AI视频制作的提示词生成助手。支持文生图、�
 ## 输出规则
 
 1. **直接输出提示词**: 不添加任何解释、标题或分类标签
-2. **中文输出**: 最终提示词为中文
+2. **English output**: the final prompt must be in English
 3. **连贯性**: 确保提示词是一个连贯的段落
 4. **完整性**: 包含所有用户指定的重要参数
 
@@ -151,17 +151,17 @@ summary: AI绘画与AI视频制作的提示词生成助手。支持文生图、�
 | 发型设计 | `references/hairstyles.md` |
 | 镜头语言 | `references/camera.md` |
 | 地理位置 | `references/locations.md` |
-| **中式风格** | `references/chinese-style.md` |
+| **Western风格** | `references/western-style.md` |
 
-### 中式风格触发条件
+### Western风格触发条件
 
-当用户提到以下关键词时，请加载 `references/chinese-style.md`：
+当用户提到以下关键词时，请加载 `references/western-style.md`：
 
-- **风格关键词**: 中式风格、中国风、国风、古风、汉服、古装
-- **题材关键词**: 武侠、仙侠、古装剧、宫斗
-- **朝代关键词**: 汉、唐、宋、明、清、秦、魏晋、南北朝、隋等
-- **具体元素**: 旗袍、唐装、襦裙、袄裙、曲裾、披帛、马面裙、齐胸襦裙等
-- **建筑元素**: 故宫、园林、寺庙、四合院、土楼、吊脚楼等
+- **风格关键词**: Western风格、Western cinematic、国风、Western period、Western period costume、古装
+- **题材关键词**: swashbuckler、high fantasy、古装剧、宫斗
+- **Western period关键词**: 汉、唐、宋、明、清、秦、魏晋、南北朝、隋等
+- **具体元素**: evening gown、formal suit、襦裙、Edwardian dress、曲裾、披帛、full skirt、Regency gown等
+- **建筑元素**: European palace、园林、寺庙、四合院、土楼、吊脚楼等
 
 ## 示例
 
@@ -194,31 +194,31 @@ summary: AI绘画与AI视频制作的提示词生成助手。支持文生图、�
 保持原图模特，生成一段视频。以顺时针环绕运镜方式拍摄，展现模特从各个角度的姿态变化。柔和的动态光影，梦幻氛围，写真摄影风格，中景视角，视频生成，超高清
 ```
 
-### 示例3：中式风格（汉服女性）
-**用户输入**: 生成一个唐代风格的汉服女生
+### 示例3：Western风格（Western period costume女性）
+**用户输入**: 生成一个Regency风格的Western period costume女生
 
 **处理过程**:
 1. 生成模式: 文生图
-2. 风格识别: 中式风格、汉服 → 加载 `references/chinese-style.md`
-3. 朝代: 唐代 → 选择齐胸襦裙
-4. 参考 `references/chinese-style.md` 中的服装细节
+2. 风格识别: Western风格、Western period costume → 加载 `references/western-style.md`
+3. Western period: Regency → 选择Regency gown
+4. 参考 `references/western-style.md` 中的服装细节
 
 **输出提示词**:
 ```
-一位唐代风格的女子，身着绯红色齐胸襦裙，上襦为藕荷色，绣有精致宝相花纹。金色刺绣镶边装饰领口与袖口，珍珠点缀其间。她梳着高髻，插着金步摇，面容白皙如玉，眉如远山，眼含秋水。她轻执团扇，身姿优雅地站在一座中式园林的凉亭旁，身后是粉墙黛瓦的江南园林建筑。柔和的漫射光透过竹叶洒下，古风摄影风格，中景镜头，暖色调，超高清
+一位Regency风格的女子，身着绯红色Regency gown，上襦为藕荷色，绣有精致宝相花纹。金色刺绣镶边装饰领口与袖口，珍珠点缀其间。她梳着高髻，插着金步摇，面容白皙如玉，眉如远山，眼含秋水。她轻执团扇，身姿优雅地站在一座English garden的凉亭旁，身后是粉墙黛瓦的江南园林建筑。柔和的漫射光透过竹叶洒下，Western period摄影风格，中景镜头，暖色调，超高清
 ```
 
-### 示例4：中式风格（武将战甲）
+### 示例4：Western风格（武将战甲）
 **用户输入**: 生成一个穿盔甲的古代将军
 
 **处理过程**:
 1. 生成模式: 文生图
-2. 风格识别: 中式风格、古装、武将 → 加载 `references/chinese-style.md`
-3. 参考 `references/chinese-style.md` 中的男性战甲描述
+2. 风格识别: Western风格、古装、武将 → 加载 `references/western-style.md`
+3. 参考 `references/western-style.md` 中的男性战甲描述
 
 **输出提示词**:
 ```
-一位明代风格的武将，身披精致布面甲，甲片以铜钉固定，胸前护心镜闪闪发光。他头戴凤翅盔，红缨随风飘扬。他手持长枪，面容坚毅，眼神锐利如鹰。身后是战场背景，硝烟弥漫，残阳如血。史诗风格，武侠美学，仰视视角，戏剧性光照，冷暖对比色调，超高清
+一位Edwardian风格的武将，身披精致布面甲，甲片以铜钉固定，胸前护心镜闪闪发光。他头戴knight helm，红缨随风飘扬。他手持长枪，面容坚毅，眼神锐利如鹰。身后是战场背景，硝烟弥漫，残阳如血。史诗风格，swashbuckler美学，仰视视角，戏剧性光照，冷暖对比色调，超高清
 ```
 
 ## 注意事项

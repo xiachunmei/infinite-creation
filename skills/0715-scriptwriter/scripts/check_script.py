@@ -5,13 +5,12 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-
 STEEL_BLUE = "#4682B4"
 KEY_RED = "#FF0000"
-TIME_TAGS = "日|夜|清晨|黄昏|傍晚|凌晨|黎明"
-SCENE_RE = re.compile(rf"^\d+-\d+\.\s+.+\s+\[(内|外)\]\s+\[({TIME_TAGS})\]$")
-EPISODE_RE = re.compile(r"(?:《[^》]+》)?第\d{1,3}集")
-DIALOGUE_RE = re.compile(r"^([^：\n]{1,16})：(.*)$")
+TIME_TAGS = "DAY|NIGHT|MORNING|DUSK|EVENING|DAWN|AFTERNOON"
+SCENE_RE = re.compile(rf"^\d+-\d+\.\s+.+\s+\[(INT|EXT)\]\s+\[({TIME_TAGS})\]$")
+EPISODE_RE = re.compile(r"\bEpisode\s+\d{1,3}\b", re.IGNORECASE)
+DIALOGUE_RE = re.compile(r"^([^:\n]{1,40}):\s*(.*)$")
 BLUE_SPAN_RE = re.compile(
     r'<span\b[^>]*style=["\'][^"\']*color\s*:\s*#4682B4[^"\']*["\'][^>]*>(.*?)</span>',
     re.IGNORECASE,
@@ -21,16 +20,14 @@ RED_SPAN_RE = re.compile(
     re.IGNORECASE,
 )
 HALF_WIDTH_PRODUCTION = re.compile(
-    r"\[(音效|字幕|特写|景别|运镜|特效|插入闪回|闪回结束|蒙太奇|平行剪辑|本集完)"
+    r"\[(SFX|SUBTITLE|CLOSE-UP|SHOT SIZE|CAMERA|VFX|INSERT FLASHBACK|END FLASHBACK|MONTAGE|PARALLEL CUT|END OF EPISODE)"
 )
 FORBIDDEN_META = {
-    "场景题头",
-    "画面/动作",
-    "画面/动作(Action)",
-    "对白",
-    "对白(Dialogue)",
-    "特殊音效与视觉",
-    "专业术语",
+    "Scene Heading",
+    "Action",
+    "Dialogue",
+    "Special Effects",
+    "Glossary",
 }
 
 
@@ -65,7 +62,7 @@ def has_alignment(value: str, direction: str) -> bool:
 
 
 def terminal_groups(value: str) -> int:
-    return len(re.findall(r"[。！？?!]+", value))
+    return len(re.findall(r"[.。!！?？]+", value))
 
 
 def blue_text(value: str) -> str:
@@ -77,7 +74,7 @@ def prop_is_red(value: str, prop: str) -> bool:
 
 
 def is_forbidden_meta_line(plain: str) -> bool:
-    normalized = plain.strip().strip("【】[]：: ")
+    normalized = plain.strip().strip("【】[]: ")
     return normalized in FORBIDDEN_META
 
 
@@ -95,113 +92,110 @@ def analyze(text: str, key_props: list[str]) -> list[Issue]:
             continue
 
         if is_forbidden_meta_line(plain):
-            issues.append(Issue("ERROR", line_no, "最终正文不得输出教学栏目名称"))
+            issues.append(Issue("ERROR", line_no, "Final script body must not contain tutorial section labels"))
 
         if "(0.S.)" in plain or "(V.0.)" in plain:
-            issues.append(Issue("ERROR", line_no, "声音术语中的O必须是英文字母，不能写数字0"))
-
-        if HALF_WIDTH_PRODUCTION.search(plain):
-            issues.append(Issue("ERROR", line_no, "制作标记必须使用全角【】，半角方括号只用于场次题头"))
+            issues.append(Issue("ERROR", line_no, "The O in (O.S.) and (V.O.) must be the letter O"))
 
         if EPISODE_RE.search(plain):
             found_title = True
             if not is_bold(original):
-                issues.append(Issue("ERROR", line_no, "集标题必须加粗"))
+                issues.append(Issue("ERROR", line_no, "Episode title must be bold"))
             if not has_alignment(original, "center"):
-                issues.append(Issue("WARN", line_no, "富文本集标题应居中"))
+                issues.append(Issue("WARN", line_no, "Rich-text episode title should be centred"))
             continue
 
-        if plain.startswith("本集人物："):
+        if plain.startswith("Episode Cast:"):
             found_episode_cast = True
             if not is_bold(original):
-                issues.append(Issue("ERROR", line_no, "本集人物总表必须加粗"))
+                issues.append(Issue("ERROR", line_no, "Episode cast list must be bold"))
             continue
 
         if SCENE_RE.match(plain):
             found_scene = True
             if not is_bold(original):
-                issues.append(Issue("ERROR", line_no, "场次题头必须加粗"))
+                issues.append(Issue("ERROR", line_no, "Scene heading must be bold"))
             continue
 
         if re.match(r"^\d+-\d+\.", plain) and not SCENE_RE.match(plain):
-            issues.append(Issue("ERROR", line_no, "场次题头应为：1-1. 地点 [内] [夜]"))
+            issues.append(Issue("ERROR", line_no, "Scene heading format: 1-1. Abandoned Warehouse [INT] [NIGHT]"))
             continue
 
-        if plain.startswith("人物："):
+        if plain.startswith("Scene Cast:"):
             found_scene_cast = True
             if not is_bold(original):
-                issues.append(Issue("ERROR", line_no, "逐场人物表必须加粗"))
+                issues.append(Issue("ERROR", line_no, "Scene cast list must be bold"))
             continue
 
-        if plain == "【本集完】":
+        if plain == "[END OF EPISODE]":
             found_end = True
             if not has_alignment(original, "right"):
-                issues.append(Issue("WARN", line_no, "富文本中的【本集完】应右对齐"))
+                issues.append(Issue("WARN", line_no, "Rich-text [END OF EPISODE] should be right-aligned"))
             continue
 
-        if "【字幕" in plain:
+        if "[SUBTITLE" in plain:
             if STEEL_BLUE.lower() not in original.lower():
-                issues.append(Issue("ERROR", line_no, "字幕标记和字幕内容必须使用钢蓝色#4682B4"))
+                issues.append(Issue("ERROR", line_no, "Subtitle labels and content must use steel blue #4682B4"))
 
         if plain.startswith("△"):
             if terminal_groups(plain) > 1:
-                issues.append(Issue("ERROR", line_no, "动作句应每个完整句子单独换行"))
-        elif plain.startswith("【") and plain.endswith("】"):
+                issues.append(Issue("ERROR", line_no, "Write one complete action sentence per line"))
+        elif plain.startswith("[") and plain.endswith("]"):
             pass
         else:
             dialogue = DIALOGUE_RE.match(plain)
             if dialogue:
                 speaker, content = dialogue.groups()
                 if is_bold(original):
-                    issues.append(Issue("ERROR", line_no, "正文对白人物名和对白不得加粗"))
-                if "“" not in content or "”" not in content:
-                    issues.append(Issue("ERROR", line_no, "每句台词必须使用中文双引号标明始末"))
+                    issues.append(Issue("ERROR", line_no, "Dialogue speaker and line must not be bold"))
+                if '"' not in content:
+                    issues.append(Issue("ERROR", line_no, 'Each dialogue line must be wrapped in English double quotes (")'))
                 if terminal_groups(content) > 1:
-                    issues.append(Issue("ERROR", line_no, "每个完整台词句子必须单独换行并重复人物名"))
+                    issues.append(Issue("ERROR", line_no, "One complete dialogue sentence per line; repeat the speaker name on the next line"))
                 colored = blue_text(original)
-                if f"{speaker}：" not in colored or "“" not in colored or "”" not in colored:
-                    issues.append(Issue("ERROR", line_no, "对白人物名、冒号、引号和台词必须使用钢蓝色#4682B4"))
+                if f"{speaker}:" not in colored or '"' not in colored:
+                    issues.append(Issue("ERROR", line_no, "Speaker name, colon, quotes, and dialogue must use steel blue #4682B4"))
                 for token in ("(O.S.)", "(V.O.)"):
                     if token in plain and token not in colored:
-                        issues.append(Issue("ERROR", line_no, f"{token}必须使用钢蓝色#4682B4"))
+                        issues.append(Issue("ERROR", line_no, f"{token} must use steel blue #4682B4"))
             elif not plain.startswith(("<", "<!--")):
-                issues.append(Issue("WARN", line_no, "未识别行：动作应以△开头，对白应使用人物名：格式"))
+                issues.append(Issue("WARN", line_no, "Unrecognised line: action starts with △, dialogue uses CHARACTER: \"line\""))
 
         for prop in key_props:
             if prop in plain and not prop_is_red(original, prop):
-                issues.append(Issue("ERROR", line_no, f"关键道具“{prop}”的每次出现都必须使用红色#FF0000"))
+                issues.append(Issue("ERROR", line_no, f'Key prop "{prop}" must use red #FF0000 on every appearance'))
 
     if not found_title:
-        issues.append(Issue("ERROR", 0, "缺少集标题"))
+        issues.append(Issue("ERROR", 0, "Missing episode title"))
     if not found_episode_cast:
-        issues.append(Issue("ERROR", 0, "缺少集前本集人物总表"))
+        issues.append(Issue("ERROR", 0, "Missing episode cast list"))
     if not found_scene:
-        issues.append(Issue("ERROR", 0, "缺少合法场次题头"))
+        issues.append(Issue("ERROR", 0, "Missing valid scene heading"))
     if not found_scene_cast:
-        issues.append(Issue("ERROR", 0, "缺少逐场人物表"))
+        issues.append(Issue("ERROR", 0, "Missing scene cast list"))
     if not found_end:
-        issues.append(Issue("ERROR", 0, "缺少【本集完】"))
+        issues.append(Issue("ERROR", 0, "Missing [END OF EPISODE]"))
     return issues
 
 
 def run_self_test() -> int:
-    valid = """<div align="center"><strong>《测试剧》第01集</strong></div>
-**本集人物：陈墨，周启**
-**1-1. 废弃仓库 [内] [夜]**
-**人物：陈墨，周启**
-△陈墨推开生锈的铁门。
-<span style="color:#4682B4">陈墨：</span>（冷笑）<span style="color:#4682B4">“你以为你能跑？”</span>
-<span style="color:#4682B4">【字幕：三分钟前】</span>
-△周启把<span style="color:#FF0000">黑色钥匙</span>攥进掌心。
-<div align="right">【本集完】</div>"""
-    invalid = """第1集
-人物：陈墨
-1-1仓库[内][夜]
-A陈墨害怕。
-**陈墨：你别来。**
-[字幕]三分钟前
-【本集完】"""
-    valid_issues = analyze(valid, ["黑色钥匙"])
+    valid = """<div align="center"><strong>Episode 01 — The Test</strong></div>
+**Episode Cast: Ethan Clark, Marcus Hale**
+**1-1. Abandoned Warehouse [INT] [NIGHT]**
+**Scene Cast: Ethan Clark, Marcus Hale**
+△Ethan pushes open the rusted iron door.
+<span style="color:#4682B4">Ethan Clark:</span><span style="color:#4682B4">"You thought you could run?"</span>
+<span style="color:#4682B4">[SUBTITLE: Three minutes earlier]</span>
+△Marcus grips the <span style="color:#FF0000">black key</span> in his palm.
+<div align="right">[END OF EPISODE]</div>"""
+    invalid = """Episode 01
+Scene Cast: Ethan Clark
+1-1 Abandoned Warehouse [INT][NIGHT]
+A Ethan is afraid.
+**Ethan Clark: Don't come closer.**
+[SUBTITLE] Three minutes earlier
+[END OF EPISODE]"""
+    valid_issues = analyze(valid, ["black key"])
     invalid_issues = analyze(invalid, [])
     valid_errors = [issue for issue in valid_issues if issue.level == "ERROR"]
     invalid_errors = [issue for issue in invalid_issues if issue.level == "ERROR"]
@@ -215,16 +209,16 @@ A陈墨害怕。
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="检查0715编剧Skill的剧本硬格式")
-    parser.add_argument("file", nargs="?", help="UTF-8 Markdown、HTML或文本剧本")
-    parser.add_argument("--key-prop", action="append", default=[], help="必须全程标红的关键道具，可重复")
-    parser.add_argument("--self-test", action="store_true", help="运行内置自测")
+    parser = argparse.ArgumentParser(description="Check the 0715 English Western screenplay hard format")
+    parser.add_argument("file", nargs="?", help="UTF-8 Markdown, HTML, or text screenplay")
+    parser.add_argument("--key-prop", action="append", default=[], help="Key prop that must be red on every appearance; repeatable")
+    parser.add_argument("--self-test", action="store_true", help="Run the built-in self-test")
     args = parser.parse_args()
 
     if args.self_test:
         return run_self_test()
     if not args.file:
-        parser.error("需要剧本文件，或使用 --self-test")
+        parser.error("Provide a screenplay file, or use --self-test")
 
     path = Path(args.file)
     text = path.read_text(encoding="utf-8-sig")

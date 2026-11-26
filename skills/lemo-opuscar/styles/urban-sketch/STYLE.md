@@ -18,7 +18,7 @@ Reportage drawing, made on location in a few minutes. Two layers that stay visib
 
 **The page is part of the image**: warm cream cold-press paper with large-scale mottling and fine tooth. Nothing is painted edge to edge; the painting frays into leaf-sized dabs and white holes, leaving margins for handwriting.
 
-Not Watercolor Brush (no line-free wet-in-wet painting, no painterly edges without ink), not Whiteboard (no marker, no explainer diagrams), not Chinese Ink Wash (no brush calligraphy, no monochrome ink tones). Line and wash, both, always.
+Not Watercolor Brush (no line-free wet-in-wet painting, no painterly edges without ink), not Whiteboard (no marker, no explainer diagrams), not Western Ink Illustration (no brush calligraphy, no monochrome ink tones). Line and wash, both, always.
 
 ## 2. Materials & rendering
 

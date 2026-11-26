@@ -9,7 +9,7 @@
 ## 1. 明确核心设定
 
 ### 题材风格
-> [根据用户输入填写，例如：都市逆袭爽文，高清国漫写实风，冷色调都市质感]
+> [根据用户输入填写，例如：都市逆袭爽文，高清Western animation写实风，冷色调都市质感]
 
 ### 世界观边界
 | 要素 | 设定 |
@@ -103,9 +103,9 @@
 ### 统一画风关键词（贯穿全剧，每次生图必加）
 ```
 [画风关键词串]
-示例: high quality Chinese comic style, cinematic lighting, 8K resolution,
+示例: high quality Western comic style, cinematic lighting, 8K resolution,
 detailed background, professional composition, dramatic shadows,
-cold urban atmosphere, realistic rendering, 国漫写实风, 高清细腻
+cold urban atmosphere, realistic rendering, Western animation写实风, 高清细腻
 ```
 
 ### 复杂镜头简化方案

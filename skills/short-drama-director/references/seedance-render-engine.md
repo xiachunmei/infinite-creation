@@ -1,7 +1,7 @@
 # 视频模型三层解耦、双画幅渲染与时长预算协议 (Seedance 2.5 / 2.0 Render Engine)
 
 > 🔗 **本文件是 P4 投喂生成的主模板入口，但非唯一依据**。生成投喂提示词前必须按序过完以下规范（完整执行序列见 `prompt-feeding-checklist.md`）：
-> ⓪ **模型版本强制锁定 → `model-adapters.md` 〇节**（Seedance 2.5 / 2.0 强制二选一，未指定不动笔；2.0 禁 `[SFX:]`、禁顿挫词，末尾参数行已废止）① 画幅路由 → `aspect-ratio-adaptation.md`（★权威）② 镜头规格 → `camera-specs-15rules.md` ③ 有对白 → `dialogue-speed-check.md` + `wenxi-micro-expression.md` ④ 战斗段**先定档再取库**（`sd-combat-engine/references/tier-and-finisher-system.md` 〇节）：R3玄幻 → `sd-xuanhuan-engine` / R2武侠现代 → `sd-combat-engine` / R1写实 → `sd-real-engine`⑤ 出稿质检 → `quality-gate-review.md`。
+> ⓪ **模型版本强制锁定 → `model-adapters.md` 〇节**（Seedance 2.5 / 2.0 强制二选一，未指定不动笔；2.0 禁 `[SFX:]`、禁顿挫词，末尾参数行已废止）① 画幅路由 → `aspect-ratio-adaptation.md`（★权威）② 镜头规格 → `camera-specs-15rules.md` ③ 有对白 → `dialogue-speed-check.md` + `wenxi-micro-expression.md` ④ 战斗段**先定档再取库**（`sd-combat-engine/references/tier-and-finisher-system.md` 〇节）：R3玄幻 → `sd-xuanhuan-engine` / R2swashbuckler现代 → `sd-combat-engine` / R1写实 → `sd-real-engine`⑤ 出稿质检 → `quality-gate-review.md`。
 > ⚠️ 2026-09-01 实测教训：仅按本文件直接产出会漏掉语速自检/金句发酵/镜头五要素/微步进/Hit-Stop/R3 蓄力语法，必须全量过检。
 
 ---
@@ -62,7 +62,7 @@ $$\text{锚定} = \text{角色}：\text{粒子色/光效} + \text{护甲材质} 
 * **锚定必须成体系**：每个角色 = 主色 + 材质 + 专属特效轨迹，整套贯穿全程；
 * **双方互补对冲**：冷色系 vs 暖色系、光系 vs 暗系，在极速混战与远景对撞中保证视线清晰，杜绝画面混杂与面孔混淆；
 * **对照模板**（学自 35s 玄幻秒级拆解）：
-  * 黑发剑客 → 冷银剑气 / 水墨黑白 / 玄青轻甲 / 月牙弧光与霜刃拖尾（纯粹剑道·极速穿透）；
+  * blond swordsman → 冷银剑气 / 水墨黑白 / 玄青轻甲 / 月牙弧光与霜刃拖尾（纯粹剑道·极速穿透）；
   * 白发神将 → 金红烈火 / 熔岩重铠 / 阴阳双龙 / 战戟犁地火线（神魔伟力·重击霸体）；
   * 双方对冲：金红熔岩流火拖尾 vs 银白冷冽霜刃拖尾，左右分流。
 * **能量贴附物理载体（能量禁悬浮·2026-09-04 吸收）**：一切能量特效必须**贴附在物理载体上**——刀刃、手臂、服装边缘、运动轨迹、骨甲、法器内部结构，禁止无附着物的悬浮光团/光雾；
@@ -102,7 +102,7 @@ $$\text{锚定} = \text{角色}：\text{粒子色/光效} + \text{护甲材质} 
 ### 1. 16:9 横屏标准模板（电影级宽银幕）
 ```text
 【画幅风格】
-16:9 横屏, 电影级真实影视质感 / 3D 国漫写实 PBR 渲染, 冷灰主色+属性色辅光、细密胶片颗粒; 场景纵深构图, 镜头稳定, 人物微动作自然。
+16:9 横屏, 电影级真实影视质感 / 3D Western animation写实 PBR 渲染, 冷灰主色+属性色辅光、细密胶片颗粒; 场景纵深构图, 镜头稳定, 人物微动作自然。
 model=seedance-2.5
 【场景资产】
 @SCN-主场景

@@ -190,59 +190,59 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:1px solid var
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="../">← All {{N_ALL}} styles · 全部风格</a>
+  <a class="back" href="../">← All {{N_ALL}} styles · </a>
 
   <header>
-    <p class="kicker">Feature Presentation · Lemo-Opuscar<small>特别放映</small></p>
+    <p class="kicker">Feature Presentation · Lemo-Opuscar<small></small></p>
     <h1>Opuscar 98</h1>
     <p class="sub">98 Years of Best Picture · 1927 – 2025 · {{FEATURE_DUR}}</p>
   </header>
 
   <div class="frame"><div class="slot" id="slot">
-    <p class="away" lang="en">Playing in the corner. Scroll back here to watch it large.</p><p class="away" lang="zh-CN">正在右下角播放，滚回这里看大画面</p>
+    <p class="away" lang="en">Playing in the corner. Scroll back here to watch it large.</p><p class="away" lang="zh-CN">，</p>
     <div class="dock" id="dock">
       <video id="film" controls playsinline preload="none" poster="{{FEATURE_POSTER}}" src="{{FEATURE_SRC}}"></video>
       <div class="dockbar"><a class="dnow" id="dnow" href="#styles"></a>
-        <button type="button" class="dloop on" id="dloop" aria-pressed="true"><span lang="en">Loop this film</span><span lang="zh-CN">循环本段</span></button>
-        <button type="button" class="dclose" id="dclose" aria-label="Close the player · 关闭">×</button></div>
+        <button type="button" class="dloop on" id="dloop" aria-pressed="true"><span lang="en">Loop this film</span></button>
+        <button type="button" class="dclose" id="dclose" aria-label="Close the player · ">×</button></div>
     </div>
   </div></div>
   <p class="now" id="now" aria-live="polite"></p>
 
   <p class="blurb">One Clawd walks through all 98 Best Picture winners, each one redrawn in a style that fits the film. Every frame, every note and every cut was written in code by Claude Opus 5.5.</p>
-  <p class="blurb-cn">一个 Clawd 走过 98 部最佳影片，每一部都换成贴合那部电影的画风。每一帧画面、每一个音符、每一刀剪辑，都是 Claude Opus 5.5 写代码做出来的。</p>
-  <nav class="links"><a class="main" href="{{FEATURE_FULL}}" target="_blank" rel="noopener">Download · 1080p</a><a href="{{REPO_URL}}" target="_blank" rel="noopener">Source repo · 仓库</a><a href="#styles">The 98 styles · 98 种风格</a><a href="../">The {{N_ALL}} styles · 风格图鉴</a></nav>
+  <p class="blurb-cn"> Clawd  98 ，。、、， Claude Opus 5.5 。</p>
+  <nav class="links"><a class="main" href="{{FEATURE_FULL}}" target="_blank" rel="noopener">Download · 1080p</a><a href="{{REPO_URL}}" target="_blank" rel="noopener">Source repo · </a><a href="#styles">The 98 styles · 98 </a><a href="../">The {{N_ALL}} styles · </a></nav>
 
   <dl class="credits">
-    <div><dt>Running time</dt><dd>{{FEATURE_DUR}}<small>98 部影片，1927 – 2025</small></dd></div>
-    <div><dt>Made with</dt><dd>Claude Opus 5.5 in Claude Code<small>导演、作画、配乐、剪辑都是代码</small></dd></div>
-    <div><dt>Video model</dt><dd>None<small>没有用视频生成模型</small></dd></div>
+    <div><dt>Running time</dt><dd>{{FEATURE_DUR}}<small>98 ，1927 – 2025</small></dd></div>
+    <div><dt>Made with</dt><dd>Claude Opus 5.5 in Claude Code<small>、、、</small></dd></div>
+    <div><dt>Video model</dt><dd>None<small></small></dd></div>
     <div><dt>By</dt><dd>Lemomo · LemoLab<small><a href="https://x.com/lemomo_ai" target="_blank" rel="noopener">@lemomo_ai</a> · <a href="https://github.com/lemomo-ai" target="_blank" rel="noopener">github.com/lemomo-ai</a></small></dd></div>
   </dl>
 
   <section class="book" id="styles" data-lang="en">
     <h2>The 98 Styles</h2>
     <p class="lead">Every film in OPUSCAR 98 got its own style. Here is each one: what the style is, a prompt to reuse it on your own topic, and how the shots were directed. Click a frame to play that film: it loops in a small player that stays in the corner while you keep reading.</p>
-    <p class="lead cn" style="font:400 14px/1.85 var(--cn);color:var(--soft);margin-top:8px">98 部影片，每部一种定制画风。这里逐部公开：风格是什么、拿去拍你自己题材的提示词、镜头怎么设计和编排。点截图就播放那一部：在右下角的小播放器里循环，你可以边看边往下翻。</p>
+    <p class="lead cn" style="font:400 14px/1.85 var(--cn);color:var(--soft);margin-top:8px">98 ，。：、、。：，。</p>
     <div class="bar">
       <div class="decades" role="group" aria-label="Decade">{{BOOK_TABS}}</div>
-      <input type="search" id="q" placeholder="Search a film or a style" data-zh="搜索片名或风格" data-en="Search a film or a style" aria-label="Search">
+      <input type="search" id="q" placeholder="Search a film or a style" data-zh="" data-en="Search a film or a style" aria-label="Search">
       <div class="kinds" role="group" aria-label="2D or 3D">{{BOOK_KINDS}}</div>
-      <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" class="on">EN</button><button type="button" data-lang="zh">中文</button></div>
+      <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" class="on">EN</button><button type="button" data-lang="zh"></button></div>
       <span class="count" id="count"></span>
     </div>
     <div id="films">
 {{BOOK_FILMS}}
     </div>
-    <p class="json">All 98 as JSON · 全部数据：<a href="styles.json">styles.json</a></p>
+    <p class="json">All 98 as JSON · ：<a href="styles.json">styles.json</a></p>
   </section>
 
   <section class="made">
     <h2>How it was made</h2>
     <p>No video model drew this film. Claude Opus 5.5, working in Claude Code, wrote each set, the character animation, the camera moves, the edit and the score as code, and the code rendered them to video.</p>
-    <p class="cn">这部片没有用视频模型生成。Claude Opus 5.5 在 Claude Code 里把每个布景、角色动画、运镜、剪辑和配乐都写成代码，再由代码渲染成视频。</p>
+    
     <p>The same approach is packaged as Lemo-Opuscar: {{N_ALL}} film styles, each a style prompt plus a demo film, installable as a Claude Code skill so your agent can direct a film about your own topic.</p>
-    <p class="cn">同样的做法整理成了 Lemo-Opuscar：{{N_ALL}} 种影片风格，每种是一份风格提示词加一支样片，可以装成 Claude Code skill，让你的 agent 给你自己的题材导一支片。</p>
+    
   </section>
 
   <div class="repo"><a href="{{REPO_URL}}" target="_blank" rel="noopener">github.com/{{REPO}}</a></div>
@@ -251,13 +251,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:1px solid var
 <footer>
   <p class="sig">LemoLab × Claude Opus 5.5</p>
   <p class="fine">Official repository: github.com/{{REPO}}, by Lemomo.</p>
-  <p class="fine-cn">官方仓库：github.com/{{REPO}}，作者 Lemomo。</p>
+  <p class="fine-cn">：github.com/{{REPO}}， Lemomo。</p>
 </footer>
 <script>
 (() => {
   const v = document.getElementById('film'), book = document.getElementById('styles'), films = [...book.querySelectorAll('.film')];
   const now = document.getElementById('now'), q = document.getElementById('q'), count = document.getElementById('count');
-  const TONE_ZH = { 'B&W': '黑白', 'Sepia': '棕褐', 'B&W screen': '黑白屏幕' };
+  const TONE_ZH = { 'B&W': '', 'Sepia': '', 'B&W screen': '' };
   // language: remembered per viewer, else the browser's
   let lang = 'en';
   try { lang = localStorage.getItem('o98lang') || (/^zh/i.test(navigator.language) ? 'zh' : 'en'); } catch (e) { lang = /^zh/i.test(navigator.language) ? 'zh' : 'en'; }
@@ -323,7 +323,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:1px solid var
     // what gets copied: one line naming the style and whether it is 2D or 3D, then the prompt
     const tone = f.dataset.tone && (zh ? TONE_ZH[f.dataset.tone] : f.dataset.tone);
     const name = f.querySelector(`.style > [lang="${zh ? 'zh-CN' : 'en'}"]`).textContent;
-    const text = (zh ? '风格：' : 'Style: ') + [name, f.dataset.k, tone].filter(Boolean).join(' · ') + '\n\n' + p.textContent;
+    const text = (zh ? '：' : 'Style: ') + [name, f.dataset.k, tone].filter(Boolean).join(' · ') + '\n\n' + p.textContent;
     const done = () => { c.classList.add('done'); setTimeout(() => c.classList.remove('done'), 1400); };
     // no clipboard access (http, old browser): open the prompt and select it so the viewer can copy it themselves
     (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(done, () => {

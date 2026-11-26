@@ -1,6 +1,6 @@
 ---
 name: lemo-opuscar
-description: 用「代码渲染」方式把用户挑选的风格模板 + 上传的图片/视频/音频素材 + 提示词合成为对应风格的成片视频（脱离 ComfyUI）。当用户要在「无限・秩影」模式下、或指定某个 Lemo-Opuscar 风格（油画厚涂/浮世绘/皮影戏/卫星简报/产品拆解 等 66 种）制作短片时使用。
+description: 用「代码渲染」方式把用户挑选的风格模板 + 上传的图片/视频/音频素材 + 提示词合成为对应风格的成片视频（脱离 ComfyUI）。当用户要在「无限・秩影」模式下、或指定某个 Lemo-Opuscar 风格（油画厚涂/Western print/Western shadow theatre/卫星简报/产品拆解 等 66 种）制作短片时使用。
 ---
 
 # Lemo-Opuscar · 代码电影库

@@ -15,8 +15,8 @@ Use this file as the first disclosure layer. Route the Music Brief to one primar
 
 | Route | Positive cues | Disambiguation | Index |
 |---|---|---|---|
-| `east-asian-modern` | Mandopop, C-pop, Cantopop, J-pop with electronic, R&B, hip-hop, dance, funk, rock, or metal production | Use the heritage family for acoustic, orchestral, traditional, or conventional ballad writing | [index-east-asian-modern.md](index-east-asian-modern.md) |
-| `east-asian-ballad-heritage` | Mandopop, C-pop, Cantopop, J-pop ballad, guofeng pop, acoustic or orchestral East Asian pop | Add roots/traditional only when traditional instruments are central rather than decorative | [index-east-asian-ballad-heritage.md](index-east-asian-ballad-heritage.md) |
+| `western-pop-rock` | Western pop, rock, indie, country with electronic, R&B, hip-hop, dance, funk, rock, or metal production | Use the heritage family for acoustic, orchestral, traditional, or conventional ballad writing | [index-western-pop-rock.md](index-western-pop-rock.md) |
+| `western-country-folk` | Western pop, rock, indie, country ballad, guofeng pop, acoustic or orchestral East Asian pop | Add roots/traditional only when traditional instruments are central rather than decorative | [index-western-country-folk.md](index-western-country-folk.md) |
 | `modern-rnb-neo-soul` | Contemporary R&B, alternative R&B, neo-soul, trap soul, atmospheric R&B | Lo-fi R&B may also use hip-hop; classic soul belongs to soul/blues/gospel | [index-modern-rnb-neo-soul.md](index-modern-rnb-neo-soul.md) |
 | `soul-blues-gospel` | Soul, blues, blues rock, gospel, worship, soul-blues | Route jazz-blues primarily by the user's stated identity and groove | [index-soul-blues-gospel.md](index-soul-blues-gospel.md) |
 | `cinematic-pop-ballad` | Cinematic pop, cinematic ballad, orchestral pop song, soundtrack-like vocal ballad | Use cinematic orchestral when score, trailer, orchestra, or choir is the main identity | [index-cinematic-pop-ballad.md](index-cinematic-pop-ballad.md) |
@@ -28,7 +28,7 @@ Use this file as the first disclosure layer. Route the Music Brief to one primar
 | `metal-heavy-rock` | Metalcore, power metal, symphonic metal, nu-metal, hard rock, post-hardcore | Alternative and pop rock without heavy-metal technique belong to pop/alternative rock | [index-metal-heavy-rock.md](index-metal-heavy-rock.md) |
 | `pop-alternative-rock` | Pop rock, alternative rock, indie rock, arena rock, J-rock, punk, post-grunge | Country rock, blues rock, and folk rock follow their roots family when that identity is primary | [index-pop-alternative-rock.md](index-pop-alternative-rock.md) |
 | `contemporary-folk-acoustic` | Indie folk, contemporary folk, folk pop, singer-songwriter, modern acoustic pop | Use roots/traditional for heritage, regional, maritime, Celtic, or traditional folk identity | [index-contemporary-folk-acoustic.md](index-contemporary-folk-acoustic.md) |
-| `roots-traditional-global` | Traditional folk, Celtic, Chinese traditional, folk blues, reggae, maritime, global folk fusion | Guofeng pop remains East Asian pop when pop songwriting is primary | [index-roots-traditional-global.md](index-roots-traditional-global.md) |
+| `roots-traditional-global` | Traditional folk, Celtic, Western classical, folk blues, reggae, maritime, global folk fusion | Guofeng pop remains East Asian pop when pop songwriting is primary | [index-roots-traditional-global.md](index-roots-traditional-global.md) |
 | `general-pop-ballad` | Pop, contemporary pop, pop ballad, broadly described emotional song | Use only as fallback when no more specific genre family is supported | [index-general-pop-ballad.md](index-general-pop-ballad.md) |
 | `dance-pop-disco-funk` | Dance-pop, nu-disco, funk-pop, disco revival, groove-led pop | House, trance, hardstyle, and festival drops belong to club/EDM | [index-dance-pop-disco-funk.md](index-dance-pop-disco-funk.md) |
 | `club-edm-house-trance` | EDM, house, trance, hardstyle, dubstep, techno, festival electronic | Electronic pop without a club or drop structure belongs to electronic/synth/ambient pop | [index-club-edm-house-trance.md](index-club-edm-house-trance.md) |
@@ -40,7 +40,7 @@ Use this file as the first disclosure layer. Route the Music Brief to one primar
 |---|---|
 | 华语流行、国语流行 | Mandopop / C-pop |
 | 粤语流行 | Cantopop |
-| 国风流行 | East Asian pop, optionally roots/traditional |
+| Western pop | East Asian pop, optionally roots/traditional |
 | 氛围 R&B、另类节奏布鲁斯 | Alternative R&B |
 | 复古电子 | Resolve from synthwave/retrowave versus disco/house cues |
 | 朋克流行 | Pop-punk |
@@ -62,8 +62,8 @@ Normalize spelling variants such as `Hip Hop`/`Hip-Hop`, `Dance Pop`/`Dance-Pop`
 
 Examples:
 
-- `Mandopop with trap R&B production` → primary `east-asian-modern`, secondary `modern-rnb-neo-soul` or `hip-hop-rap` according to whether singing or beat language dominates.
-- `Metalcore with Chinese traditional instruments` → primary `metal-heavy-rock`, secondary `roots-traditional-global`.
+- `Mandopop with trap R&B production` → primary `western-pop-rock`, secondary `modern-rnb-neo-soul` or `hip-hop-rap` according to whether singing or beat language dominates.
+- `Metalcore with Western classical instruments` → primary `metal-heavy-rock`, secondary `roots-traditional-global`.
 - `Cinematic folk ballad` → primary `contemporary-folk-acoustic` when it is a song; primary `cinematic-orchestral-epic` when it is a score.
 - `Lo-fi female R&B` → primary `modern-rnb-neo-soul`, secondary `hip-hop-rap` only when a lo-fi beat is central.
 

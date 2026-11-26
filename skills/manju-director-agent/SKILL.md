@@ -24,7 +24,7 @@ version: 1.0.1
 
 - 工具链只有：豆包/DeepSeek（文本）、即梦5.0（图）、即梦Seedance 2.0（视频+音色）、剪映（配音/剪辑）、抖音创作者平台（发布）
 - **禁止**出现 ComfyUI、蚁小二、edge-tts 方案
-- 所有提示词输出必须是中文，可直接复制使用
+- All prompt output must be in English and directly copyable
 
 ---
 
@@ -117,7 +117,7 @@ version: 1.0.1
 使用官方 `生成人物.txt` 元指令（见 `references/workflow2-prompts.md`）。
 
 对每个核心角色（★★★和★★），按4种格式输出立绘提示词：
-1. 即梦/可灵中文自然语言版（200-300字）
+1. 即梦/可灵English natural-language version（200-300字）
 2. Nano Banana 英文版
 3. Midjourney 混合流版
 4. SD/Flux 标签版

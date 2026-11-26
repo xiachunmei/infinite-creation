@@ -1,10 +1,10 @@
 {
   "project": {"model": "Seedance 2.0", "video_aspect": "9:16", "asset_aspect": "16:9", "total_duration": 30},
   "characters": [
-    {"id": "char-lin", "visual_age": 28, "description": "短黑发，浅蓝棉衬衣，深灰长裤，右腕戴布绳。"}
+    {"id": "char-lin", "visual_age": 28, "description": "short brown hair, light blue cotton shirt，深灰长裤，右腕戴布绳。"}
   ],
   "assets": [
-    {"id": "asset-lin", "type": "character", "aspect": "16:9", "prompt": "28岁短黑发人物，浅蓝棉衬衣、深灰长裤、右腕布绳，日常比例，白色背景四视图。待验证，未实拍。", "refs": ["char-lin"]},
+    {"id": "asset-lin", "type": "character", "aspect": "16:9", "prompt": "28-year-old with short brown hair，浅蓝棉衬衣、深灰长裤、右腕布绳，日常比例，白色背景四视图。待验证，未实拍。", "refs": ["char-lin"]},
     {"id": "asset-room", "type": "scene", "aspect": "16:9", "prompt": "修理室母版，木桌在窗下，左侧窗户向右投射午后自然光，桌上只有一台旧收音机，无人。待验证，未实拍。", "refs": []},
     {"id": "asset-radio", "type": "prop", "aspect": "16:9", "prompt": "棕色木壳旧收音机，圆形黑色旋钮，亚麻扬声器网，纯道具展示。待验证，未实拍。", "refs": []}
   ],

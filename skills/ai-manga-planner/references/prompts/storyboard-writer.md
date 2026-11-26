@@ -20,8 +20,8 @@
 台词/字幕：[本镜头对应的对白或旁白]
 时长参考：[2-5秒]
 
-AI出图提示词（中文）：
-[详细的中文描述，包含画面所有要素]
+AI image prompt (English)：
+[Detailed English description covering all visual elements]
 
 AI出图提示词（英文Prompt）：
 [对应英文Prompt，格式：主体描述, 环境描述, 风格标签, 质量标签]

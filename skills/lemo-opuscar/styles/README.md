@@ -36,21 +36,21 @@ Users may name a style in English, in Chinese, or by its folder. Find it here, t
 |---|---|---|---|
 | Crayon Picture Book | 蜡笔儿童绘本 | [`crayon-book`](crayon-book/STYLE.md) | *The Moon Can't Sleep* |
 | Watercolor Brush | 水彩笔刷 | [`watercolor`](watercolor/STYLE.md) | *Follow the Rain* |
-| Chinese Ink Wash | 中国水墨 | [`ink-wash`](ink-wash/STYLE.md) | *The Swordsman and the River* |
+| Western Ink Illustration | Western ink illustration | [`ink-wash`](ink-wash/STYLE.md) | *The Swordsman and the River* |
 | Impasto Oil Painting | 油画厚涂 | [`impasto`](impasto/STYLE.md) | *The Colour of Rain* |
 | One-line Drawing | 一笔画 | [`one-line`](one-line/STYLE.md) | *The Line That Never Lifted* |
 | Whiteboard Explainer | 白板讲解 | [`whiteboard`](whiteboard/STYLE.md) | *Einstein in Your Pocket* |
 | Urban Sketch · Pen & Wash | 钢笔淡彩 | [`urban-sketch`](urban-sketch/STYLE.md) | *Where the Wind Went* |
 | Chalkboard | 黑板粉笔 | [`chalkboard`](chalkboard/STYLE.md) | *The Story of Chinese Characters* |
 
-## East Asian Traditions · 东方传统
+## Western Traditions · Western traditions
 
 | Style | 风格 | Folder | Our demo |
 |---|---|---|---|
-| Shadow Puppetry | 皮影戏 | [`shadow-puppet`](shadow-puppet/STYLE.md) | *Hou Yi Shoots the Suns* |
-| Ukiyo-e | 浮世绘 | [`ukiyoe`](ukiyoe/STYLE.md) | *Toward the Mountain* |
-| Red Paper-cut | 红色窗花剪纸 | [`papercut-red`](papercut-red/STYLE.md) | *Nian Comes to Town* |
-| Paper-cut Lightbox | 纸雕灯影 | [`paper-lantern`](paper-lantern/STYLE.md) | *A Mooncake's Longing* |
+| Shadow Puppetry | Western shadow theatre | [`shadow-puppet`](shadow-puppet/STYLE.md) | *Hou Yi Shoots the Suns* |
+| Ukiyo-e | Western print | [`ukiyoe`](ukiyoe/STYLE.md) | *Toward the Mountain* |
+| Red Paper-cut | Western papercut | [`papercut-red`](papercut-red/STYLE.md) | *Nian Comes to Town* |
+| Paper-cut Lightbox | Western paper relief | [`paper-lantern`](paper-lantern/STYLE.md) | *A Mooncake's Longing* |
 
 ## Print & Printmaking · 印刷与版画
 

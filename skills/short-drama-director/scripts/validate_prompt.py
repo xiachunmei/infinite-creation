@@ -21,7 +21,7 @@
 
   • --model 2.5 / 2.0 → C1~C26（Seedance 侧，本文件主体；另含增量主码 C27a~d / C28a~c / C29 / C30a~d · 编号不重排）
   • --model h3        → H1~H12（MiniMax H3 格式支线，规程见 references/h3-adapter.md）
-  • --track 1|2|3|4   → 赛道分流（〇·0 强制分流锁：1 国内剧 / 2 海外剧 / 3 解说叙事 /
+  • --track 1|2|3|4   → 赛道分流（〇·0 强制分流锁：1 Western drama / 2 Western overseas drama / 3 Explainer narrative /
                         4 其他）。默认 1。仅影响 C14 系列——赛道 3 走解说专线 C14n
                         （豁免 VO 篇幅卡口），见「C14n」段说明。
   • --combat on|off|auto → **C21/C22 打戏护栏触发门**（C21 C22）。默认 auto：
@@ -29,7 +29,7 @@
   • --c23 on|off|auto → **C23 画风锁机检触发门**（I 画风锁）。默认 auto：
                         稿内存在【STYLE/【PERFORMANCE 块或 --style-source 登记来源即启用；
                         未启用画风锁的旧稿不追溯。on/off 为强制开关。
-  • --style-source 名 → STYLE_BIBLE 来源风格登记（如 徐克/王家卫），启用 C23d②/C23e 判据。
+  • --style-source 名 → STYLE_BIBLE 来源风格登记（如 徐克/Western stylized auteur），启用 C23d②/C23e 判据。
   • --aspect 16:9|9:16|21:9 → **B 锁画幅一致性比对**（C6b）：与稿内锁定值不符即 FAIL，
                         防「说了 16:9 却回填 9:16」的静默回落。不传则只做稿内自洽检查。
 
@@ -191,7 +191,7 @@
       FAIL  C23d1 交付层零人名：全稿出现导演/工作室/摄影师/影片名（含"吉卜力""MAPPA"等）
       FAIL  C23d2 转译丢失：--style-source 登记了来源风格，但段8 未落到成组参数组
             （参数维度 <4/9、无数值区间、特征词 <5——只写"电影感画风"不算转译）
-      FAIL  C23e 题材越界：稿含打斗信号但来源风格打斗承载 ★0（如王家卫）；或声明高强度
+      FAIL  C23e 题材越界：稿含打斗信号但来源风格打斗承载 ★0（如Western stylized auteur）；或声明高强度
             特效但来源风格特效承载 ≤★1。风格与题材是否匹配的唯一机检道
       FAIL  C23f 单镜超载（10 秒实拍复盘病机检化 · style-bible-spec.md §五）：
             f-B1 一镜建立 ≥2 全身人物（入画/交接语义 + 全身/兵器描述；显式互动语义
@@ -213,7 +213,7 @@
             群体反应须成「波」不成「排」（错开先后与强度）
 
   C26 锚点继承门（2026-10-12 新增 · 剧本→资产的锚传递 · 粉丝实测反馈）：
-      WARN  C26a 世界锚缺失——【画幅风格】/【场景资产】均无年代锚（年份/朝代/技术时代）
+      WARN  C26a 世界锚缺失——【画幅风格】/【场景资产】均无年代锚（年份/Western period/技术时代）
       WARN  C26b 年代锚与正文物证冲突——声明未来却出旧时代元素 / 声明古代却出现代元素
       WARN  C26c 核心人物缺年龄锚（X~Y岁）——用户卡不到人物年龄
       WARN  C26d 核心人物缺身份可渲染外观——只有身份词没有可画要素（外卖员出成协警）
@@ -271,7 +271,7 @@ H 系列（--model h3 · MiniMax H3 格式支线 · h3-adapter.md）：
   H2 镜号/切点    [Shot 1] 不得带时间戳；[Shot N] 切点 MM:SS.mmm 严格递增；切镜动词须用官方绑定短语（the camera/shot cuts to…）
   H3 时长         声明时长落在 4–15s；最后切点 ≤15s
   H4 语言         正文应为英文（2026-10-02 官方复核：base-en/ref-en "Write all six rewrite sections in English"）；
-                  <d> 内必须带语言标签（<d>[Chinese] …</d>），<d> 与双引号画内文字之外的正文出现中文 → WARN
+                  <d> 内必须带语言标签（<d>[English] …</d>），<d> 与双引号画内文字之外的正文出现中文 → WARN
   H5 参考标签     标签先定义后引用；summary 不引新标签；定义项 >9 告警；定义了却未引用 → 告警
   H6 保留度标记   只用合法英文固定值；retention_analysis 不写 (Sx)
   H7 说话人       (Sx) 按首现顺序从 (S1) 递增编号
@@ -344,7 +344,7 @@ def _strip_md_meta(text):
     """剔除 Markdown 元数据行（`# 标题` / `> 引用` / `| 表格` / ``` 围栏标记 / `---` 分隔线）。
 
     仅供「交付层零人名」类**全文扫描型**判据使用——标题与说明性引用块属**元数据区**、
-    不是投喂正文。不剔除会把「# 成稿示例 · 王家卫 15 秒」判成交付层出现三方名
+    不是投喂正文。不剔除会把「# 成稿示例 · Western stylized auteur 15 秒」判成交付层出现三方名
     （2026-10-11 实测：官方示例 demo-feed-wkw-15s / demo-feed-xuke-15s 双双因此假 FAIL）。
     """
     keep = []
@@ -419,15 +419,15 @@ C25_SYNC_CROWD = ("众人同时", "齐声", "异口同声", "整齐划一", "所
 # 规则权威：剧本层 = sd-script-engine（世界锚卡 / 因果与关系表）；资产层 = asset-spatial-ledger.md §角色锚点
 C26_ERA_ANCHOR = re.compile(
     r"(?:1[0-9]{3}|20[0-9]{2})\s*年|"                      # 1998年 / 2035年
-    r"公元前|民国|清朝|明朝|宋朝|唐朝|汉朝|先秦|战国|春秋|"  # 朝代
+    r"公元前|民国|清朝|明朝|宋朝|唐朝|汉朝|先秦|战国|春秋|"  # Western period
     r"古代|近代|中古|上古|未来|近未来|架空|赛博朋克|科幻|蒸汽时代|工业时代|现代|当代|民国风")
 # 未来/科幻锚 → 正文出现下列「旧时代元素」即冲突
 C26_FUTURE_ANCHOR = re.compile(r"(?:19[89]\d|20[0-9]{2})\s*年|未来|近未来|赛博朋克|科幻|架空")
-# ★审计补丁P1 修：「旗袍 / 发髻 / 长衫 / 中山装」在现代中式礼仪场合（寿宴、婚礼、年会、国风大片）
-#   是**常规服装**，不是年代穿帮——旧版把它们一律判「旧时代元素」，导致现代剧穿旗袍必报假冲突。
-#   现只保留真正与未来/科幻冲突的物件；中式礼服类另立白名单，仅在「声明古装却出现代物证」方向参与判定。
-C26_FESTIVE_ELEMS = ("旗袍", "长衫", "中山装", "发髻", "盘扣", "唐装")
-C26_OLD_ELEMS = ("马车", "青砖", "煤油灯", "辫子", "裹脚", "铜钱", "长工", "轿子",
+# ★审计补丁P1 修：「evening gown / updo / tailcoat / tuxedo」在现代Western礼仪场合（寿宴、婚礼、年会、国风大片）
+#   是**常规服装**，不是年代穿帮——旧版把它们一律判「旧时代元素」，导致现代剧穿evening gown必报假冲突。
+#   现只保留真正与未来/科幻冲突的物件；Western礼服类另立白名单，仅在「声明古装却出现代物证」方向参与判定。
+C26_FESTIVE_ELEMS = ("evening gown", "tailcoat", "tuxedo", "updo", "button", "formal suit")
+C26_OLD_ELEMS = ("carriage", "brickwork", "oil lamp", "braid", "bound feet", "coins", "farmhand", "sedan chair",
                  "竹简", "文言", "亭台", "木质楼梯", "手摇电话", "蒸汽机车")
 # 古代/近代锚 → 正文出现下列「现代元素」即冲突
 C26_PAST_ANCHOR = re.compile(r"古代|近代|先秦|战国|春秋|汉朝|唐朝|宋朝|明朝|清朝|民国|中古|上古")
@@ -440,9 +440,9 @@ C26_AGE_ANCHOR = re.compile(
     r"青年|中年|老年|少年|少女|孩童|婴儿|[老少中]年")
 # 人物身份可渲染外观：服装/配饰/职业标识物等实质描写（纯"以参考图锁定"不算）
 C26_LOOK_ANCHOR = re.compile(
-    r"外套|夹克|制服|工装|衬衫|T恤|polo|背心|风衣|大衣|连衣裙|旗袍|长袍|道袍|剑袍|劲装|广袖|束发|短须|头身|佩剑|铠甲|警服|"
+    r"外套|夹克|制服|工装|衬衫|T恤|polo|背心|风衣|大衣|连衣裙|evening gown|长袍|clerical robe|duelling coat|fitted training outfit|wide sleeves|tied-back hair|stubble|头身|rapier|plate armour|警服|"
     r"护士服|白大褂|围裙|头盔|鸭舌帽|棒球帽|工牌|安全帽|反光背心|外卖箱|保温箱|"
-    r"发髻|马尾|寸头|络腮胡|眼镜|耳钉|围巾|手套|胸牌|"
+    r"updo|马尾|寸头|络腮胡|眼镜|耳钉|围巾|手套|胸牌|"
     r"袖口|衣领|肩章|纽扣|拉链|补丁|磨损|油渍|血迹|疤痕|纹身|"
     r"[青白黑红黄灰紫橙]色(?:长|短|风)?(?:衫|褂|袍|衣|甲)|头发|胡须|面孔|眉|眼|唇|齿")
 # 豁免：M0 纯提示词稿（不引图）仍需年龄锚，但允许"外观复述块"承担；已写复述块不判 d
@@ -609,7 +609,7 @@ H3_PIC_MAX = 9
 H3_VO_EVID = re.compile(r"闭合|闭口|紧闭|lips\s+(?:remain|stay)\s+(?:completely\s+)?closed")
 # H9 画外声官方固定短语（base-en §4.4；2026-10-02 官方复核新增）
 H3_VO_PHRASE = re.compile(r"says\s+in\s+an\s+off[- ]screen\s+voiceover", re.I)
-# H2 切镜动词官方绑定短语（base-en §4.2；中文"镜头切至"不被绑定，会被做成叠化融脸）
+# H2 切镜动词官方绑定短语（base-en §4.2；Chinese cut-phrase equivalents不被绑定，会被做成叠化融脸）
 H3_CUT_VERB = re.compile(r"the\s+(?:camera|shot|image)\s+(?:cuts?|transitions?|changes?|switches?)\s+to", re.I)
 H3_BAD_CUT_VERB = re.compile(r"镜头切至|cross[- ]?dissolve|淡入淡出|叠化|\bfade\b|\bwipe\b", re.I)
 # H4 正文语言（2026-10-02：六段正文一律英文；此处只用于"检测 <d> 与双引号之外的中文"）
@@ -715,7 +715,7 @@ def validate_h3(text, mode="new"):
     # H4 语言标签 + 正文语言（2026-10-02 官方复核：六段正文一律英文）
     bad_d = re.findall(r"<d>(?!\s*\[)", text)
     if bad_d:
-        issues.append(f"H4 <d> 缺语言标签 {len(bad_d)} 处——应为 <d>[Chinese] 原文</d>（语言标签保留原语言；"
+        issues.append(f"H4 <d> 缺语言标签 {len(bad_d)} 处——应为 <d>[English] 原文</d>（语言标签保留原语言；"
                       "正文语言见下，2026-10-02 起一律英文）")
     _no_d = re.sub(r"<d>.*?</d>", "", text, flags=re.S)          # 台词/歌词保原语言，先摘除
     _no_d = re.sub(r"[\"“][^\"”\n]{0,60}[\"”]", "", _no_d)       # 双引号内画内文字保原语言，摘除
@@ -1311,12 +1311,12 @@ C23_NAMES = [
     # 中国内地
     "张艺谋", "陈凯歌", "冯小刚", "周星驰", "宁浩", "乌尔善", "路阳", "毕赣",
     # 中国香港
-    "徐克", "王家卫", "杜琪峰", "袁和平", "彭顺", "陈可辛", "李少红", "刘镇伟",
+    "徐克", "Western stylized auteur", "杜琪峰", "袁和平", "彭顺", "陈可辛", "李少红", "刘镇伟",
     # 中国台湾
     "李安", "侯孝贤", "杨德昌", "蔡明亮", "王童",
     # 日本
     "黑泽明", "北野武", "今村昌平", "是枝裕和", "河濑直美", "岩井俊二", "押井守",
-    "大友克洋", "铃木敏郎", "高畑勋", "宫崎骏",
+    "Western sci-fi animation", "铃木敏郎", "高畑勋", "宫崎骏",
     # 韩国
     "奉俊昊", "朴赞郁", "李沧东", "金炯柱",
     # 欧美
@@ -1345,8 +1345,8 @@ C23_PARAM_HINTS = ["光比", "颗粒", "色温", "饱和度", "镜头", "焦段"
 
 # C23e 题材越界：风格能力表 (打斗★, 特效★)（打戏禁用组核心 + 特效承载）
 C23_STYLE_ABILITY = {
-    "国漫3D仙侠": (3, 3), "暗黑神话游戏CG": (3, 3), "国漫3D进阶水墨": (3, 3), "东方神话3D奇幻": (3, 3),
-    "徐克": (3, 3), "路阳": (3, 2), "袁和平": (3, 2), "乌尔善": (3, 3), "张艺谋": (2, 2), "朴赞郁": (3, 2), "大卫·芬奇": (2, 2), "芬奇": (2, 2), "罗杰·狄金斯": (2, 2), "MAPPA": (3, 3), "王家卫": (0, 0), "侯孝贤": (0, 0), "毕赣": (0, 0),
+    "Western 3D high fantasy": (3, 3), "暗黑神话游戏CG": (3, 3), "Western painterly 3D fantasy": (3, 3), "Western mythology 3D fantasy": (3, 3),
+    "徐克": (3, 3), "路阳": (3, 2), "袁和平": (3, 2), "乌尔善": (3, 3), "张艺谋": (2, 2), "朴赞郁": (3, 2), "大卫·芬奇": (2, 2), "芬奇": (2, 2), "罗杰·狄金斯": (2, 2), "MAPPA": (3, 3), "Western stylized auteur": (0, 0), "侯孝贤": (0, 0), "毕赣": (0, 0),
     "蔡明亮": (0, 0), "马利克": (0, 1), "塔可夫斯基": (0, 1), "北野武": (1, 0),
     "是枝裕和": (0, 0), "河濑直美": (0, 0), "岩井俊二": (0, 0), "李沧东": (0, 0),
     "韦斯·安德森": (0, 0), "索德伯格": (1, 0), "雷德利·斯科特": (1, 2),
@@ -1356,7 +1356,7 @@ C23_STYLE_ABILITY = {
 # ★C23e 打斗信号词必须限定在「画面动作层」——否则声音描述（金属劈砍声）与
 #   强制禁止项（禁一镜内连续堆叠多个独立动作）会被误判为含打斗
 #   （自检第 3 轮抓到的假阳性；按行回看排除语境，固定窗口会漏跨行段）。
-C23_COMBAT_SIG = re.compile(r"(打斗|打戏|武打|武侠|格斗|对决|对峙|交手|过招|拆招|斗法|"
+C23_COMBAT_SIG = re.compile(r"(打斗|打戏|武打|swashbuckler|格斗|对决|对峙|交手|过招|拆招|斗法|"
                             r"厮杀|混战|交战|挥剑|出剑|劈砍|格挡|刺穿|兵刃相向|剑锋|刀锋|"
                             r"[出直挥]拳|[一记重]脚|[挥甩抽]手|出手|打退|逼退|摔跤|"
                             r"搏斗|攻击动作|卸力|后仰|侧滑|闪避|突进|跃起|腾空|翻滚|"
@@ -1388,7 +1388,7 @@ def _c23_has_combat(txt):
 # C23f 单镜超载数据（B1/B2 铁律的机检化 · 10 秒实拍复盘：镜2 丢主角 / 镜3 动作糊成残影）
 C23_PERSON_TOKEN = re.compile(r"(主角|对手|反派|男主|女主|角色|人物|两人|三人|二人|众人|群演|"
                               r"侍卫|护卫|弟子|长老|师父|敌人|双方)")
-C23_FULL_BODY = re.compile(r"(全身|中全景|全景|站位|铠甲|持剑|举剑|握刀|立姿|背影)")
+C23_FULL_BODY = re.compile(r"(全身|中全景|全景|站位|plate armour|持剑|举剑|握刀|立姿|背影)")
 # ★B1 只在「人物引入镜」生效——打戏互动镜天然双人（剑锋擦肩、气浪、后仰），
 #   若只按"同镜≥2人物"判会把所有打戏镜头全误报；实拍病根是「一镜同时建立两个人物」。
 C23_INTRO_SEM = re.compile(r"(入画|出场|登场|亮相|建立|交接|对峙|并立|同框.*(站|立)|初次)")
@@ -1463,7 +1463,7 @@ def _c23_check(text, style_source=None):
             issues.append(f"C23a 段8 出现不可解析的模糊表述「{bad}」——槽位必须写量化区间")
 
     # ---- C23d1 三方名（★只扫交付正文：剔除 Markdown 标题/引用/表格等元数据区）----
-    # 病根（2026-10-11）：此前 `if name in text` 裸扫全文，官方示例的「# 成稿示例 · 王家卫 15 秒」
+    # 病根（2026-10-11）：此前 `if name in text` 裸扫全文，官方示例的「# 成稿示例 · Western stylized auteur 15 秒」
     # 标题与「> 风格来源：F 锁 · 徐克」引用块被判成交付层 → 两个官方示例双双假 FAIL C23d1。
     _d1_text = _strip_md_meta(text)
     for name in C23_NAMES:
@@ -1963,7 +1963,7 @@ def validate(text, model="2.5", mode="new", track="1", combat="auto", c23="auto"
     # C12 转场术语（2026-10-13 体检修复 A1）：文档三处声称拦、机检词表曾未覆盖 → 补机检兜底。
     #   术语只在分镜层标注（段缝两侧逐对标接缝式别），投喂稿转译成「画面怎么接」。
     #   抽帧豁免（2026-10-13 交叉 Gemini 修法合入）：「12fps 抽帧」「抽帧感」是 C23 法定风格参数
-    #   写法（王家卫 step-printing 语法，demo-feed-wkw 成稿在用），前置 Nfps 或后接「感」即放行。
+    #   写法（Western stylized auteur step-printing 语法，demo-feed-wkw 成稿在用），前置 Nfps 或后接「感」即放行。
     trans = []
     for _m in C12_TRANSITION_RE.finditer(_feed_probe):
         if _m.group(0) == "抽帧":
@@ -3391,9 +3391,9 @@ def validate(text, model="2.5", mode="new", track="1", combat="auto", c23="auto"
     _c26_body = text
     # C26a 世界锚缺失：画幅风格 + 场景资产两处都没有任何年代锚
     if not (C26_ERA_ANCHOR.search(_c26_meta_s) or C26_ERA_ANCHOR.search(_c26_scn_s)):
-        warns.append("C26a 全稿无世界锚（年代/朝代/技术时代）——剧本层的世界观设定没有落进【画幅风格】或"
+        warns.append("C26a 全稿无世界锚（年代/Western period/技术时代）——剧本层的世界观设定没有落进【画幅风格】或"
                      "【场景资产】，模型会回落到自己的默认年代（实测：设定 2035 年出片成 80 年代街景）。"
-                     "修法：在【画幅风格】或【场景资产】写明年代锚（年份/朝代 + 技术时代），"
+                     "修法：在【画幅风格】或【场景资产】写明年代锚（年份/Western period + 技术时代），"
                      "权威见 sd-script-engine《世界锚卡》与 asset-spatial-ledger.md §四·E 年代锚")
     # C26b 年代锚与正文时代元素冲突
     if C26_FUTURE_ANCHOR.search(_c26_meta_s + _c26_scn_s):
@@ -3465,7 +3465,7 @@ def validate(text, model="2.5", mode="new", track="1", combat="auto", c23="auto"
     _all_prp_names = sorted(set(re.findall(r"@PRP-([A-Za-z0-9_\u4e00-\u9fff]+)", _c26_scn_s)))
     if _all_prp_names and len(_segments_time) > 1:
         for _pname in _all_prp_names:
-            _p_root = re.sub(r"(?:古剑|宝剑|长剑|佩剑|飞剑|神剑|法宝)$", "", _pname) or _pname
+            _p_root = re.sub(r"(?:古剑|宝剑|长剑|rapier|飞剑|神剑|法宝)$", "", _pname) or _pname
             for _sn, _sb, _st in _segments_time:
                 _seg_scn_m = re.search(r"【场景资产】(.*?)(?=【核心人物】|【站位声明】|【时间轴分镜】|\Z)", _st, re.S)
                 _seg_scn_txt = _seg_scn_m.group(1) if _seg_scn_m else ""
@@ -3560,7 +3560,7 @@ def validate(text, model="2.5", mode="new", track="1", combat="auto", c23="auto"
     #   • C30c 角色表演档案 Voice 声线锁交接：显式 --plugin，或 auto 判出 R1/R3 打戏档时，核查【核心人物】是否落了声线/音色描述
     #   • C30d 外挂激活回执头：同上触发门下，核查原稿是否包含「激活外挂 / 已读子库 / 本段调用外挂指纹」回执头
     #     ★2026-10-14 Agent 修复：原触发门只认显式 --plugin（real/xuanhuan/combat），默认 auto 整组不跑
-    C30_XUANHUAN_SIG = re.compile(r"剑阵|法阵|法相|万剑|飞剑|仙侠|修仙|修真|灵力|灵气|神魔|元婴|金丹|结印|道法|天雷|阵纹|符箓|剑气化|剑罡")
+    C30_XUANHUAN_SIG = re.compile(r"剑阵|法阵|法相|万剑|飞剑|high fantasy|修仙|修真|灵力|灵气|神魔|元婴|金丹|结印|道法|天雷|阵纹|符箓|剑气化|剑罡")
     # 尺度四件套拆分为 4 个独立子维度（C30_SCALE_4：xuanhuan-combat-director V2.6.0 尺度四件套缺一即废句重写）
     C30_SCALE_FRAME = re.compile(r"占画[面框]|画面[七八九六五四三]成|半幅|满屏|[1-9]/[1-9]|八成天穹|七成天穹")
     C30_SCALE_MACRO = re.compile(r"[十百千万][米丈]|数公里|数百米|上百米|百丈|千丈|万丈|丈许粗|数十米")
@@ -3691,7 +3691,7 @@ def validate(text, model="2.5", mode="new", track="1", combat="auto", c23="auto"
             if _r1_vfx_bad:
                 warns.append(
                     f"C30j R1 真人写实打斗特效越界污染：「{'、'.join(sorted(set(_r1_vfx_bad)))}」——"
-                    "R1 写实克制档严禁出现仙侠剑气/法阵/光波对轰等超自然特效词，必须全部改为真实物理受力与环境破坏（sd-real-engine/SKILL.md §一 + r1-combat-core.md §一）"
+                    "R1 写实克制档严禁出现high fantasy剑气/法阵/光波对轰等超自然特效词，必须全部改为真实物理受力与环境破坏（sd-real-engine/SKILL.md §一 + r1-combat-core.md §一）"
                 )
             _r1_fly_bad = re.findall(r"空中不落地|凌空悬浮|悬停半空|浮空而立|御空|旋转720|连转数圈|多周旋转", _shot_blob_all)
             if _r1_fly_bad:
@@ -4284,9 +4284,9 @@ def _self_test():
              "<Subject 1>（出现于 [Shot 1]、[Shot 2]）：fully_preserved - 长发低髆与炭灰长袍保留。\n"
              "<Subject 2>（出现于 [Shot 1]、[Shot 2]）：fully_preserved - 深色短发与眉上细疤保留。\n"
              "<Audio 1>：reference - 只取其音色引导念白，不复制原始信号。\n\n"
-             "detailed_description:\n目标视频为实拍武侠文戏，夜雨冷青色调，35mm 浅景深。\n"
-             "[Shot 1] 全景确立回廊。<Subject 1> 立于木栏旁，以 <Audio 1> 所参考的低而沙哑音色（S1）说：<d>[Chinese] 你迟了半刻。</d> 说完闭口。\n"
-             "[Shot 2] 在 00:05.000 处，镜头切至 <Subject 2> 的中近景。<Subject 2>（S2）以平直语速说：<d>[Chinese] 名册，我拿来了。</d>\n\n"
+             "detailed_description:\n目标视频为实拍swashbuckler文戏，夜雨冷青色调，35mm 浅景深。\n"
+             "[Shot 1] 全景确立回廊。<Subject 1> 立于木栏旁，以 <Audio 1> 所参考的低而沙哑音色（S1）说：<d>[English] 你迟了半刻。</d> 说完闭口。\n"
+             "[Shot 2] 在 00:05.000 处，镜头切至 <Subject 2> 的中近景。<Subject 2>（S2）以平直语速说：<d>[English] 名册，我拿来了。</d>\n\n"
              "overall_soundscape:\n雨打石板，风铃轻响两声。\n\n"
              "non_diegetic_music:\n古琴单音起于慢速，末帧前收掉。\n")
     iss, _, _ = validate_h3(h3_ok)
@@ -4308,7 +4308,7 @@ def _self_test():
     if not any("H3" in i and "越界" in i for i in iss):
         print("FAIL self-test: 声明时长 20s 应报 H3"); ok = 0
     # H4 <d> 缺语言标签
-    iss, _, _ = validate_h3(h3_ok.replace("<d>[Chinese] 你迟了半刻。</d>", "<d>你迟了半刻。</d>"))
+    iss, _, _ = validate_h3(h3_ok.replace("<d>[English] 你迟了半刻。</d>", "<d>你迟了半刻。</d>"))
     if not any("H4" in i for i in iss):
         print("FAIL self-test: <d> 缺语言标签应报 H4"); ok = 0
     # H5 未定义标签
@@ -4342,12 +4342,12 @@ def _self_test():
     if not any("H8" in w and "转场术语" in w for w in warns):
         print("FAIL self-test: H3 正文转场术语应报 H8 WARN", warns); ok = 0
     # H9 画外声缺闭口证据
-    t_h9 = h3_ok.replace("说完闭口。", "说完移开视线。") + "她的内心独白：<d>[Chinese] 再也退不回去了。</d>\n"
+    t_h9 = h3_ok.replace("说完闭口。", "说完移开视线。") + "她的内心独白：<d>[English] 再也退不回去了。</d>\n"
     iss, _, _ = validate_h3(t_h9)
     if not any("H9" in i for i in iss):
         print("FAIL self-test: 画外声缺闭口证据应报 H9"); ok = 0
     # H10 声音层含对白
-    iss, _, _ = validate_h3(h3_ok.replace("雨打石板，风铃轻响两声。", "雨打石板，风铃轻响两声。<d>[Chinese] 测试</d>"))
+    iss, _, _ = validate_h3(h3_ok.replace("雨打石板，风铃轻响两声。", "雨打石板，风铃轻响两声。<d>[English] 测试</d>"))
     if not any("H10" in i for i in iss):
         print("FAIL self-test: soundscape 含 <d> 应报 H10"); ok = 0
     # H11 语气位缺失应 WARN（两个发言人首次出场都去掉发声特征）
@@ -4373,22 +4373,22 @@ def _self_test():
     # H4b 正文中文（<d> 与双引号画内文字除外）→ WARN
     _, warns, _ = validate_h3(h3_ok)
     if not any("H4" in w and "中文" in w for w in warns):
-        print("FAIL self-test: H3 中文正文应报 H4 WARN（官方要求六段正文英文）", warns); ok = 0
-    # H2 中文「镜头切至」→ 切镜动词告警
+        print("FAIL self-test: H3 source-language body should trigger H4 WARN (six sections must be English)", warns); ok = 0
+    # H2 Chinese cut phrase -> cut-verb warning
     _, warns, _ = validate_h3(h3_ok)
     if not any("H2" in w and "切镜动词" in w for w in warns):
-        print("FAIL self-test: 中文「镜头切至」应报 H2 切镜动词告警", warns); ok = 0
-    # H2 反例：官方绑定短语 → 不报切镜告警
+        print("FAIL self-test: Chinese cut phrase should trigger H2 cut-verb warning", warns); ok = 0
+    # H2 counterexample: official bound phrase -> no cut warning
     _, warns, _ = validate_h3(h3_ok.replace("镜头切至", "the shot cuts to"))
     if any("H2" in w and "切镜动词" in w for w in warns):
-        print("FAIL self-test: 官方绑定短语不应报 H2 切镜告警", warns); ok = 0
+        print("FAIL self-test: official bound phrase should not trigger H2 cut warning", warns); ok = 0
     # H9 画外声未用官方固定短语 → WARN；用了则不报
-    _, warns, _ = validate_h3(h3_ok.replace("说完闭口。", "说完闭口。她以画外音说：") + "<d>[Chinese] 再也退不回去了。</d>\n")
+    _, warns, _ = validate_h3(h3_ok.replace("说完闭口。", "说完闭口。她以画外音说：") + "<d>[English] 再也退不回去了。</d>\n")
     if not any("H9" in w and "官方固定短语" in w for w in warns):
         print("FAIL self-test: 画外声未用官方短语应报 H9 WARN", warns); ok = 0
     _h3_vo_ok = h3_ok.replace(
         "说完闭口。",
-        "说完闭口。<Subject 1> (S1) says in an off-screen voiceover: <d>[Chinese] 再也退不回去了。</d> "
+        "说完闭口。<Subject 1> (S1) says in an off-screen voiceover: <d>[English] 再也退不回去了。</d> "
         "while her lips remain completely closed.")
     _, warns, _ = validate_h3(_h3_vo_ok)
     if any("H9" in w and "官方固定短语" in w for w in warns):
@@ -4436,13 +4436,13 @@ def _self_test():
     iss23, _, _ = validate(t_style + "参考徐克《狄仁杰》的视觉风格\n", "2.0", "new", "1", "auto")
     if not any(i.startswith("C23d1") for i in iss23):
         print("FAIL self-test: 交付层人名/影片名应报 C23d1", iss23); ok = 0
-    # 50e) 题材越界：含打斗稿 + 来源=王家卫（打斗★0）→ C23e
+    # 50e) 题材越界：含打斗稿 + 来源=Western stylized auteur（打斗★0）→ C23e
     t_c23e = t_style + "4s-8s [镜头2] 近景 · 24mm。主角 挥剑劈向 对手，兵刃相向。\n"
-    iss23, _, _ = validate(t_c23e, "2.0", "new", "1", "auto", "auto", "王家卫")
+    iss23, _, _ = validate(t_c23e, "2.0", "new", "1", "auto", "auto", "Western stylized auteur")
     if not any(i.startswith("C23e") for i in iss23):
         print("FAIL self-test: 打斗稿用打斗★0 来源风格应报 C23e", iss23); ok = 0
     # 50f) C23f-B1：一镜建立两全身人物（入画语义 · 无互动/单人声明）→ FAIL
-    t_c23f = t_style + "4s-8s [镜头2] 中全景 · 24mm。主角与对手入画并立，全身铠甲持剑而立。\n"
+    t_c23f = t_style + "4s-8s [镜头2] 中全景 · 24mm。主角与对手入画并立，全身plate armour持剑而立。\n"
     iss23, _, _ = validate(t_c23f, "2.0", "new", "1", "auto")
     if not any("C23f" in i and "B1" in i for i in iss23):
         print("FAIL self-test: 一镜建立两全身人物应报 C23f-B1", iss23); ok = 0
@@ -5058,9 +5058,9 @@ def _self_test():
         print("FAIL self-test: 全角【镜头N】应被识别、不应报 C7b", _i7b); ok = 0
 
     # ---- 72) C23d1 Markdown 元数据剔除（2026-10-11 · 治官方示例假 FAIL）----
-    _md = "# 成稿示例 · 王家卫 15 秒\n> 风格来源：F 锁 · 徐克\n| 表头 | 徐克 |\n正文无三方名。\n"
+    _md = "# 成稿示例 · Western stylized auteur 15 秒\n> 风格来源：F 锁 · 徐克\n| 表头 | 徐克 |\n正文无三方名。\n"
     _md_stripped = _strip_md_meta(_md)
-    if ("王家卫" in _md_stripped) or ("徐克" in _md_stripped):
+    if ("Western stylized auteur" in _md_stripped) or ("徐克" in _md_stripped):
         print("FAIL self-test: _strip_md_meta 应剔除标题/引用/表格行里的三方名",
               repr(_md_stripped)); ok = 0
     if "正文无三方名" not in _md_stripped:
@@ -5087,9 +5087,9 @@ def _self_test():
                        "2.5", "new", "1", "off")
     if not any("C26a" in w for w in _w):
         print("FAIL self-test: 缺世界锚应报 C26a WARN", [w for w in _w if w.startswith("C26")]); ok = 0
-    # C26b 年代锚与正文物证冲突（声明 2035 却出马车）→ WARN
+    # C26b 年代锚与正文物证冲突（声明 2035 却出carriage）→ WARN
     _, _w, _ = validate(_t26.replace("停在高架桥柱旁，低头看手机屏",
-                                     "站在青砖巷口，身旁停着一辆马车，手里提着煤油灯"),
+                                     "站在brickwork巷口，身旁停着一辆carriage，手里提着oil lamp"),
                        "2.5", "new", "1", "off")
     if not any("C26b" in w for w in _w):
         print("FAIL self-test: 年代锚与正文物证冲突应报 C26b WARN", [w for w in _w if w.startswith("C26")]); ok = 0
@@ -5122,7 +5122,7 @@ def _self_test():
                       "【时间轴分镜】\n一只女人的手伸向窗台，指尖触到积灰。\n\n【音效】\n无。\n\n【强制禁止项】\n画面：禁止变形。\n")
     _md_h3_doc = ("subject_definitions:\n<Subject 1> 男性青年。\n\nsummary:\n测试。\n\n"
                   "retention_analysis:\n<Subject 1>：fully_preserved - 外观。\n\n"
-                  "detailed_description:\n[Shot 1] 全景。<Subject 1> (S1) 说：<d>[Chinese] 你好。</d>\n")
+                  "detailed_description:\n[Shot 1] 全景。<Subject 1> (S1) 说：<d>[English] 你好。</d>\n")
     # 安全关键：误杀真稿件 = 机检对真稿静默失效（比假 FAIL 更危险），故双向断言。
     if _looks_like_feed(_md_rule_doc):
         print("FAIL self-test: 规则库文档（无镜行/栏位不足）应判为非稿件"); ok = 0
@@ -5197,7 +5197,7 @@ def _self_test():
     # 70o) 2026-10-14 全链路闭环新增回归用例（C30a/b/c/d + C27 N-N秒 + 打戏逗号镜行头 C19c 不误报 + 多段 C26/C29）
     #   ① C30a：玄幻打戏无尺度四件套与三层元素 → 必报 C30a；补齐后 → 不报 C30a
     _t_xh_bad = (t_ok.replace("她从袖中抽出信件。", "@剑修 祭出飞剑万剑归宗轰向 @魔主。")
-                     .replace("指尖微颤。", "@魔主 被仙侠灵力震退三步。"))
+                     .replace("指尖微颤。", "@魔主 被high fantasy灵力震退三步。"))
     _, _w_xh_bad, _ = validate(_t_xh_bad, "2.5", "new", combat="on", plugin="xuanhuan")
     if not any(x.startswith("C30a") for x in _w_xh_bad):
         print("FAIL self-test: 玄幻打戏缺尺度四件套与三层元素应报 C30a", _w_xh_bad); ok = 0
@@ -5265,7 +5265,7 @@ def _self_test():
     _t_r1_jk = _t_r1_ok.replace("胸口衣料凹陷闷响。", "胸口衣料凹陷闷响，随即凌空悬浮在半空祭出万剑归宗剑气，对手在旁原地等待。")
     _, _w_r1_jk, _ = validate(_t_r1_jk, "2.5", "new", combat="on", plugin="real")
     if not (any(x.startswith("C30j") for x in _w_r1_jk) and any(x.startswith("C30k") for x in _w_r1_jk) and any(x.startswith("C30l") for x in _w_r1_jk)):
-        print("FAIL self-test: R1 混入仙侠剑气/凌空悬浮/原地等待应报 C30j/C30k/C30l", _w_r1_jk); ok = 0
+        print("FAIL self-test: R1 混入high fantasy剑气/凌空悬浮/原地等待应报 C30j/C30k/C30l", _w_r1_jk); ok = 0
 
     # ===== 2026-10-16 新增：C32 画面段最低三要素 / C18p 景别占比预算（双向断言）=====
     _v16_head = ("【画幅风格】16:9 横屏 (aspect_ratio=16:9) model=seedance-2.5\n"
@@ -5518,7 +5518,7 @@ def main():
         print("[-] --model 必须 2.5/2.0/h3"); sys.exit(2)
     track = opt("--track", "1")
     if track not in ("1", "2", "3", "4"):
-        print("[-] --track 必须 1/2/3/4（〇·0 分流锁：1 国内剧 / 2 海外剧 / 3 解说叙事 / 4 其他）"); sys.exit(2)
+        print("[-] --track 必须 1/2/3/4（〇·0 分流锁：1 Western drama / 2 Western overseas drama / 3 Explainer narrative / 4 其他）"); sys.exit(2)
     combat = opt("--combat", "auto")
     if combat not in ("on", "off", "auto"):
         print("[-] --combat 必须 on/off/auto（C21 打戏护栏触发门：默认 auto 自动探测打戏稿）"); sys.exit(2)

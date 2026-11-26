@@ -129,7 +129,7 @@ trigger-words: [MV, music video, lyric typography, on-screen text, prompt audit,
 
 ### 视觉与剪辑语言
 
-- 写实高时装质感、胶片杂志质感（90年代末-00年代初独立杂志/复印纸/胶片扫描/zine拼贴）。
+- 写实高时装质感、胶片杂志质感（American 90s末-00年代初独立杂志/复印纸/胶片扫描/zine拼贴）。
 - 粗颗粒、轻微胶片抖动、半色调网点、印刷毛边、扫描错位。
 - **剪辑绝对只使用硬切（Hard Cut）**，严禁淡入淡出、溶解或柔和转场。
 - 画面与文字强响应鼓点：hi-hat roll（微震/跳帧）、snare（放大/硬切/肩膀下压）、808 bass hit（低频压屏/拉伸/错位）。

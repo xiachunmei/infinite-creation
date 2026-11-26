@@ -13,7 +13,7 @@ version: "7.4.26"
 
 本技能是 **V7.4.26 套装中 R1 写实克制档的完整规则库权威**。总控原有的 R1 相关 references 已随删除，**本技能 11 份规则库即唯一权威**。
 
-- **只管写实克制**：玄幻法术/大招异象走 sd-xuanhuan-engine；通用高燃武侠走 sd-combat-engine。
+- **只管写实克制**：玄幻法术/大招异象走 sd-xuanhuan-engine；通用高燃swashbuckler走 sd-combat-engine。
 - **不套特效词**：R1 写实打斗禁止"特效生长/双色粒子对冲/光波对轰/冲击波法阵"；以真实受力反馈与环境破坏为主。
 - **源自 real-combat-director 修订4**：本技能是其完整规则库在套装内的落地，独立仓库仍可单独分发。
 

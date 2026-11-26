@@ -106,6 +106,6 @@ claimed_impact / applicable_product_condition / disposition / proposed_target
 
 ## 六、与其他赛道的接口
 
-- **国内剧（赛道①）**：平台合规走总控 `short-drama-director/references/platform-safety-compliance-guide.md`（国内平台安全转译）。**本文件不覆盖国内平台**。
-- **海外剧（赛道②）**：本文件管**发行画像与制作预检**；语言与本土化纪律见 [语言与风格合同](language-contract.md) 与 [证据、权限与听者边界](evidence-and-authority.md)。
+- **Western drama（赛道①）**：平台合规走总控 `short-drama-director/references/platform-safety-compliance-guide.md`（国内平台安全转译）。**本文件不覆盖国内平台**。
+- **Western overseas drama（赛道②）**：本文件管**发行画像与制作预检**；语言与本土化纪律见 [语言与风格合同](language-contract.md) 与 [证据、权限与听者边界](evidence-and-authority.md)。
 - **画幅**：最终画幅一律以总控 **B 锁（用户指定）** 为准。本文件的竖屏预检**只在画幅已确认为 9:16 时**运行。

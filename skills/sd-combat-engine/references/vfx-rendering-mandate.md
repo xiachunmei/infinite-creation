@@ -7,7 +7,7 @@
 > **"特效分几层、各层什么材质、占比多少"**（13 种三层复合元素 + 三混合配比）；
 > 本库管的是**"这些层用什么表现手法画出来"**——**前者定成分，后者定笔法**，两层叠加使用。
 >
-> **来源**：吸收自外部包 `huhe-combat-director V2.1` 拉片实证层。适合**水墨、国漫、二次元**风格档；
+> **来源**：吸收自外部包 `huhe-combat-director V2.1` 拉片实证层。适合**水墨、Western animation、二次元**风格档；
 > 3D 写实档（`sd-real-engine`）默认不套用，除非用户明确要求手绘化质感。
 
 ---
@@ -29,7 +29,7 @@
 | ④ | **墨线勾勒** | `如同墨线勾勒，线条有轻重顿挫，非等比均匀描边` | 黑白闪、轮廓提示、力量纹路 |
 | ⑤ | **笔触拖尾 / 残影** | `拖出笔触状拖尾，拖尾随时间变淡并崩解为手绘碎点，非平滑粒子消散` | 兵器轨迹、身法残影、能量尾迹 |
 
-> ⚠️ **按画质档分适用（2026-10-12 用户裁定 · 让行条款）**：本轮三条与 §一 五手法是**泼墨仙侠 / 二次元 / 手绘国漫档**的硬约束；**3D 国漫（次世代写实渲染）/ 写实仙侠档**按 `sd-xuanhuan-engine/references/xuanhuan-elements-vfx.md` 的 **13 种三层复合元素 + 三混合配比**执行，**不强制叠加手绘笔法**——把写实档硬拉成水墨同样是"规则层产毒"。是否套用本条，以 `sd-xuanhuan-engine/SKILL.md` §六 与 `sd-combat-engine/SKILL.md` §六 的画质档判据 + `combat-rhythm-and-load-guardrails.md` §七 豁免表为准。
+> ⚠️ **按画质档分适用（2026-10-12 用户裁定 · 让行条款）**：本轮三条与 §一 五手法是**泼墨high fantasy / 二次元 / 手绘Western animation档**的硬约束；**3D Western animation（次世代写实渲染）/ 写实high fantasy档**按 `sd-xuanhuan-engine/references/xuanhuan-elements-vfx.md` 的 **13 种三层复合元素 + 三混合配比**执行，**不强制叠加手绘笔法**——把写实档硬拉成水墨同样是"规则层产毒"。是否套用本条，以 `sd-xuanhuan-engine/SKILL.md` §六 与 `sd-combat-engine/SKILL.md` §六 的画质档判据 + `combat-rhythm-and-load-guardrails.md` §七 豁免表为准。
 
 ### 1.2 三条硬约束（一票否决）
 
