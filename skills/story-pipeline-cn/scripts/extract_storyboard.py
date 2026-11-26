@@ -487,51 +487,51 @@ def format_markdown(storyboard, character_cards, scene_cards, source_file) -> st
                     sc["location_type"], sc["time_of_day"], sc["mood"]))
         chars = "、".join(shot["characters"]) if shot["characters"] else "无特定角色"
         lines.append("#### 镜头 %s  `%s`" % (shot["shot_id"], shot["shot_type"]))
-        lines.append("\n| 项目 | 内容 |\n|------|------|")
-        lines.append("| 画面内容 | %s |" % shot["description_cn"])
-        lines.append("| 出场角色 | %s |" % chars)
-        lines.append("| 摄影机运动 | %s |" % shot["camera_move"])
-        lines.append("| 光线 | %s |" % shot["light"])
-        lines.append("| 色调 | %s |" % shot["color_tone"])
-        lines.append("| 音效/配乐 | %s |" % shot["sound"])
+        lines.append("\n| Field | Value |\n|------|------|")
+        lines.append("| Visual | %s |" % shot["description_cn"])
+        lines.append("| Characters | %s |" % chars)
+        lines.append("| Camera | %s |" % shot["camera_move"])
+        lines.append("| Lighting | %s |" % shot["light"])
+        lines.append("| Colour tone | %s |" % shot["color_tone"])
+        lines.append("| Sound / music | %s |" % shot["sound"])
         if shot["dialogue"]:
-            lines.append("| 对白 | %s |" % shot["dialogue"])
+            lines.append("| Dialogue | %s |" % shot["dialogue"])
         lines.append("")
 
     lines.append("---\n## 角色特征卡\n")
     for card in character_cards:
         lines.append("### %s — %s" % (card["char_id"], card["name"]))
-        lines.append("\n| 属性 | 内容 |\n|------|------|")
-        lines.append("| 总出场次数 | %d |" % card["total_appearances"])
-        lines.append("| 对白条数 | %d |" % card["dialogue_count"])
-        lines.append("| 出镜镜头数 | %d |" % card["shot_count"])
+        lines.append("\n| Field | Value |\n|------|------|")
+        lines.append("| Total appearances | %d |" % card["total_appearances"])
+        lines.append("| Dialogue lines | %d |" % card["dialogue_count"])
+        lines.append("| Shots on screen | %d |" % card["shot_count"])
         if card["appearance_traits"]:
-            lines.append("| 外貌特征 | %s |" % "；".join(card["appearance_traits"]))
+            lines.append("| Appearance | %s |" % "；".join(card["appearance_traits"]))
         if card["personality_traits"]:
-            lines.append("| 性格特征 | %s |" % "；".join(card["personality_traits"]))
+            lines.append("| Personality | %s |" % "；".join(card["personality_traits"]))
         if card["sample_dialogues"]:
-            lines.append("| 代表台词 | %s |" % "；".join("「%s」" % d for d in card["sample_dialogues"]))
-        lines.append("| AI 绘图提示词(中) | `%s` |" % card["ai_prompt_hint_cn"])
+            lines.append("| Sample lines | %s |" % "；".join("\"%s\"" % d for d in card["sample_dialogues"]))
+        lines.append("| AI image prompt | `%s` |" % card["ai_prompt_hint_cn"])
         lines.append("")
 
     lines.append("---\n## 场景特征卡\n")
     for card in scene_cards:
         chars = "、".join(card["characters_present"]) if card["characters_present"] else "无"
         lines.append("### 场景 %s：%s" % (card["scene_id"], card["header"]))
-        lines.append("\n| 属性 | 内容 |\n|------|------|")
-        lines.append("| 地点类型 | %s |" % card["location_type"])
-        lines.append("| 时间 | %s |" % card["time_of_day"])
-        lines.append("| 氛围 | %s |" % card["mood"])
-        lines.append("| 色调 | %s |" % card["color_tone"])
-        lines.append("| 光线 | %s |" % card["light"])
-        lines.append("| 音效 | %s |" % card["sound"])
-        lines.append("| 出场人物 | %s |" % chars)
+        lines.append("\n| Field | Value |\n|------|------|")
+        lines.append("| Location type | %s |" % card["location_type"])
+        lines.append("| Time | %s |" % card["time_of_day"])
+        lines.append("| Mood | %s |" % card["mood"])
+        lines.append("| Colour tone | %s |" % card["color_tone"])
+        lines.append("| Lighting | %s |" % card["light"])
+        lines.append("| Sound | %s |" % card["sound"])
+        lines.append("| Characters present | %s |" % chars)
         if card["location_desc"]:
-            lines.append("| 场景描述 | %s |" % card["location_desc"])
-        lines.append("| AI 场景提示词 | `%s` |" % card["ai_scene_prompt"])
+            lines.append("| Scene description | %s |" % card["location_desc"])
+        lines.append("| AI scene prompt | `%s` |" % card["ai_scene_prompt"])
         lines.append("")
 
-    lines.append("\n---\n> ⚠ 提示：`image_prompt`/`video_prompt` 当前为中文草稿，出图出视频前须译为英文。\n")
+    lines.append("\n---\n> NOTE: `image_prompt`/`video_prompt` must be English with no visible text before image or video generation. Fill `art_style_prefix` with an English style tag.\n")
     return "\n".join(lines)
 
 
@@ -540,8 +540,8 @@ def format_json(storyboard, character_cards, scene_cards, char_index, source_fil
         "title": Path(source_file).stem,
         "art_style_prefix": "",
         "character_index": char_index,
-        "prompt_language": "zh-draft",
-        "prompt_note": "image_prompt/video_prompt 当前为中文草稿，出图前须译为英文；art_style_prefix 须填写画风标签。",
+        "prompt_language": "en",
+        "prompt_note": "image_prompt/video_prompt must be English with no visible text; art_style_prefix must contain an English style tag.",
         "summary": {
             "total_shots": len(storyboard),
             "total_scenes": len(scene_cards),

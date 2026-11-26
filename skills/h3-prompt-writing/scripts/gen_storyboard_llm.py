@@ -201,14 +201,14 @@ OUTPUT CONTRACT
 - Output ONLY a single JSON object. No markdown fences, no commentary, no prose before or after.
 - Top-level keys: schema_version, title, art_style_prefix, video, characters, scenes, shots.
 - Every value that reaches an H3 prompt MUST be English: art_style_prefix, name_en, static_features, dynamic_features, do_not_change, retention_en, shot_size_en, angle_en, camera_move_en, world_pos, axis_en, positions.*, lighting_en, beats[].action/camera/sound/handoff, first_frame_hard, last_frame_hard, overall_soundscape, non_diegetic_music, shot_purpose, scene static_features/slugline/anchors.
-- Human-only fields may be Chinese: title, cut_reason, continuity_risk.
+- Human-readable fields are English too: title, cut_reason, continuity_risk.
 
-characters  (object, key = "@" + Chinese character name)
-  name_en (English noun phrase, e.g. "the eleven-year-old boy"), static_features (>=3 English phrases: face, hair, skin, build), dynamic_features (>=3 English phrases: clothing, shoes, carried items), do_not_change (English phrases), ref_role ("身份"), retention_en (one English clause listing what must be retained).
+characters  (object, key = "@" + English character name)
+  name_en (English noun phrase, e.g. "the eleven-year-old boy"), static_features (>=3 English phrases: face, hair, skin, build), dynamic_features (>=3 English phrases: clothing, shoes, carried items), do_not_change (English phrases), ref_role ("identity"), retention_en (one English clause listing what must be retained).
   IMPORTANT: there are NO reference images yet, so DO NOT emit ref_front.
 
-scenes  (object, key = "#" + Chinese scene name)
-  name_en, static_features (>=3 English phrases of the fixed space), shared_by (character labels present), ref_role ("空间"), ref_wide (null), slugline ("EXT./INT. 地点 - 时段"), anchors (stable landmarks with a role, e.g. "the rusted gate = the only entrance at the frame's left edge"), retention_en.
+scenes  (object, key = "#" + English scene name)
+  name_en, static_features (>=3 English phrases of the fixed space), shared_by (character labels present), ref_role ("space"), ref_wide (null), slugline ("EXT./INT. LOCATION - TIME"), anchors (stable landmarks with a role, e.g. "the rusted gate = the only entrance at the frame's left edge"), retention_en.
 
 shots  (array, in story order; high-quality, faithful adaptation)
   id: "S01_01", "S01_02", ... (strictly increasing, S01 = scene 1)
@@ -233,7 +233,7 @@ shots  (array, in story order; high-quality, faithful adaptation)
   overall_soundscape: 1-4 English sentences summarising ambient/action/non-verbal sound (no dialogue)
   non_diegetic_music: 1-3 English sentences, or exactly "N/A"
   shot_purpose: one English sentence, self-contained (it becomes the Ref2VA summary)
-  cut_reason / continuity_risk: short Chinese notes; fidelity_lock: true
+  cut_reason / continuity_risk: short English notes; fidelity_lock: true
 
 HARD RULES
 1. ZERO-PRONOUN: the final prompt must never rely on context. Never use any of: %(banned)s — not in the action text and not inside dialogue either. Rewrite every cross-shot state as a full physical description.
@@ -245,7 +245,7 @@ HARD RULES
 7. Style continuity: art_style_prefix is a single frozen English sentence (format, look, palette) written into every segment; choose it from the chapter's tone.
 8. FACING CONSISTENCY: positions[].facing must agree with pose and view_target. A boy looking up at a sign faces the sign, not the lens; two people talking to each other share an eyeline between them. Do NOT default every subject to "toward the camera" and do NOT aim view_target at the camera unless the beat is deliberately a direct-address close-up.
 9. CAMERA VARIETY: give at least half of the shots a real camera move (not static) with a clear start, end and reason. Every non-static camera_move_en MUST state where the move STARTS and where it STOPS, using explicit words (e.g. \"starts behind ... and tracks forward ... and stops when he reaches ...\"): a bare \"tracks behind him, following his movement\" is rejected by the gate as non-executable. Never write three consecutive shots with the same shot size, the same angle and a static camera.
-10. SPOKEN LINES: reproduce the chapter's spoken lines VERBATIM, in their original language, inside the beat action, using the H3 dialogue syntax with stable speaker IDs, e.g. "The elderly gatekeeper (S1) says: <d>[Chinese] 你好，请稍等一下。</d>". Characters who never speak get no speaker ID. Do not paraphrase dialogue.
+10. SPOKEN LINES: translate the chapter's spoken lines into English and place them inside the beat action, preserving meaning and tone, using the H3 dialogue syntax with stable speaker IDs, e.g. "The elderly gatekeeper (S1) says: <d>Hello, please wait a moment.</d>". Characters who never speak get no speaker ID. Do not leave source-language dialogue in the contract.
 11. EYELINE AND STAGING: keep the 180-degree axis stable and state which side the camera is on; the same character keeps the same left/right screen side across shots in one scene unless the camera legitimately moves.
 12. COMPACT OUTPUT: keep every phrase tight — one clause per action sentence, 2 beats per shot, no filler adjectives. A long storyboard risks being cut off before it is closed, so earn every word.
 13. PROVENANCE (fidelity lock): every beat carries source = "original" | "added" | "tbd". Use "original" for anything the chapter states (actions, dialogue, facts); use "added" ONLY for performance or staging detail that introduces no new plot event, cause or outcome (a breath, a glance, a step, a hand steadying); use "tbd" when a human should confirm. An "added" beat must never bring in a new character, place, object, cause or result, and the whole storyboard must never contradict the chapter's five prohibitions: do not add, delete, replace, reassign or reorder plot events.
@@ -268,7 +268,7 @@ STYLE REFERENCE (a filled storyboard for a different story; mimic its depth and 
 
 def build_user_prompt(novel_text):
     return (
-        "NOVEL CHAPTER (Chinese, verbatim source; adapt it into shots):\n"
+        "NOVEL CHAPTER (source text in any language; adapt it into English shots):\n"
         "----8<----\n" + novel_text.strip() + "\n----8<----\n\n"
         "Now output the storyboard.json for this chapter. JSON only."
     )
@@ -279,22 +279,22 @@ def build_user_prompt(novel_text):
 # ─────────────────────────────────────────────
 
 def run_gate(storyboard_path, compiler_path):
-    """调用编译器门禁，返回 (errors, warns, parsed_ok)。"""
+    """Run the compiler gate; return (errors, warns, parsed_ok)."""
     cmd = [sys.executable, str(compiler_path), "--storyboard-file", str(storyboard_path), "--json"]
-    # 子进程 stdout 是管道，Windows 下默认按本地代码页（cp936）编码；本函数按 utf-8 解析 --json。
-    # 不加 PYTHONIOENCODING 会出现 UnicodeDecodeError → stdout 变 None → 门禁永远读不到结果、
-    # 每次尝试都报假错、必然 exit 1。errors="replace" 只作兜底（宁可报「无法解析」也不崩栈）。
+    # Subprocess stdout is a pipe; on Windows it defaults to the local code page. Force UTF-8 for --json.
+    # Without PYTHONIOENCODING, UnicodeDecodeError makes stdout None and the gate always reports false errors.
+    # errors="replace" is only a fallback (prefer an unparseable report over a crash).
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
     try:
         proc = subprocess.run(cmd, capture_output=True, text=True,
                               encoding="utf-8", errors="replace", env=env, timeout=120)
     except subprocess.TimeoutExpired:
-        return ["门禁超时"], [], False
+        return ["Gate timed out"], [], False
     out = (proc.stdout or "").strip()
     try:
         payload = json.loads(out)
     except Exception:
-        return ["门禁输出无法解析（stderr：%s）" % (proc.stderr or "").strip()[:300]], [], False
+        return ["Gate output could not be parsed (stderr: %s)" % (proc.stderr or "").strip()[:300]], [], False
     issues = payload.get("issues") or []
     errors = [i["msg"] for i in issues if i.get("level") == "error"]
     warns = [i["msg"] for i in issues if i.get("level") == "warn"]
@@ -302,29 +302,29 @@ def run_gate(storyboard_path, compiler_path):
 
 
 def shape_check(sb):
-    """结构/必填的轻量校验（不依赖 jsonschema）。"""
+    """Lightweight structure/required-field check without jsonschema."""
     errs = []
     if not isinstance(sb, dict):
-        return ["根节点不是对象"]
+        return ["Root node is not an object"]
     for k in ("schema_version", "art_style_prefix", "characters", "scenes", "shots"):
         if k not in sb:
-            errs.append("缺少顶层字段：%s" % k)
+            errs.append("Missing top-level field: %s" % k)
     if not (sb.get("characters") or {}):
-        errs.append("characters 为空")
+        errs.append("characters is empty")
     if not (sb.get("scenes") or {}):
-        errs.append("scenes 为空")
+        errs.append("scenes is empty")
     shots = sb.get("shots") or []
     if not shots:
-        errs.append("shots 为空")
+        errs.append("shots is empty")
     for i, s in enumerate(shots):
-        # 元素不是对象时必须先挡下：`k not in s` 对 int/None 会抛 TypeError（对 str/list
-        # 则变成子串/成员判定，给出误导性结论）。与 compile_storyboard.validate 的 bad_type 一致。
+        # Reject non-objects first: `k not in s` raises TypeError for int/None and
+        # checks substrings for str/list, producing misleading results.
         if not isinstance(s, dict):
-            errs.append("shots[%d] 不是对象（实际是 %s）" % (i, type(s).__name__))
+            errs.append("shots[%d] is not an object (got %s)" % (i, type(s).__name__))
             continue
         for k in ("id", "scene", "duration", "beats"):
             if k not in s:
-                errs.append("shots[%d] 缺少 %s" % (i, k))
+                errs.append("shots[%d] missing %s" % (i, k))
     return errs
 
 

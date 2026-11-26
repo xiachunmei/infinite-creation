@@ -1,53 +1,53 @@
-# 输出格式规范（output-schemas）
+# Output Format Contracts
 
-定义三模式的产物结构与命名，保证可落盘、可程序化、可直接对接下游图像/视频生成工具。
+Define the artifacts of all three modes so they can be written to disk, consumed programmatically, and passed directly to downstream image/video tools. All creative values are English; JSON keys and file names are fixed contracts.
 
-## 一、通用落盘约定
+## 1. Common output layout
 
-```
-outputs/<作品名>/
-├── script.md                 # 模式 A 产物
-├── storyboard.md             # 模式 B/C 人读分镜表
-├── storyboard.json           # 模式 B/C 机读，下游生成工具兼容
-├── characters/               # 角色人设卡（B/C）
+```text
+outputs/<work>/
+├── script.md                 # mode A
+├── storyboard.md             # modes B/C, human-readable
+├── storyboard.json           # modes B/C, machine-readable, downstream-compatible
+├── characters/               # character cards (B/C)
 │   └── CHAR_001.md
-└── scenes/                   # 场景特征卡（C，可选）
+└── scenes/                   # scene cards (C, optional)
     └── SCENE_01.md
 ```
 
-所有路径用绝对路径、`/` 分隔；先建目录再写文件。
+Use absolute paths with `/`; create directories before writing files.
 
-## 二、script.md（模式 A）
+## 2. `script.md` (mode A)
 
-按 `templates/script-template.md`：
+Follow `templates/script-template.md`:
 
+```text
+# <Work Title>
+**Genre:** …  **Target runtime:** …  **Rating:** …
+
+## World Overview
+## Character List (table)
+## Script Body ([SCENE NN] … format)
+## Production Notes (theme / emotional core / next hook)
 ```
-# 《作品名》
-**类型：** …  **目标时长：** …  **分级：** …
 
-## 世界观简介
-## 角色一览（表）
-## 剧本正文（【场景 NN】… 格式）
-## 创作备注（主题/情感核心/下集钩子）
-```
+## 3. `storyboard.md` (modes B/C)
 
-## 三、storyboard.md（模式 B/C）
+Shot table (one section per scene):
 
-分镜表（每场景一段）：
-
-| 镜号 | 时长 | 景别 | 运镜 | 画面内容（中文） | 视频生成Prompt（英文） | 角色动作 | 对白/音效 |
-|------|------|------|------|----------------|----------------------|---------|-----------|
+| Shot ID | Duration | Shot size | Camera | Visual (English) | Video Prompt (English) | Character Action | Dialogue / Sound |
+|---|---|---|---|---|---|---|---|
 | S01_01 | 3s | ELS | STATIC | … | … | … | … |
 
-后接「角色人设卡」与「场景特征卡」章节。
+Followed by `Character Cards` and `Scene Cards` sections.
 
-## 四、storyboard.json（模式 B/C，下游生成工具兼容）
+## 4. `storyboard.json` (modes B/C, downstream-compatible)
 
 ```json
 {
-  "title": "作品名",
+  "title": "Work Title",
   "art_style_prefix": "anime style, cel shading, vibrant colors, high quality",
-  "character_index": { "林晨": "CHAR_001", "阿九": "CHAR_002" },
+  "character_index": { "Lin Chen": "CHAR_001", "A Jiu": "CHAR_002" },
   "summary": { "total_shots": 12, "total_scenes": 3, "total_characters": 2 },
   "shots": [
     {
@@ -55,15 +55,15 @@ outputs/<作品名>/
       "scene_id": "S01",
       "duration": 4,
       "shot_type": "ELS",
-      "description_cn": "废弃工厂外景，夕阳西下，铁架剪影",
-      "image_prompt": "abandoned factory exterior, sunset, rusty framework silhouette, golden hour, cinematic, static shot",
+      "description_cn": "Abandoned factory exterior at sunset, rusty framework silhouettes",
+      "image_prompt": "abandoned factory exterior, sunset, rusty metal framework silhouette, golden hour, cinematic, static shot",
       "video_prompt": "slow push in, camera moves forward",
       "characters": ["CHAR_001"],
-      "dialogue": "[音效：风声]",
-      "mood": "神秘",
-      "color_tone": "深蓝紫暗调",
-      "light": "暖橙逆光",
-      "sound": "环境音·诡异回响",
+      "dialogue": "[SFX: wind]",
+      "mood": "mysterious",
+      "color_tone": "deep blue-purple dark",
+      "light": "warm orange backlight",
+      "sound": "ambience, eerie reverb",
       "camera_move": "STATIC",
       "reference_image": null
     }
@@ -71,24 +71,24 @@ outputs/<作品名>/
   "character_cards": [
     {
       "char_id": "CHAR_001",
-      "name": "林晨",
+      "name": "Lin Chen",
       "age": "19",
-      "identity": "异能事件独立调查员",
+      "identity": "independent investigator of anomalous events",
       "appearance": "…",
-      "personality": "孤僻/固执/外冷内热",
+      "personality": "solitary, stubborn, sharp intuition, cold outside and warm inside",
       "image_prompt_en": "Lin Chen, 19-year-old male, … anime style, full body front view, white background",
-      "sample_lines": ["……知道了。"]
+      "sample_lines": ["I understand."]
     }
   ],
   "scene_cards": [
     {
       "scene_id": "S01",
-      "header": "【场景 01】室外·废弃工厂·傍晚",
-      "location_type": "室外",
-      "time_of_day": "傍晚",
-      "mood": "神秘",
-      "color_tone": "深蓝紫暗调",
-      "light": "暖橙逆光",
+      "header": "[SCENE 01] Outside · Abandoned Factory · Dusk",
+      "location_type": "outside",
+      "time_of_day": "dusk",
+      "mood": "mysterious",
+      "color_tone": "deep blue-purple dark",
+      "light": "warm orange backlight",
       "characters_present": ["CHAR_001"],
       "ai_scene_prompt": "…"
     }
@@ -96,12 +96,12 @@ outputs/<作品名>/
 }
 ```
 
-> `image_prompt` / `video_prompt` / `image_prompt_en` **必须为英文**，否则画图/视频模型效果差；若上游只产出中文草稿，阶段末须翻译。
+> `image_prompt`, `video_prompt`, and `image_prompt_en` **must be English**. `description_cn` is a retained key name for compatibility; write its **value in English**. No translation stage is required or permitted.
 
-## 五、角色人设卡（characters/CHAR_xxx.md）
+## 5. Character card (`characters/CHAR_xxx.md`)
 
-按 `templates/character-card-template.md`：基础信息 + 外貌 + 服装 + 性格 + **可直接使用的英文图像 Prompt** + 表情/动作变体。
+Follow `templates/character-card-template.md`: basic info + appearance + wardrobe + personality + **directly usable English image prompt** + expression/action variants.
 
-## 六、场景特征卡（scenes/SCENE_xx.md，模式 C 可选）
+## 6. Scene card (`scenes/SCENE_xx.md`, mode C optional)
 
-地点类型 / 时间 / 氛围 / 色调 / 光线 / 出场角色 / AI 场景提示词。
+Location type / time / mood / palette / lighting / characters present / English AI scene prompt.

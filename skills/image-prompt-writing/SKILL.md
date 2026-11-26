@@ -1,36 +1,38 @@
 ---
 name: image-prompt-writing
-description: 为 Krea2 超写实文生图（t2i）与 Qwen-Image-Edit-2511 图生图（i2i）编写中英文提示词。使用时机：为漫剧项目生成人物三视图、场景环境图、道具白底图等资产生图，或基于参考图做一致性变体。输出 prompt 与 negative_prompt。
+description: Write English prompts for Krea2 photoreal text-to-image (t2i) and Qwen-Image-Edit-2511 image-to-image (i2i). Use when generating character turnarounds, scene environment plates, or prop sheets for a comic-drama project, or when deriving consistent variants from a reference image. Outputs prompt and negative_prompt.
 ---
 
-# 图像提示词编写（Krea2 t2i / Qwen i2i）
+# Image Prompt Writing (Krea2 t2i / Qwen i2i)
 
-为资产生图工作流编写提示词。本工程文生图走 Krea2 超写实工作流（节点 CLIPTextEncode），图生图走 Qwen-Image-Edit-2511（参考图 + 指令）。
+Write asset-generation prompts exclusively in English. Text-to-image uses the Krea2 photoreal workflow (CLIPTextEncode); image-to-image uses Qwen-Image-Edit-2511 (reference image + instruction).
 
-## 按资产类型选尺寸与构图
+## Size and composition by asset type
 
-- **人物 character → 16:9**：角色设定图，左侧 1/3 为人物上半身脸部特写（头肩/胸部以上，突出五官/发型/神态/气质），右侧 2/3 为从头到脚的完整全身三视图（正面、侧面、背面，头顶到脚尖完整入画、不得裁切），同一人物外貌/服装/配色完全一致，简洁浅色背景，横向布局。
-- **场景 scene → 16:9**：环境氛围、空间透视、光线与风格，画面完整可作背景。
-- **道具 prop → 1:1**：纯白背景，画面只出现该道具本身，突出形状/材质/细节；道具自带的文字/标签/包装说明/品牌 logo 要保留并写清内容。
+- **Character → 16:9:** character sheet. Left third: head-and-shoulders close-up of the face (facial features, hairstyle, expression, temperament). Right two thirds: full-body front/side/back turnaround from head to toe, fully in frame and uncropped. The same character must have identical appearance, outfit, and palette across all views. Simple light background, horizontal layout.
+- **Scene → 16:9:** environment mood, spatial perspective, lighting, and style; the whole frame must work as a background plate.
+- **Prop → 1:1:** pure white background; only the prop itself, with shape, material, and details clearly visible. Real text belonging to the prop (signage, book title, packaging label, screen copy, brand/logo) must be kept and written in English with its placement.
 
-## prompt 编写规则
+## Prompt rules
 
-1. 结构化优于叙事化：按「主体 → 环境/背景 → 光照/材质/色调/视角」分类描述，1~3 句，80~150 字。
-2. 先主体核心特征，再环境，最后细节（材质、光影、色调、镜头视角）。
-3. 明确镜头视角（特写/中景/全景、正面/侧面/背面、平视/俯视/仰视）。
-4. 风格与本项目 style.md 保持一致。
-5. **允许保留与主体相关的真实文字**（招牌、书名、包装标签、屏幕文案、道具品牌名/logo 等），写清文字内容与位置；不要出现与画面无关的字幕条、水印、签名或乱码。
+1. Prefer structured description over narrative prose: subject → environment/background → lighting/material/palette/camera angle; 1–3 sentences, about 80–150 words.
+2. Lead with the subject's core features, then environment, then details (material, light, palette, viewpoint).
+3. State the camera view explicitly (close-up / medium / wide, front / side / back, eye-level / high / low).
+4. Keep style consistent with the project's `style.md`.
+5. **Allowed real text:** signage, book covers, packaging labels, on-screen copy, and prop brand names/logos may appear, and their English content and position must be written explicitly. No unrelated subtitle bars, watermarks, signatures, or gibberish.
 
-## negative_prompt 规则
+## Negative prompt rules
 
-通用排除：`blurry, low quality, pixelated, distorted, watermark, oversaturated, artificial, plastic-looking`。
-人物类额外排除：`extra fingers, deformed hands, mutated hands, fused fingers, plastic skin, over-smoothed`。
-不要排除 `text, letters, words, logo, signature`——把文字写进负向提示词会让产品包装、书封、招牌上的字被擦掉。
+General exclusions: `blurry, low quality, pixelated, distorted, watermark, oversaturated, artificial, plastic-looking`.
 
-## 输出
+Characters additionally: `extra fingers, deformed hands, mutated hands, fused fingers, plastic skin, over-smoothed`.
 
-每个资产输出 JSON：`{"prompt":"...","negative_prompt":"..."}`。prompt 用英文（写实模型对英文响应更好），结构清晰、具体可执行。
+Do not exclude `text, letters, words, logo, signature`; doing so erases legitimate packaging, book-cover, and signage text.
 
-## 调用方式
+## Output
 
-写好后用 `update_asset(id, {prompt, negative_prompt})` 写入对应资产，再用 `generate_asset_image(asset_id)` 或 `generate_assets_batch` 统一提交（批量时优先，避免反复切换工作流导致模型重载）。图生图变体用 `edit_asset_image(asset_id, prompt, reference_asset_id)`。人物换装用 `change_outfit(character_id, outfit)`（生成服装资产，category=costume）。若模型支持图片输入，写提示词前先用 `view_asset(asset_id)` 查看参考图，基于真实图写提示词。
+For each asset return `{"prompt":"...","negative_prompt":"..."}`. Both strings must be English, clear, specific, and directly executable by the model.
+
+## Tool usage
+
+Write the result with `update_asset(id, {prompt, negative_prompt})`, then submit with `generate_asset_image(asset_id)` or `generate_assets_batch` (prefer batch to avoid model reloads). Use `edit_asset_image(asset_id, prompt, reference_asset_id)` for i2i variants and `change_outfit(character_id, outfit)` for wardrobe assets. If the model supports image input, call `view_asset(asset_id)` before writing prompts and base them on the real reference image.

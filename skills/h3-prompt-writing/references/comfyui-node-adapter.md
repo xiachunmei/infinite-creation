@@ -1,32 +1,32 @@
-# ComfyUI MiniMaxH3Easy 节点适配说明
+# ComfyUI MiniMaxH3Easy Node Adapter
 
-本工程不是直连 MiniMax 官方 API，而是通过本地 ComfyUI 的 `MiniMaxH3Easy` 节点（mode=reference、reference_mention_mode=index）跑 Ref2VA。因此提示词要做两处适配。
+This project does not call the official MiniMax API directly. It runs Ref2VA through the local ComfyUI `MiniMaxH3Easy` node (`mode=reference`, `reference_mention_mode=index`). Two adaptations are required.
 
-## 1. 参考标签：官方 → 节点占位符
+## 1. Reference tags: official → node placeholders
 
-官方六段式用 `<Subject N>` / `<Picture N>` / `<Audio N>` / `<Video N>`。本节点不认识这些标签，**只认平铺的 `__MINIMAX_H3_REF_N__`（N 从 1 开始的整数）**。
+The official six-section format uses `<Subject N>` / `<Picture N>` / `<Audio N>` / `<Video N>`. This node recognizes only flat `__MINIMAX_H3_REF_N__` placeholders (`N` starts at 1).
 
-N 的序号 = `assembleShotReferences` 上传媒体的顺序：先是人物形象图、场景图、道具图（按该镜头引用顺序），最后是**有台词角色**的声音 `voice_ref` 音频（仅实际开口说话的角色，单分镜 ≤3 段）。因此写提示词时：
+`N` follows the upload order of `assembleShotReferences`: character images, scene images, prop images (in the shot's reference order), then `voice_ref` audio for **characters with spoken lines** (≤3 audio segments per shot). Therefore:
 
-- 第 1 张参考图 → `__MINIMAX_H3_REF_1__`，第 2 张 → `__MINIMAX_H3_REF_2__`，以此类推；
-- 人物声音音频 → 只给「有台词」角色，排在图片之后，例如 `__MINIMAX_H3_REF_3__`（若前面有 2 张图）；无台词角色不写声音标签，单分镜音频 ≤3 段。
+- First reference image → `__MINIMAX_H3_REF_1__`, second → `__MINIMAX_H3_REF_2__`, and so on.
+- Voice audio follows the images, for example `__MINIMAX_H3_REF_3__` after two images. No audio tag for silent characters.
 
-**不要混用**：一旦用 `__MINIMAX_H3_REF_N__`，就全文统一用这一种，不再出现 `<Picture N>` / `<Subject N>` / `<Audio N>`。
+**Never mix formats:** once `__MINIMAX_H3_REF_N__` is used, do not use `<Picture N>` / `<Subject N>` / `<Audio N>` in the same prompt.
 
-## 2. 六段式 → 平铺提示词
+## 2. Six-section → flat prompt
 
-节点 prompt 字段接受**一段平铺英文提示词**（非六段式 JSON/多节标题）。把官方六段式的关键信息浓缩成一段，结构建议：
+The node's `prompt` field accepts **one flat English prompt**, not six JSON sections or multiple headings. Compress the official six sections into one paragraph:
 
-1. 开头一句话点明参考素材：`__MINIMAX_H3_REF_1__ 是小明的人物形象参考，__MINIMAX_H3_REF_2__ 是图书室的场景，__MINIMAX_H3_REF_3__ 是小明的声音。`
-   **人物只报身份，不写长相和衣服（硬规则）**：参考图已经承载人物外形，参考行里只写「`__MINIMAX_H3_REF_N__` 是某某（角色名/身份）」，**不得**写年龄、五官、脸型、发型发色、肤色、体型、服装鞋履、配饰、材质、纹样与配色；场景、道具、环境不受此限，可照常描述。需要跨镜一致性时写「以 `__MINIMAX_H3_REF_N__` 的形象为准」，不要复制外形描述。若上游输入（资产描述、人物圣经、`角色一致性：…`）已经给了人物外形，也不要把它抄进提示词。
-2. 按时间轴描述整段（0–Ns）：构图、主体位置与动作、环境与光线、运镜、音效，逐段写清。
-3. 对白：人物「说」的内容用引号直接写出（由 `voice_ref` 音频承载，不写在画面字幕上）。
-4. 结尾加质量/一致性约束。
+1. Open by naming the references: `__MINIMAX_H3_REF_1__ is Lin Mo, __MINIMAX_H3_REF_2__ is the library, __MINIMAX_H3_REF_3__ is Lin Mo's voice.`
+   **Identity only for characters:** the reference line states only "`__MINIMAX_H3_REF_N__` is [character name/identity]". Never copy age, facial features, face shape, hairstyle/hair colour, skin tone, build, outfit, shoes, accessories, material, pattern, or palette from upstream descriptions or `bible.md`. Scenes, props, and environments may be described normally. For cross-shot consistency write "match the appearance in `__MINIMAX_H3_REF_N__`" instead of restating appearance.
+2. Describe the whole timeline (0–Ns): composition, subject positions and actions, environment and lighting, camera movement, and sound.
+3. Dialogue: write what each speaker says in English inside quotation marks, carried by `voice_ref`, never as on-screen subtitles.
+4. Close with quality and consistency constraints.
 
-## 3. 硬性约束
+## 3. Hard constraints
 
-- 全程英文（仅台词可保留原文语言）。
-- 时长与镜头 duration 对齐（5–15 秒）。
-- 具体、可执行，避免「cinematic / beautiful」这类空词。
-- **画面内不得出现任何文字、字幕、水印、logo、标语、签名**；对白只走声音，绝不要求画面出现文字。
-- 参考标签顺序与实际引用一致，不出现未引用的标签；**只引用「有台词」角色的音色，音频参考 ≤3 段**，无台词角色不要写声音标签。
+- The entire prompt is English, including dialogue, lyrics, and any visible scene text.
+- Duration matches the shot's `duration` (5–15 seconds).
+- Be concrete and executable; avoid empty words such as "cinematic" or "beautiful".
+- **No text, subtitles, watermarks, logos, slogans, or signatures in the frame.** Dialogue is voice only.
+- Reference tag order matches actual references; no unused tags; only speaking characters get audio tags.

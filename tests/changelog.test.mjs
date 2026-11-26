@@ -230,7 +230,7 @@ test('pickShotFields：白名单外的字段一律报错，产物字段不可写
   // 实际静默无效」，与 status/video_path 同口径拒收。断言精确到错误文案：只数条数会被
   // 「数字字段走兜底分支被按 duration 区间校验」这种错报蒙混过去（本轮真踩过）。
   const seed = pickShotFields({ seed: 123456, visual: 'v' });
-  assert.deepEqual(seed.errors, ['不接受字段 seed'], 'seed 不可写（渲染自己回写，外部写进去下次渲染就被覆盖）');
+  assert.deepEqual(seed.errors, ['Field not accepted: seed'], 'seed 不可写（渲染自己回写，外部写进去下次渲染就被覆盖）');
   assert.equal(seed.patch.seed, undefined, '被拒的字段不能进 patch');
   assert.equal(seed.patch.visual, 'v', '同一请求里的合法字段仍要写入');
   // 白名单里的数字字段必须各自显式判名，不能被兜底分支按 duration 区间校验
@@ -240,7 +240,7 @@ test('pickShotFields：白名单外的字段一律报错，产物字段不可写
   // db 层当「无效 id」静默丢弃（回 200 却没写进去），refs 那条则把垃圾字符串存下来。
   // 与「白名单外字段一律报错」同口径：当场报错，别让调用方以为写成功了。
   const objArr = pickShotFields({ character_ids: [{ id: 'a' }], visual: 'v' });
-  assert.deepEqual(objArr.errors, ['character_ids 的元素必须是字符串（当前含对象/数组）']);
+  assert.deepEqual(objArr.errors, ['character_ids elements must be strings (found object/array)']);
   assert.equal(objArr.patch.character_ids, undefined, '被拒的字段不能进 patch');
   assert.equal(objArr.patch.visual, 'v', '同一请求里的合法字段仍要写入');
   // 数字/null 仍按原行为归一（String(2)='2'，null 被滤掉）：模型常把 id 写成别的标量形态
@@ -566,7 +566,7 @@ test('台词速度校验：两条写入路径共用同一份默认时长（历�
   core.getDb().prepare('UPDATE shots SET duration = 0 WHERE id = ?').run(s.id);
   const dlg = '字'.repeat(30);   // 30/5=6 超速（上限 5.5 字/秒）；30/8=3.75 不超速
   const ctx = createToolRuntime({ projectId: p.id, chapter: '第1章' });
-  await assert.rejects(() => runTool(ctx, 'update_shot', { shot_id: s.id, dialogue: dlg }), /超速/);
+  await assert.rejects(() => runTool(ctx, 'update_shot', { shot_id: s.id, dialogue: dlg }), /Dialogue length does not match shot duration/);
   assert.ok(validateShotContent({ dialogue: dlg }, { duration: 0 }).length, '外部写入 API 同口径');
   assert.deepEqual(validateShotContent({ dialogue: dlg }, { duration: 8 }), [], '时长真是 8 秒时不该报错');
   Projects.remove(p.id);
@@ -835,7 +835,7 @@ test('章节写入白名单：只认 title/novel/script，seq/status/music_* 当
   // 拼错的字段不能静默通过（否则回 200 却什么都没改）
   assert.ok(pickChapterFields({ titel: '拼错' }).errors.length === 1);
   // 非对象请求体
-  assert.deepEqual(pickChapterFields(null).errors, ['请求体必须是 JSON 对象']);
+  assert.deepEqual(pickChapterFields(null).errors, ['Request body must be a JSON object']);
   // 值一律按字符串落库（与 Chapters.update 的 String 化口径一致）
   assert.deepEqual(pickChapterFields({ novel: 123 }).patch, { novel: '123' });
   // 允许字段真的能落库、且不动 seq
@@ -868,7 +868,7 @@ test('validateShotContent：显式空 chapter 被拒（否则分镜从章节视�
   assert.deepEqual(validateShotContent({ visual: 'x' }, {}), [], '省略 chapter 不在内容校验里报错（归属由调用方决定）');
   for (const v of ['', '   ']) {
     const errs = validateShotContent({ chapter: v, visual: 'x' }, {});
-    assert.ok(errs.some((e) => e.includes('chapter 不能为空')), JSON.stringify(errs));
+    assert.ok(errs.some((e) => e.includes('chapter cannot be empty')), JSON.stringify(errs));
   }
 });
 
@@ -1281,15 +1281,15 @@ test('章节标题：空标题会让整章分镜从章节视图消失，写入�
   const p = mkProject('章节空标题项目');
   const cid = Chapters.list(p.id)[0].id;
   // 外部写入 API 的入口（PATCH …/chapters/:cid）
-  assert.match(pickChapterFields({ title: '' }).errors.join('；'), /title 不能为空/);
-  assert.match(pickChapterFields({ title: '   ' }).errors.join('；'), /title 不能为空/);
+  assert.match(pickChapterFields({ title: '' }).errors.join('；'), /title cannot be empty/);
+  assert.match(pickChapterFields({ title: '   ' }).errors.join('；'), /title cannot be empty/);
   assert.equal(pickChapterFields({ novel: '正文' }).errors.length, 0, '不带 title 时不校验');
   // db 层兜底：绕过路由直接调用也必须拒绝（空标题会绕过标题唯一性检查）
   assert.throws(() => Chapters.update(cid, { title: '' }), /标题不能为空/);
   assert.equal(Chapters.get(cid).title, '第1章');
   // 创建侧：显式空白标题在路由层被 pickChapterFields 拒掉；绕过路由（内部调用）时兜底成「第N章」，
   // 不能让「建得出来、却再也存不下去」的一章落库
-  assert.match(pickChapterFields({ title: '\t ' }).errors.join('；'), /title 不能为空/);
+  assert.match(pickChapterFields({ title: '\t ' }).errors.join('；'), /title cannot be empty/);
   assert.equal(Chapters.create(p.id, { title: '   ' }).title, '第2章');
   assert.equal(Chapters.create(p.id, { novel: '只给正文' }).title, '第3章');
   assert.equal(Chapters.create(p.id, { title: '第9章' }).title, '第9章');
@@ -1303,10 +1303,10 @@ test('PATCH 项目：只接受内容字段，status/context 等流水线字段�
   assert.equal(ok.patch.target_duration, 90.5, '时长是秒，允许小数');
   assert.equal(ok.patch.enable_bgm, false);
   // status 是流水线状态（前端「运行中」判定、/run、/stages 都读它）
-  assert.match(pickProjectFields({ status: 'done' }).errors.join('；'), /不接受字段 status/);
+  assert.match(pickProjectFields({ status: 'done' }).errors.join('；'), /Field not accepted: status/);
   // context 只能在 PUT /context 写（同时落 context/*.md，从这个口进去会让 DB 与盘上文件脱节）
-  assert.match(pickProjectFields({ context: {} }).errors.join('；'), /不接受字段 context/);
-  assert.match(pickProjectFields({ video_width: 'abc' }).errors.join('；'), /不小于 0 的数字/);
+  assert.match(pickProjectFields({ context: {} }).errors.join('；'), /Field not accepted: context/);
+  assert.match(pickProjectFields({ video_width: 'abc' }).errors.join('；'), /must be a number ≥ 0/);
 });
 
 test('素材分类：值域外的分类必须拒绝（否则界面与批量生成都扫不到这一行）', () => {

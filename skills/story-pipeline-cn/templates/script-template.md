@@ -1,48 +1,49 @@
-# 《[剧名]》
+# <Work Title>
 
-**类型：** [类型]  
-**目标时长：** [分钟]  
-**集数：** 第[X]集·[标题]  
-**分级：** 全年龄 / PG-13 / R  
+**Genre:** [genre]  
+**Target runtime:** [minutes]  
+**Episode:** Episode [X] · [title]  
+**Rating:** All ages / PG-13 / R
 
 ---
 
-## 世界观简介
-[3-5 句话，面向首次接触的读者]
+## World Overview
+[3–5 sentences for a first-time reader.]
 
-## 角色一览
-| 角色名 | 身份 | 本集功能 |
-|--------|------|---------|
+## Character List
+
+| Character | Identity | Function in this episode |
+|---|---|---|
 | | | |
 | | | |
 
 ---
 
-## 剧本正文
+## Script Body
 
 ═══════════════════════════════════════
-【场景 01】室外·废弃工厂·傍晚
+[SCENE 01] Outside · Abandoned Factory · Dusk
 ───────────────────────────────────────
-[画面：橙红夕阳将工厂铁架拉出长影。锈蚀的铁门半掩。]
-[音效：风声，远处城市嘈杂声渐渐淡出]
+[VISUAL: Orange-red sunset stretches the factory's iron frames into long shadows. The rusted gate is half open.]
+[SFX: Wind, distant city noise fading out.]
 
-林晨（从铁门缝隙中侧身而入，手持手电筒，神色警惕）："来了三次了……每次都差一点。"
+LIN CHEN (slipping through the gap, flashlight in hand, wary): "Three times now. Each time I was almost too late."
 
-[画面：手电光扫过墙壁，定格在一组奇异符文上。]
+[VISUAL: The beam sweeps the wall and stops on a set of strange runes.]
 
-系统音（机械感）：「检测到能量残留——强度：S 级」
+SYSTEM VOICE (mechanical): "Energy residue detected — class S."
 
-林晨（倒吸一口气，后退半步）："怎么可能……"
+LIN CHEN (drawing a breath, stepping back): "How is that possible…"
 
-[音效：符文突然发出蓝色荧光，地板开始震动]
-[情绪：震惊→恐惧→决意]
+[SFX: The runes flare blue; the floor begins to tremble.]
+[EMOTION: shock→fear→resolve]
 ═══════════════════════════════════════
 
-（后续场景按同样结构续写）
+(Continue subsequent scenes with the same structure.)
 
 ---
 
-## 创作备注
-- 本集主题：
-- 情感核心：
-- 下集预告钩子：
+## Production Notes
+- Episode theme:
+- Emotional core:
+- Next-episode hook:

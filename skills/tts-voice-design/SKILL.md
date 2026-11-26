@@ -1,39 +1,40 @@
 ---
 name: tts-voice-design
-description: 为 Qwen3-TTS 音色设计工作流编写人物音色参数。使用时机：为漫剧人物设计专属音色（音色样本 voice_ref），需给出代表性台词 text 与音色描述 voice_description。输出 text 与 voice_description。
+description: Write English voice parameters for the Qwen3-TTS voice-design workflow. Use when designing a distinctive voice sample (`voice_ref`) for a comic-drama character, producing a short English `text` line and an English `voice_description`. Outputs text and voice_description.
 ---
 
-# 人物音色设计（Qwen3-TTS）
+# Voice Design (Qwen3-TTS)
 
-为每个出场人物设计一个专属音色样本，供后续视频生成时作为 `voice_ref` 参考。
+Design one distinctive English voice sample per speaking character for later use as `voice_ref` in video generation.
 
-## 输入
+## Inputs
 
-- 人物 bible.md 中的 voice 特征（若有）。
-- 人物在本章的对白风格（年龄、性别、性格、情绪基调）。
+- The character's `voice` entry in `bible.md` (English).
+- The character's dialogue style in the chapter: age, gender, personality, and emotional baseline.
 
-## 先决条件：asset 的 voice_desc（声音画像）
+## Prerequisite: asset `voice_desc`
 
-设计音色前，角色资产应带有 `voice_desc`（声音特征描述，性别+年龄段+音色质感，如 `青年男性，嗓音低沉`）：
-- 若创建角色资产时未传 `voice_desc`，先调用 `update_asset(asset_id, { voice_desc })` 补充——这样 `design_voice` 才能拿到角色性别/年龄，生成后音色才与角色一致（男主不会变成女声）。
-- `voice_desc` 与 `description` 不同：description 是外貌（给文生图），voice_desc 是声音（给 TTS）。不要混用。
+Before voice design, the character asset must carry an English `voice_desc`: gender + age group + timbre, for example `young adult male, deep resonant voice`.
 
-## text（朗读文案 · 简短自我介绍）
+- If `create_asset` was called without `voice_desc`, patch it with `update_asset(asset_id, { voice_desc })`. `design_voice` relies on it to avoid wrong-gender or wrong-age voices.
+- `voice_desc` is not `description`: `description` is appearance for text-to-image; `voice_desc` is voice for TTS. Never mix them.
 
-写 1 句 **20~30 字左右的简短自我介绍**（约 5 秒，口语化、贴合人物语气），作为人物朗读的音色合成样本。示例：`你好呀，我是沈舒妍，喜欢安静的午后和温暖的光，很高兴认识你。`
+## `text` (narration sample · short self-introduction)
 
-**禁止长篇大论**：不要塞大段台词、剧情或描写，20~30 字即可；文案过长会生成过长的音色样本。
+Write one colloquial English self-introduction of about **8–15 words (~5 seconds)** that fits the character's tone. Example: `Hi, I'm Sophie. I love quiet afternoons and warm light.`
 
-## voice_description（音色描述 · 不限制字数）
+Do not paste a long speech, plot summary, or description. Overlong text produces an overlong voice sample.
 
-描述目标音色，**不限制字数**，可详细写，覆盖：性别 + 年龄段 + 音色质感（明亮/低沉/沙哑/清亮/温润）+ 语速 + 语气情绪 + 口音/风格。示例：`青年男性，嗓音低沉温和，语速偏慢，带一点书卷气的平静口吻`。
+## `voice_description` (voice description · no length limit)
 
-## 输出与调用
+Describe the target voice in English in as much detail as needed: gender + age group + timbre (bright / deep / hoarse / clear / warm) + pace + emotional tone + accent/style. Example: `young adult male, deep and gentle voice, slow pace, calm bookish tone with a faint hint of amusement`.
 
-对每个人物输出 `{"text":"...","voice_description":"..."}`，然后调用 `design_voice(asset_id, text, voice_description)` 生成音色样本（落盘为该项目 voice_ref）。多个角色连续调用 design_voice，避免中途切回生图工作流造成模型重载。
+## Output and tool usage
 
-## 约束
+For each character return `{"text":"...","voice_description":"..."}`, then call `design_voice(asset_id, text, voice_description)` to generate the sample (stored as the project's `voice_ref`). Call `design_voice` for multiple characters consecutively to avoid reloading the image-generation workflow.
 
-- 音色与人物年龄/性别/性格一致；不同角色音色尽量区分。
-- voice_description 中文、具体，避免「好听」这类空词。
-- **voice_description 必须包含性别与年龄段**（如「青年男性」「老年女性」），缺失时 TTS 会自由发挥成年轻女声。
+## Constraints
+
+- Match the voice to the character's age, gender, and personality; differentiate characters clearly.
+- `voice_description` must be English, concrete, and specific; avoid vague words such as "nice voice".
+- **Always include gender and age group** (for example `young adult male`, `older woman`). Missing these makes TTS default to a young female voice.

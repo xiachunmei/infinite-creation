@@ -1,77 +1,79 @@
-# 模式 A · 小说转剧本（novel-to-script）
+# Mode A · Novel → Script
 
-把一部小说（或一段素材）改编成**可分镜的文学剧本**。目标是结构清晰、场景标注规范、对白动作分离，便于模式 B 直接拆分镜。
+Adapt a novel or source material into a **shootable English literary script**. The target is clear structure, standardized scene headings, and separated dialogue/action so mode B can split shots directly. All output is English; translate and adapt non-English source meaning before writing.
 
-## 触发
+## Trigger
 
-用户说「把小说改成剧本 / 小说转剧本 / 改编剧本 / 文学剧本」，或提供小说文件并意图改编。若未指定，回退 SKILL.md 菜单。
+The user asks to adapt a novel into a script, or provides a novel file with adaptation intent. If no mode is specified, return to the `SKILL.md` menu.
 
-## 输入
+## Input
 
-- 粘贴的小说正文，或小说/素材文件路径（`.txt`/`.md`）。
-- 若只给梗概/创意，先与其确认核心设定再写。
+- Pasted novel text, or a `.txt` / `.md` novel/source path.
+- If only a premise/idea is given, confirm core settings before drafting.
 
-## 步骤
+## Steps
 
-### Step 1 · 素材挖点（提炼四要素）
+### Step 1 · Source mining
 
-先不动笔，向用户确认或自行提炼：
+Extract or confirm four elements:
 
-| 要素 | 要回答 |
-|------|--------|
-| 前提（Premise） | 一句话核心设定：「如果一个__，会怎样？」 |
-| 主角与欲望 | 谁、想要什么、阻碍是什么 |
-| 核心冲突 | 人物 vs 人物 / 环境 / 自我 |
-| 主题 | 想表达什么（一句话） |
+| Element | Question |
+|---|---|
+| Premise | One-sentence core setting: "If a ___, what happens?" |
+| Protagonist and desire | Who, what they want, what blocks them |
+| Core conflict | Character vs character / environment / self |
+| Theme | What the story expresses, in one sentence |
 
-输出一段「改编要点」给用户确认（门控点 1）。
+Output an English adaptation brief for confirmation (gate 1).
 
-### Step 2 · 三幕结构搭建
+### Step 2 · Three-act structure
 
-按 `references/style-guide.md` 与 `templates/script-template.md` 搭骨架：
+Build the skeleton using `references/style-guide.md` and `templates/script-template.md`:
 
-- **第一幕 起（~25%）**：钩子（前 30s 抓住观众）→ 世界观呈现 → 主角登场 → 触发事件。
-- **第二幕 承转（~50%）**：上升行动 → 中点转折 → 危机加深（All Is Lost）。
-- **第三幕 合（~25%）**：高潮对决 → 结局 → 余韵（可选钩子）。
+- **Act I (~25%):** hook (grab the audience in the first 30 seconds) → world presentation → protagonist entrance → inciting incident.
+- **Act II (~50%):** rising action → midpoint turn → deepening crisis (All Is Lost).
+- **Act III (~25%):** climactic confrontation → resolution → aftertaste / optional hook.
 
-给出「分场大纲」（每场一句话 + 功能），请用户确认（门控点 2）。
+Give an English scene-by-scene outline (one sentence + function per scene) for confirmation (gate 2).
 
-### Step 3 · 场景剧本成稿
+### Step 3 · Finished scene script
 
-逐场写成文学剧本，严格遵守场景头与标注规范：
+Write each scene as an English literary script with standardized headings:
 
+```text
+[SCENE 01] Outside · Abandoned Factory · Dusk
+───────────────────────────────────────
+[VISUAL: Orange-red sunset stretches the factory's iron frames into long shadows. The rusted gate is half open.]
+[SFX: Wind, distant city noise fading out.]
+
+LIN CHEN (slipping through the gap, flashlight in hand, wary): "Three times now. Each time I was almost too late."
+
+[VISUAL: The beam sweeps the wall and stops on a set of strange runes.]
+SYSTEM VOICE (mechanical): "Energy residue detected — class S."
 ```
-【场景 01】室外·废弃工厂·傍晚
-───────────────────────────────
-[画面：橙红夕阳将工厂铁架拉出长影。锈蚀铁门半掩。]
-[音效：风声，远处城市嘈杂声渐渐淡出]
 
-林晨（从铁门缝隙中侧身而入，手持手电筒，神色警惕）："来了三次了……每次都差一点。"
+Rules:
 
-[画面：手电光扫过墙壁，定格在一组奇异符文上。]
-系统音（机械感）：「检测到能量残留——强度：S 级」
-```
+- Scene header: `[SCENE NN] Location · Sub-location · Time`.
+- Dialogue: `CHARACTER (action/emotion): "line"`.
+- Objective visuals: `[VISUAL: …]`; sound: `[SFX: …]` / `[MUSIC: …]`; emotion arc: `[EMOTION: A→B→C]`.
+- Every line has a purpose; keep spoken lines under about 20 English words; avoid explanatory dialogue.
 
-规则：
-- 场景头统一 `【场景 NN】地点·子地点·时间`。
-- 对白：`角色名（动作/情绪）：「台词」`。
-- 客观画面用 `[画面：…]`，声音用 `[音效：…]`/`[BGM：…]`，情绪用 `[情绪：A→B→C]`。
-- 台词每句有目的；动画台词单句 ≤20 字；少用解释性台词。
+### Step 4 · Self-review and iteration
 
-### Step 4 · 自检与迭代
+Check against `templates/script-template.md`:
 
-对照 `templates/script-template.md` 的创作备注项，检查：
-- 三幕比例是否合理、钩子是否够强
-- 每场是否有清晰功能（推进/揭示/转折）
-- 角色语气是否差异化
+- Three-act proportions and hook strength.
+- Each scene has a clear function (advance / reveal / turn).
+- Distinct character voices.
 
-输出 `script.md` 到 `outputs/<作品名>/`，并附「下集预告钩子」。交付前请用户确认（门控点 3）。
+Write `outputs/<work>/script.md` in English, including a next-episode hook. Ask for confirmation before delivery (gate 3).
 
-## 产出
+## Output
 
-- `outputs/<作品名>/script.md`（文学剧本，含世界观/角色一览/正文/备注）
-- 可选：`outputs/<作品名>/storyboard.md` 的占位（待模式 B 填充）
+- `outputs/<work>/script.md` (English literary script with world overview, character list, body, and notes).
+- Optional placeholder `outputs/<work>/storyboard.md` for mode B.
 
-## 衔接
+## Handoff
 
-把 `script.md` 直接交给**模式 B（剧本转分镜）**，即可得到分镜表与角色卡，无需重新拆解。
+Pass `script.md` directly to **mode B (Script → Storyboard)**; no re-extraction is needed.

@@ -1,79 +1,74 @@
 ---
 name: scene-blocking-consistency
-description: 人物/道具站位一致性：为每个场景建立「站位表」（空间锚点+角色默认方位+道具锚点+180度轴线与允许机位），并强制同一场景内所有镜头的 sub_shots / visual / video_prompt 复述并保持人物/道具相对左右方位、朝向、视线一致，消除跨镜左右漂移。当出现人物在左、下一镜位置关系错乱、左右漂移、站位不连贯、越轴等分镜一致性问题时使用。
+description: Maintain character and prop blocking consistency. Use before splitting shots or writing video prompts for scenes with multiple characters or key props, or when diagnosing left/right drift, reversed eyelines, prop teleportation, or axis violations. Every scene gets a blocking map; all shots restate it in English.
 ---
 
-# 人物/道具站位一致性（scene-blocking-consistency）
+# Character / Prop Blocking Consistency
 
-把「站位」当成与人物外貌、服装、画风同级的**一致性锚点**来管理。核心思想：先为每个场景定一张**站位表（blocking map）**，之后同一场景内所有镜头一律从这张表取方位，禁止逐镜自由发挥导致左右关系漂移。
+Treat blocking as a consistency anchor equal to appearance, wardrobe, and art style. First define one **blocking map** per scene. All shots in that scene take positions from the map; never improvise per shot.
 
-## 何时使用
+## When to use
 
-- 拆分镜前、写视频提示词前，凡涉及多人同场、人物与道具同框的场景，都必须先建立/读取站位表。
-- 排查「上一镜人物在左、下一镜跑到右」「两人对视方向相反」「道具从左边瞬移到右边」等问题时，按本技能重建站位表并逐镜校正。
+- Before splitting shots or writing video prompts for any scene with multiple characters on screen or a character interacting with a key prop.
+- When repairing "the character was on the left in shot one and on the right in shot two", reversed eyelines, teleporting props, or axis jumps.
 
-## 站位表结构（每个场景一条）
+## Blocking map structure (one per scene)
 
-站位表写进 `bible.md` 的「场景站位表」章节。每张表包含四块：
+Write the map into an English `Scene Blocking Map` section of `bible.md`. Each map has four parts:
 
+```text
+[SCENE 01] Library · Dusk
+- Spatial anchors: door = screen-left; window = screen-right; desk = slightly left of centre; bookshelf = rear right
+- Character positions:
+  - Lin Mo: screen-left, facing right (toward Su Wan), about one step from the door
+  - Su Wan: screen-right, facing left (toward Lin Mo), back to the window
+- Prop anchors:
+  - Teapot: on the desk, slightly left between the two characters
+- Axis and camera side: axis = the Lin Mo—Su Wan line; camera stays on the lower side (in front of both, slightly left); no crossing
 ```
-【场景 01】图书室·黄昏
-- 空间锚点：门=画面左；窗=画面右；书桌=画面中偏左；书架=画面右后
-- 角色站位：
-  - 林默：画面左侧，面向右（朝向苏婉），距门约1步
-  - 苏婉：画面右侧，面向左（朝向林默），背对窗
-- 道具锚点：
-  - 茶壶：书桌上，位于两人之间偏左
-- 轴线与机位：以「林默—苏婉」连线为轴线；机位统一在轴线下方（两人正前方偏左），禁止越轴
-```
 
-### 字段说明
+| Field | Meaning | Required |
+|---|---|---|
+| Spatial anchors | Fixed scene references (door/window/table/bed/stairs/counter) with screen-left/right and front/back positions | Yes |
+| Character positions | Each on-screen character's position relative to anchors + facing (left/right/front/back to camera) | Yes |
+| Prop anchors | Position of key props relative to characters or anchors, especially props that are picked up or emphasized | When props are present |
+| Axis and camera side | The character-to-character axis and the single allowed camera side | When multiple characters share a scene |
 
-| 字段 | 含义 | 必填 |
-|------|------|------|
-| 空间锚点 | 场景内固定参照物（门/窗/桌/床/台阶/柜台…）相对画面的左右/前后方位 | 是 |
-| 角色站位 | 每个入镜角色相对锚点的方位 + 朝向（面向左/右/前/背对镜头） | 是 |
-| 道具锚点 | 关键道具相对角色/锚点的方位（尤其会被拿取/强调的道具） | 有道具时必填 |
-| 轴线与机位 | 角色连线的轴线，及本场景允许的机位侧（统一同侧） | 多人同场时必填 |
+## Six hard rules
 
-## 六条铁律
+1. **180-degree axis:** keep the camera on the same side of the character axis for the whole scene. Crossing requires a wide two-shot that re-establishes the geography, or a motivated walk that changes sides on screen.
+2. **Screen direction:** the same character stays on the same side of the frame across cuts unless the plot explicitly moves them and the path is shown.
+3. **Eyeline match:** in a face-to-face exchange, one character looks screen-left and the other screen-right; directions must match across cuts.
+4. **Prop anchor consistency:** a key prop keeps its relative position unless its movement is shown.
+5. **Explicit blocking changes:** any repositioning (standing, walking to the window, circling behind someone) must be written in that shot's `sub_shots` as start → path → end, and the map must be updated.
+6. **Shot-to-shot handoff:** before writing shot N, compare its `scene_name`/scene header and time with shot N-1. Same scene + continuous time → shot N's opening frame equals shot N-1's closing frame (positions, facing, props, action direction). A transition (scene change, location change, time jump, fade to black) → do not inherit the previous positions; rebuild the map.
 
-1. **180 度轴线规则**：同一场景内，机位必须始终保持在角色连线（轴线）的同一侧；确需越轴时，必须先用一个「全景/两人同框」镜头交代，或让角色走位自然换边，否则禁止直接越轴。
-2. **屏幕方向一致**：同一角色在连续镜头中位于画面的左右侧保持一致（画面左/画面右），除非剧情明确要求其走位移动，且该移动路径在镜头里被写清。
-3. **视线匹配**：面对面对话时，一方看向左、另一方看向右；视线方向跨镜一致，不得出现两人同看一边的「镜像跳」。
-4. **道具锚点一致**：道具相对角色/场景锚点的方位跨镜一致（桌上的茶壶始终在两人之间偏左），不得瞬移。
-5. **换位/走位必须显式交代**：若剧情要求角色换位（起身、走到窗边、绕到对方身后等），必须在该镜头的 `sub_shots` 里写清「起点→路径→终点」，并**更新站位表**为新站位；换位之后的镜头沿用新站位。
-6. **镜头间上下文承接（先判断转场，再决定是否参考）**：写分镜 N 前，先比较它与分镜 N-1 的 `scene_name`/场景头与时间——**同一场景且时间连续 → 必须参考站位**：分镜 N 起幅 = 分镜 N-1 落幅（角色左右方位、朝向、道具位置、动作方向一致）；**发生转场（场景头变化/地点切换/时间跳跃/淡入黑场等）→ 不参考上一镜位置**，为新场景重建站位表。
+## Procedure
 
-## 执行步骤
+### 1. Before splitting: create or read the map
 
-### 1. 拆分镜前：建立/读取站位表
+- Group the chapter by scene and create one map per scene.
+- If `get_project` returns `context.bible` with an existing `Scene Blocking Map` for that scene, reuse it; update only for motivated movement.
 
-- 先按场景聚合本章，为每个场景建立站位表（见「站位表结构」）。
-- 若 `get_project` 返回的 `context.bible` 里已有该场景的「场景站位表」，直接沿用；剧情走位变化时才更新。
+### 2. Persist to bible (overwrite carefully)
 
-### 2. 持久化到 bible（注意覆盖式写入）
+- `bible` writes are full replacements: call `get_project` first, merge the new blocking-map section into the existing `context.bible` (preserving characters and wardrobe), then `save_context('bible', mergedText)`.
+- Append or update maps per scene as the story progresses.
 
-- `bible` 是覆盖式写入：**先 `get_project` 读回现有 `context.bible`**，把「场景站位表」章节合并进全文（保留已有的人物外貌/衣橱等内容），再 `save_context('bible', 合并后的全文)`。
-- 站位表按场景分条，随剧情推进可追加新场景、更新走位后的旧场景。
+### 3. Restate blocking in storyboards
 
-### 3. 写分镜时复述站位（含镜头间承接）
+- Every `set_storyboard` `visual` and `sub_shots` entry must state "Character X is screen-left/right, facing left/right, near anchor Y". Never use zero pronouns such as "same as above" or "unchanged".
+- If a character moves within a shot, write the start, path, and end point.
+- Write shots in `idx` order and check for transitions before inheriting positions. When resuming, use `list_shots` to read the last shot's closing frame.
 
-- 每条 `set_storyboard` 的 `visual` 与 `sub_shots` 必须明确写出「角色X在画面左/右、面向左/右、距某锚点远近」，不写「同上/保持原样」这类零指代。
-- 子分镜之间若有人物走位，写清移动路径与起终点。
-- **先判断是否转场**：写分镜 N 前，比较它与分镜 N-1 的 `scene_name`/场景头与时间。同场景且时间连续 → 参考站位（承接上一镜落幅）；发生转场（场景切换/地点变化/时间跳跃）→ 不参考上一镜位置，为新场景重建站位表。
-- **按 idx 顺序逐条写分镜**：同场景连续时，写第 N 条前先回顾第 N-1 条 `sub_shots` 的结尾一段（落幅），第 N 条的起幅站位承接第 N-1 条的落幅；续跑追加时用 `list_shots` 读回已有分镜的最后落幅再接写。
+### 4. Restate blocking in English video prompts
 
-### 4. 写视频提示词时复述站位（英文）
+- Translate the map into English and restate it in every `video_prompt`, for example: `Lin Mo stands on screen-left facing right; Su Wan stands on screen-right facing left`.
+- Reference tags (`__MINIMAX_H3_REF_N__`) and blocking descriptions coexist; neither replaces the other.
 
-- 写 `video_prompt` 时，把站位表方位翻译成英文并复述进每个镜头，例如 `Lin Mo stands on screen-left facing right; Su Wan stands on screen-right facing left`。
-- 参考标签（`__MINIMAX_H3_REF_N__`）与站位描述并存，互不替代。
+## Self-check
 
-## 常见错误（写分镜时自查）
-
-- 越轴：两人对话，A 镜从左侧拍、B 镜突然从右侧拍，导致人物左右互换。
-- 镜像跳：同一场景两人对望，却都写成「面向右」或都「面向左」。
-- 道具瞬移：上一镜茶壶在两人之间，下一镜跑到窗边。
-- 零指代：`sub_shots` 写「人物位置保持原样」，但没写「原样」具体是什么。
-
-详见 `references/blocking-map.md`（模板与示例）与 `references/continuity-rules.md`（规则判定细节）。
+- Axis jump: shot A from the left, shot B from the right with no establishing wide.
+- Mirror jump: two characters facing each other are both written as facing right or both facing left.
+- Prop teleport: the teapot moves from between them to the windowsill without a shot showing it.
+- Zero pronoun: a `sub_shots` entry says "the character stays as before" without naming the actual position.

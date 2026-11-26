@@ -1,86 +1,80 @@
-# 模式 C · 小说转分镜（直拆快路径）
+# Mode C · Novel → Storyboard (Fast Path)
 
-跳过中间剧本文件，直接把小说拆成**分镜脚本 + 角色特征卡 + 场景特征卡**，并产出下游生成工具兼容的 `storyboard.json`。适合「快速出分镜 / 喂画图模型 / 批量处理」。
+Skip the intermediate script file and extract a novel directly into a **shot script + character feature cards + scene feature cards**, producing a downstream-compatible `storyboard.json`. Use for fast shot lists, image-model input, and batch files. All output is English.
 
-模式 C = 模式 A 的剧本结构 + 模式 B 的分镜拆解，一次性完成，但不落中间 `script.md`。
+Mode C = mode A's script structure + mode B's shot extraction in one pass, without writing `script.md`.
 
-## 触发
+## Trigger
 
-用户说「小说分镜 / 小说转分镜 / 拆镜头 / 角色卡 / 场景卡 / AI 绘图提示词」，或提供小说文件并意图直接拆镜。若未指定，回退 SKILL.md 菜单。
+The user asks for novel storyboard, shot breakdown, character/scene cards, or AI image prompts, or supplies a novel file with direct extraction intent. If no mode is specified, return to the `SKILL.md` menu.
 
-## 两种用法
+## Two usages
 
-### 用法 1 · 粘贴文本（对话直出）
+### Usage 1 · Pasted text (direct chat output)
 
-用户把小说正文粘贴到对话，AI 直接在对话中按模板输出结构化内容（无需脚本）：
-- 统计摘要（总镜头/场景/角色数）
-- 分镜脚本（每镜：景别、画面、角色、运镜、光线、色调、音效、对白）
-- 角色特征卡（出场次数、外貌、性格、代表台词、AI 绘图提示词）
-- 场景特征卡（地点/时间/氛围/色调/光线/AI 场景提示词）
+Output structured content in English:
 
-如要落盘，再写 `storyboard.md` + `storyboard.json`。
+- Summary (total shots / scenes / characters).
+- Shot script per shot: shot size, visual, characters, camera, lighting, palette, sound, dialogue.
+- Character cards: appearances, personality, representative lines, English image prompt.
+- Scene cards: location/time/mood/palette/lighting/English scene prompt.
 
-### 用法 2 · 文件批量（调用脚本）
+Write `storyboard.md` + `storyboard.json` if files are required.
 
-当用户提供 `.txt`/`.md` 小说文件时，调用核心脚本处理：
+### Usage 2 · File batch (script)
 
 ```bash
-# 基础用法（输出 Markdown + 下游生成工具兼容 JSON）
-python "<skill_root>/scripts/extract_storyboard.py" "C:/path/to/novel.txt" -o "outputs/作品名" -f both
-
-# 只输出 JSON（供程序化 / 接下游生成工具）
+python "<skill_root>/scripts/extract_storyboard.py" "C:/path/to/novel.txt" -o "outputs/work" -f both
 python "<skill_root>/scripts/extract_storyboard.py" "C:/path/to/novel.txt" -f json
 ```
 
-脚本自动：多编码读取 → 段落切分与类型标注 → 场景聚合 → 角色提取（建立 `CHAR_xxx` 映射）→ 分镜生成（景别/运镜/光线/色调/音效推断）→ 角色卡 → 场景卡 → 落盘 `storyboard.md` + `storyboard.json`。
+The script handles multi-encoding read → paragraph segmentation/tagging → scene grouping → character extraction (`CHAR_xxx` map) → shot generation → cards → English `storyboard.md` + `storyboard.json`.
 
-## 步骤（与脚本对齐的逻辑）
+## Logic aligned with the script
 
-1. **读 & 清洗**：探测 `utf-8/utf-8-sig/gbk/gb2312/big5`。
-2. **段落切分 & 标注**：场景头 / 章节 / 对白 / 动作 / 叙事。
-3. **场景聚合**：按场景标头或双空行合并；推断地点类型、时间、氛围（关键词匹配）。
-4. **角色提取**：对白名 + 叙事描述正则（外貌/性格）；统计出场次数；生成 `CHAR_xxx` 映射。
-5. **分镜生成**：按「连续剧情段」聚合成镜头（时长贴合内容，2–15s，最长 15s，禁止为凑时长拖长），同一场景连续动作 + 多句连贯对白合并成一镜（镜内子分镜承载节拍），仅场景切换/时空断开才换镜；**同一分镜最多 2 个说话人，≥3 人轮流对话必须拆成多个分镜（每镜 ≤2 个说话人）**；景别按关键词推断；补运镜/光线/色调/音效（见 `style-guide.md` 映射表）；镜号 `S{场}_{n}`。**镜头时长贴合内容节奏：时长 ≈ 台词字数 ÷ 4.5 + 动作/情绪缓冲 1–3 秒，取整夹在 2–15 秒；一句短台词（8–15 字）给 2–4 秒即可，只有真正的连续动作+多句对白才给长镜头，禁止把短台词镜头拖长到 10 秒以上（会产生呆板空镜、打乱节奏）。台词时长硬约束：中文旁白约 4-5 字/秒，单镜台词字数 ≤ 时长秒 × 5（如 14 秒镜头 ≤ 70 字、15 秒镜头 ≤ 75 字）；对白过长的段落必须拆成更多镜头或压缩台词，严禁把大段台词塞进短镜头——会被 H3/TTS 压缩成听不清的模糊声。**
-6. **角色/场景卡**：含 AI 绘图提示词（中文草稿，须译英文后出图）。
-7. **落盘 & 摘要**：写 `storyboard.md` + `storyboard.json`，控制台打印统计。
+1. **Read & clean:** detect `utf-8/utf-8-sig/gbk/gb2312/big5`.
+2. **Segment & tag:** scene header / chapter / dialogue / action / narration.
+3. **Group scenes:** by header or double blank lines; infer location type, time, and mood from English keywords.
+4. **Extract characters:** dialogue speakers + appearance/personality regexes; count appearances; build `CHAR_xxx` map.
+5. **Generate shots:** aggregate continuous segments into 2–15s takes (max 15s); never pad short lines into long shots. Combine continuous action + connected dialogue into one take; split only on scene/time/emotion breaks. At most 2 speakers per shot. Infer shot size; add camera/lighting/palette/sound from `style-guide.md`. Duration ≈ dialogue word count ÷ 2.5 + 1–3s action/emotion buffer, clamped to 2–15s; keep each shot's dialogue within a realistic speaking rate or split/compress it.
+6. **Cards:** include English AI image prompts; no Chinese draft is produced.
+7. **Write and summarize:** write `storyboard.md` + `storyboard.json`, print statistics.
 
-## 输出内容
+## Output content
 
-### 分镜脚本（每镜字段）
+### Shot script (per shot)
 
-镜头编号 / 所属场景 / 景别 / 画面内容 / 出场角色 / 服装（换装） / 摄影机运动 / 光线 / 色调 / 音效·配乐 / 对白 / 动作提示。
+Shot ID / scene / shot size / visual / characters / wardrobe / camera move / lighting / palette / sound/music / dialogue / action cue. English dialogue uses `Character: line`.
 
-### 角色特征卡（每角色）
+### Character card (per character)
 
-总出场次数 / 对白条数 / 出镜镜头数 / 外貌特征 / 性格特征 / 代表台词 / AI 绘图提示词（英文优先，附中文草稿）。
+Total appearances / dialogue lines / shots on screen / appearance / personality / representative line / English image prompt.
 
-### 场景特征卡（每场景）
+### Scene card (per scene)
 
-地点类型 / 时间 / 氛围 / 色调方案 / 光线方案 / 音效方案 / 出场人物 / AI 场景提示词。
+Location type / time / mood / palette / lighting / sound / characters present / English scene prompt.
 
-## 文本格式建议（获得最佳效果）
+## Text format for best results
 
-推荐剧本格式（场景头 + `角色：台词`）：
-
-```
-【场景 01】室外·旧街道·黄昏
-街道上行人稀少，橙红夕阳把影子拉得很长。
-林默（站在路口，望着远处）：我知道你一直在这里。
-阿九（从阴影中走出，声音低沉）：你终于来了。
+```text
+[SCENE 01] Outside · Old Street · Dusk
+Few pedestrians on the street; the orange sunset stretches shadows long.
+LIN MO (standing at the crossroads, looking into the distance): I know you've been here all along.
+A JIU (stepping out of the shadows, low voice): You finally came.
 ```
 
-也支持纯小说叙事格式（无标头时按双空行切分，角色名靠上下文识别，可能不全）。
+Pure novel narration also works (double blank lines split paragraphs; character names are inferred from context and may be incomplete).
 
-## 注意事项
+## Notes
 
-- 中文剧本格式支持最佳；英文 `INT./EXT.` 同样支持。
-- 对白识别依赖 `角色：台词`；格式不规范可能漏识别（见 `fault-handling.md`）。
-- 特征提取基于关键词规则，复杂隐晦描写建议 AI 人工补充。
-- **换装**：正文出现「沐浴/洗澡/更衣/换衣/换装/换上(新)衣」等换装事件时，分镜脚本要标注「该事件之后」的镜头该角色换上了新服装（洗澡后理应换干净衣服），并在落盘 storyboard.json 的对应镜头 `costumes` 字段写明服装名；换装事件之前的镜头不标注。
-- `storyboard.json` 的 `image_prompt`/`video_prompt` 脚本只给**中文草稿**，阶段末须译为英文再喂画图模型。
+- Both English `INT./EXT.` and legacy Chinese scene markers are accepted by the script for backward compatibility, but all **outputs** are English.
+- Dialogue recognition depends on `Character: line`; irregular formats may miss speakers (see `fault-handling.md`).
+- Keyword-based feature extraction is heuristic; supplement subtle descriptions manually.
+- **Wardrobe:** mark shots after a real change event (bath/shower/change clothes/fresh clothes) with the new costume name in the corresponding `costumes` field; do not mark earlier shots.
+- `image_prompt`/`video_prompt` in `storyboard.json` are English only.
 
-## 衔接
+## Handoff
 
-- **相邻镜头衔接自然**：同场景连续镜头要保持人物位置/朝向/动作方向/光线/色调连续；换镜时写清「本镜起幅承接上一镜落幅」的衔接关系（动作接续 / 视线匹配 / 运动方向连续），避免观众感到跳跃。
-- **镜头时长贴合内容节奏**：时长 ≈ 台词字数 ÷ 4.5 + 动作/情绪缓冲 1–3 秒，夹在 2–15 秒；一句短台词只给 2–4 秒，禁止为凑 10 秒把短镜头拖长。
-- `storyboard.json` 可直接交给 **下游图像/视频生成工具** 出图出视频（`references/workflow-chain.md`）。
+- Adjacent shots must connect: same-scene continuous shots keep position/facing/action direction/lighting/palette consistent; write the handoff from the previous closing frame.
+- Shot duration must match content rhythm; never stretch a short line to 10 seconds.
+- `storyboard.json` can be passed directly to downstream image/video tools (`references/workflow-chain.md`).

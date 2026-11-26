@@ -1,79 +1,81 @@
-# 站位表模板与示例（blocking-map）
+# Blocking Map Templates and Examples
 
-## 空模板（复制即用）
+## Blank template (copy and use)
 
-```
-【场景 NN】场景名
-- 空间锚点：门=画面左；窗=画面右；桌=画面中偏左；（按需增删）
-- 角色站位：
-  - 角色A：画面左，面向右，距门约1步
-  - 角色B：画面右，面向左，背对窗
-- 道具锚点：
-  - 道具X：桌上，位于两人之间偏左
-- 轴线与机位：以「角色A—角色B」连线为轴线；机位统一在轴线同一侧（下方/上方），禁止越轴
-```
-
-> 说明：空间锚点只列「会在镜头里被当作方位参照」的固定物；角色站位写清「画面左/右 + 面向左/右 + 相对锚点距离」；道具锚点只列会被拿取/强调的关键道具；轴线与机位在多人同场时必填。
-
-## 示例 1：双人对话（对坐喝茶）
-
-```
-【场景 01】茶馆·午后
-- 空间锚点：门=画面左；窗=画面右；茶桌=画面正中；柜台=画面右后
-- 角色站位：
-  - 陆川：画面左，面向右（朝向沈璃），坐茶桌左侧
-  - 沈璃：画面右，面向左（朝向陆川），坐茶桌右侧
-- 道具锚点：
-  - 茶壶：茶桌中央，两人之间
-  - 茶杯：各在两人面前
-- 轴线与机位：以「陆川—沈璃」连线为轴线；机位统一在轴线下方（两人正前方偏下），禁止越轴
+```text
+[SCENE NN] Scene Name
+- Spatial anchors: door = screen-left; window = screen-right; table = slightly left of centre; (add/remove as needed)
+- Character positions:
+  - Character A: screen-left, facing right, about one step from the door
+  - Character B: screen-right, facing left, back to the window
+- Prop anchors:
+  - Prop X: on the table, slightly left between the two characters
+- Axis and camera side: axis = the Character A—Character B line; camera stays on one side (below/above); no crossing
 ```
 
-**该场景连续镜头应长这样**（站位始终一致，只有景别/运镜变化）：
+Notes: list only fixed objects used as directional references. Character positions state screen-left/right + facing left/right + distance from an anchor. Prop anchors list only props that will be picked up or emphasized. Axis/camera side is mandatory whenever multiple characters share a scene.
 
-- 镜1（双人中景，STATIC）：陆川画面左面向右、沈璃画面右面向左，茶壶在两人之间。
-- 镜2（陆川近景，PUSH IN）：陆川在画面左，面向右（视线看向画面右的沈璃）。
-- 镜3（沈璃近景，PUSH IN）：沈璃在画面右，面向左（视线看向画面左的陆川）。
+## Example 1: two-person conversation (tea across a table)
 
-## 示例 2：三人同场（≥3 人对话须拆镜，每个分镜 ≤2 说话人）
-
-```
-【场景 02】议事厅·夜
-- 空间锚点：门=画面左；主位长桌=画面中；火盆=画面右后
-- 角色站位：
-  - 家主：画面中，面向镜头（面对长桌下首），坐主位
-  - 客卿甲：画面左，面向右（朝家主），坐长桌左侧
-  - 客卿乙：画面右，面向左（朝家主），坐长桌右侧
-- 道具锚点：
-  - 军报：长桌中央，家主面前
-- 轴线与机位：以「客卿甲—客卿乙」连线为轴线；机位统一在轴线下方，禁止越轴
+```text
+[SCENE 01] Teahouse · Afternoon
+- Spatial anchors: door = screen-left; window = screen-right; tea table = centre frame; counter = rear right
+- Character positions:
+  - Lu Chuan: screen-left, facing right (toward Shen Li), seated on the left side of the tea table
+  - Shen Li: screen-right, facing left (toward Lu Chuan), seated on the right side
+- Prop anchors:
+  - Teapot: centre of the tea table, between them
+  - Teacups: one in front of each character
+- Axis and camera side: axis = the Lu Chuan—Shen Li line; camera stays below the axis (in front of both, slightly low); no crossing
 ```
 
-> 三人对话按 `novel-to-video` 铁律拆成多个分镜（每镜 ≤2 个说话人），但**站位表仍是同一张**：客卿甲恒在画面左、客卿乙恒在画面右、家主恒在画面中，不会因为拆镜而左右互换。
+The continuous shots in this scene should look like this (same blocking, only size/move changes):
 
-## 示例 3：角色走位换位（需显式交代并更新站位表）
+- Shot 1 (two-shot, STATIC): Lu Chuan screen-left facing right, Shen Li screen-right facing left, teapot between them.
+- Shot 2 (Lu Chuan close-up, PUSH IN): Lu Chuan stays screen-left, facing right, looking at Shen Li on screen-right.
+- Shot 3 (Shen Li close-up, PUSH IN): Shen Li stays screen-right, facing left, looking at Lu Chuan on screen-left.
 
-```
-【场景 03】庭院·晨
-- 空间锚点：石桌=画面中；月亮门=画面左后；回廊=画面右
-- 角色站位（换位前）：
-  - 阿蛮：画面左，面向右
-  - 阿青：画面右，面向左
-- 道具锚点：
-  - 长剑：石桌上，阿蛮一侧
-- 轴线与机位：以「阿蛮—阿青」连线为轴线，机位统一在轴线下方
-```
+## Example 2: three characters (≥3 speakers require shot splitting, ≤2 speakers per shot)
 
-走位镜头（sub_shots 里写清路径）：
-
-> 0-3秒：阿蛮从画面左起身，绕过石桌右侧走向画面右；阿青从画面右起身走到画面左。运镜：全景固定机位。
-
-走位后**更新站位表**：
-
-```
-- 角色站位（换位后）：
-  - 阿蛮：画面右，面向左
-  - 阿青：画面左，面向右
+```text
+[SCENE 02] Council Hall · Night
+- Spatial anchors: door = screen-left; long head table = centre; brazier = rear right
+- Character positions:
+  - Lord: centre, facing camera (toward the lower end of the table), seated at the head
+  - Guest A: screen-left, facing right (toward the Lord), seated on the left side
+  - Guest B: screen-right, facing left (toward the Lord), seated on the right side
+- Prop anchors:
+  - War report: centre of the long table, in front of the Lord
+- Axis and camera side: axis = the Guest A—Guest B line; camera stays below the axis; no crossing
 ```
 
-之后镜头一律沿用「换位后」的站位：阿蛮在画面右、阿青在画面左。
+A three-person exchange is split into multiple shots (≤2 speakers each), but the blocking map is still the same: Guest A always screen-left, Guest B always screen-right, Lord always centre. Splitting shots never swaps left/right.
+
+## Example 3: motivated repositioning (show it and update the map)
+
+```text
+[SCENE 03] Courtyard · Morning
+- Spatial anchors: stone table = centre; moon gate = rear left; corridor = right
+- Character positions (before):
+  - A Man: screen-left, facing right
+  - A Qing: screen-right, facing left
+- Prop anchors:
+  - Long sword: on the stone table, on A Man's side
+- Axis and camera side: axis = the A Man—A Qing line; camera stays below the axis
+```
+
+Movement shot (write the path in `sub_shots`):
+
+```text
+0-3s: A Man rises from screen-left, walks around the right side of the stone table to screen-right; A Qing rises from screen-right and walks to screen-left. Camera: STATIC wide shot.
+```
+
+Update the map after the move:
+
+```text
+- Character positions (after):
+  - A Man: screen-right, facing left
+  - A Qing: screen-left, facing right
+```
+
+All later shots follow the "after" positions: A Man on screen-right, A Qing on screen-left.

@@ -1,74 +1,77 @@
-# 模式 B · 剧本转分镜（script-to-storyboard）
+# Mode B · Script → Storyboard
 
-把一部现成剧本（本技能模式 A 产出的 `script.md`，或用户自带的 `.md`/`.txt` 剧本）拆成**分镜表 + 角色人设卡 + AI 绘图/视频 Prompt**，产出下游生成工具兼容的 `storyboard.json`。
+Split an existing English script (mode A's `script.md` or a user-supplied `.md`/`.txt`) into a **shot list + character cards + English AI prompts**, producing a downstream-compatible `storyboard.json`. All output is English.
 
-## 触发
+## Trigger
 
-用户说「剧本分镜 / 出分镜 / 分镜表 / 剧本拆镜」，或提供剧本文件并意图可视化。若未指定，回退 SKILL.md 菜单。
+The user asks for a script storyboard, shot list, or shot breakdown, or provides a script with visualization intent. If no mode is specified, return to the `SKILL.md` menu.
 
-## 输入
+## Input
 
-- `script.md` 或现成剧本（`.md`/`.txt`）。
-- 若用户未提供画风，先确认 `art_style_prefix`（如 `anime style, cel shading, vibrant colors`）。
+- `script.md` or an existing script (`.md` / `.txt`).
+- If no art style is provided, confirm `art_style_prefix` (for example `anime style, cel shading, vibrant colors`).
 
-## 步骤
+## Steps
 
-### Step 1 · 解析剧本结构
+### Step 1 · Parse script structure
 
-- 按 `【场景 NN】` / `INT.` / `EXT.` / `第X场` 切分场景；无标头按双空行。
-- 逐段标注类型：场景头 / 画面描述 / 对白 / 动作指示 / 情绪标注。
-- 收集出场角色（对白角色名 + 画面中提及），建立 `姓名 → CHAR_xxx` 映射。
+- Split on `[SCENE NN]` / `INT.` / `EXT.` / `Scene N`; fall back to double blank lines.
+- Tag each block: scene header / visual / dialogue / action / emotion note.
+- Collect characters (dialogue speakers + names mentioned in visuals) and build a `Name → CHAR_xxx` map.
 
-### Step 2 · 分镜表生成
+### Step 2 · Generate the shot list
 
-按「连续剧情段」聚合成长镜头（5–15s，最长 15s），同一场景连续动作 + 多句连贯对白合并成一镜（镜内子分镜承载节拍），仅场景切换/时空断开才换镜；**同一分镜最多 2 个说话人，≥3 人轮流对话必须拆成多个分镜（每镜 ≤2 个说话人）**。按 `style-guide.md` 定景别与运镜：
+Aggregate continuous story segments into long takes (5–15s, max 15s). Combine continuous action and connected dialogue in the same scene into one take, using `sub_shots` for beats. Change shots only on scene or time/space breaks. **At most 2 speakers per shot; scenes with ≥3 alternating speakers must be split into multiple shots.**
 
-- 环境/全景描写 → `ELS`/`LS`
-- 人物进场/全身 → `MLS`/`LS`
-- 对白/交流 → `MCU`/`CU`
-- 表情/眼神/细节 → `CU`/`ECU`
-- 心理/意识 → `ECU`
-- 追逐/动作 → `TRACKING`/`HANDHELD`
+Choose shot size and camera using `style-guide.md`:
 
-给每个镜头定：镜号 `S{场}_{n}`、时长（见时长参考）、景别、运镜、画面内容（中文）、角色动作、对白/音效。
+- Environment / wide description → `ELS` / `LS`
+- Entrance / full body → `MLS` / `LS`
+- Dialogue / exchange → `MCU` / `CU`
+- Expression / eyes / detail → `CU` / `ECU`
+- Interior / psychology → `ECU`
+- Chase / action → `TRACKING` / `HANDHELD`
 
-### Step 3 · 角色人设卡
+For each shot record: `S{scene}_{n}` ID, duration, shot size, camera move, English visual, character action, and dialogue/sound.
 
-对每个主要角色，按 `templates/character-card-template.md` 产出 `characters/CHAR_xxx.md`：
+### Step 3 · Character cards
 
-- 基础信息（年龄/性别/身份/性格关键词）
-- 外貌（发型/眼/体型/标志性特征）
-- 服装（日常/战斗）
-- **可直接使用的英文图像 Prompt**（正面全身立绘 + 表情/动作变体）
-- 代表台词
+For each main character, write `characters/CHAR_xxx.md` following `templates/character-card-template.md`:
 
-### Step 4 · AI 提示词分工（关键）
+- Basic information (age / gender / identity / personality keywords).
+- Appearance (hair / eyes / build / signature features).
+- Wardrobe (everyday / combat).
+- **Directly usable English image prompt** (front full-body sheet + expression/action variants).
+- Representative English line.
 
-对每个镜头拆分两个英文 Prompt（参照 `style-guide.md` 七段结构）：
+### Step 4 · Prompt division of labor (critical)
 
-- `image_prompt`：画风前缀 + 场景/环境 + 主体/角色 + 静态动作/状态 + 镜头语言 + 光线 + 质量标签。**不含运动**，且画面不得出现任何文字/字幕/水印/logo。
-- `video_prompt`：**只写镜头运动 + 角色动作**，不重复外貌（视频以首帧图定外貌），且不得出现任何文字/字幕/水印/logo。
+Write two English prompts per shot using `style-guide.md`'s seven-part structure:
 
-示例：
+- `image_prompt`: art-style prefix + scene/environment + subject/character + static action/state + camera language + lighting + quality. **No motion**, and no visible text, subtitles, watermarks, or logos.
+- `video_prompt`: **camera movement + character action only**, no repeated appearance (the first frame fixes appearance), and no visible text.
+
+Example:
+
+```text
+image_prompt: "anime style, cel shading — dark factory interior, evening — young male, dark hoodie, flashlight — cautious scanning — tracking shot — dramatic lighting — high quality"
+video_prompt: "slowly walking forward, looking around, tracking shot"
 ```
-image_prompt : "anime style, cel shading — dark factory interior, evening — young male, dark hoodie, flashlight — cautious scanning — tracking shot — dramatic lighting — high quality"
-video_prompt : "slowly walking forward, looking around, tracking shot"
-```
 
-### Step 5 · 落盘与自检
+### Step 5 · Write and self-check
 
-- 写 `storyboard.md`（人读分镜表 + 角色卡 + 场景卡）。
-- 写 `storyboard.json`（机读，结构见 `output-schemas.md`，`art_style_prefix` 已填、`characters` 用 `CHAR_xxx`、`reference_image` 初始 `null`）。
-- 自检：`image_prompt`/`video_prompt` 是否英文？是否无任何文字/字幕/水印/logo？角色 ID 是否统一？场景编号是否连续？时长是否在 5–15s（最长 15s）？
+- Write `storyboard.md` (human-readable shot list + character/scene cards, all English).
+- Write `storyboard.json` (see `output-schemas.md`; `art_style_prefix` filled, `characters` use `CHAR_xxx`, `reference_image` starts as `null`).
+- Self-check: are `image_prompt`/`video_prompt` English? Is there any visible text? Are IDs and scene numbers consistent? Is duration 5–15s?
 
-展示分镜表给用户（门控点：此处调整最省钱，确认后进出图阶段）。
+Show the shot list to the user for review (cheapest point to adjust before image generation).
 
-## 产出
+## Output
 
-- `outputs/<作品名>/storyboard.md`
-- `outputs/<作品名>/storyboard.json`（下游生成工具兼容）
-- `outputs/<作品名>/characters/CHAR_xxx.md`
+- `outputs/<work>/storyboard.md`
+- `outputs/<work>/storyboard.json` (downstream-compatible)
+- `outputs/<work>/characters/CHAR_xxx.md`
 
-## 衔接
+## Handoff
 
-`storyboard.json` 可直接交给 **下游图像/视频生成工具** 出图出视频（详见 `references/workflow-chain.md` 桥接说明）。本技能不调 API。
+`storyboard.json` can be passed directly to downstream image/video tools; see `references/workflow-chain.md`. This skill calls no APIs.

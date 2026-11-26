@@ -1,38 +1,38 @@
-# 故障处理与容错（fault-handling）
+# Fault Handling and Fallbacks
 
-## 一、输入格式不规范
+## 1. Irregular input format
 
-| 症状 | 处理 |
-|------|------|
-| 文本无场景标头（纯小说叙事） | 按双空行切段；用地点/时间关键词推断场景；无标头时标记为「（开场）」 |
-| 对白不用 `角色：台词` 格式（如直接引号对话） | 退化为「叙事中包含引语」，角色提取可能不全；提示用户补标角色名 |
-| 中英文混排剧本 | 两套场景标识（`【场景】`/`INT.`/`EXT.`）都支持；解析失败则回退双空行 |
+| Symptom | Handling |
+|---|---|
+| No scene header (pure narration) | Split on double blank lines; infer location/time from keywords; mark as `[OPENING]` when no header exists |
+| Dialogue not in `Character: line` form (quoted dialogue only) | Treat as "quotation inside narration"; character extraction may be incomplete; ask the user to add speaker names |
+| Mixed-language source | Both `[SCENE]` / `INT.` / `EXT.` markers are accepted; fall back to double blank lines on parse failure; adapt all output into English |
 
-## 二、角色识别问题
+## 2. Character recognition issues
 
-- **同名/别称**：如「林晨」「小林」「他」指向同一人，分镜阶段建议让用户确认归一化；脚本按精确匹配，别称会拆成多个角色。
-- **旁白/OS/VO**：自动过滤 `旁白/OS/VO`，不计入角色卡。
-- **角色太多**：超过 10 个主要角色时，角色卡只列出场≥3 次者，其余进备注。
+- **Aliases:** if "Lin Chen", "Xiao Lin", and "he" refer to the same person, ask the user to normalize; the script matches exact strings, so aliases become separate characters.
+- **Narration / OS / VO:** filter `Narrator` / `OS` / `VO` automatically; they are not character cards.
+- **Too many characters:** with more than 10 main characters, list only those appearing ≥3 times; put the rest in notes.
 
-## 三、长文本与截断
+## 3. Long text and truncation
 
-- 对话模式（粘贴）适合 **5000 字以内**；更长请用文件模式（`scripts/extract_storyboard.py`）。
-- 文件模式默认全量处理；若单次产出过大，按场景分批落盘（`SCENE_01.md` 等），不丢段。
-- Markdown 列表过长时，角色卡/场景卡可拆文件，主报告只留摘要表。
+- Pasted text is suitable for **up to about 5,000 words**; longer input should use file mode (`scripts/extract_storyboard.py`).
+- File mode processes everything by default; if one output is too large, split by scene into `SCENE_01.md` etc. without dropping segments.
+- If Markdown lists are too long, split character/scene cards into separate files and keep only a summary table in the main report.
 
-## 四、提示词翻译缺失
+## 4. English-prompt validation
 
-- 若 `image_prompt` / `video_prompt` 仍是中文，必须显式标注「⚠ 须译为英文后再出图」，禁止直接喂画图模型。
-- 批量翻译可用 LLM 一次性处理 `storyboard.json` 的 `description_cn`→`image_prompt`，再回填。
+- If any `image_prompt` / `video_prompt` is not English or requests visible text, mark it `⚠ REWRITE IN ENGLISH — NO VISIBLE TEXT` and never feed it to an image model.
+- Batch fixes can be done with an LLM over `storyboard.json`, rewriting `description_cn` values into `image_prompt` values; keep all keys unchanged.
 
-## 五、下游（图像/视频生成）外部依赖
+## 5. Downstream image/video dependencies
 
-- 本技能不调用 API；若用户要出图出视频，提示其切换下游图像/视频生成工具并配置其 API Key。
-- 若 `reference_image` 为 `null` 就跑下游的视频生成脚本，会报「找不到参考图」——先跑下游的图像生成脚本产出分镜图。
-- 视频人物外貌与分镜图不符：检查 `video_prompt` 是否误写了外貌（应只写运动）。
+- This skill calls no API; if the user wants actual images/video, point them to a downstream image/video tool and its API key configuration.
+- Running downstream video generation while `reference_image` is `null` produces "reference image not found"; generate storyboard frames first.
+- If generated video appearance does not match the storyboard frame, check that `video_prompt` accidentally repeats appearance (it must cover motion only).
 
-## 六、文件与编码
+## 6. Files and encoding
 
-- 输入文件编码自动探测：`utf-8` / `utf-8-sig` / `gbk` / `gb2312` / `big5`；均失败则报错并提示用户转码。
-- Windows 终端 GBK 下打印含 emoji 可能 `UnicodeEncodeError`：脚本用安全打印兜底，不影响落盘文件（文件统一 `utf-8`）。
-- 中间文件一律保留，出错可增量重跑，不整体丢弃。
+- Input encoding is auto-detected: `utf-8` / `utf-8-sig` / `gbk` / `gb2312` / `big5`; if all fail, report the error and ask the user to transcode.
+- Windows GBK terminals may raise `UnicodeEncodeError` when printing emoji; scripts use safe-print fallbacks. Written files are always `utf-8`.
+- Keep all intermediate files so a failed run can be resumed incrementally.

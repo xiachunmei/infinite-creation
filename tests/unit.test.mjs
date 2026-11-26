@@ -574,20 +574,22 @@ test('preflight: 不拦「同批/vision」这类服务状态判定，只做就�
   await assert.rejects(() => preflight([], local), /未选择任何阶段/);
 });
 
-test('fallbackVideoPrompt: 占位符与一致性描述', () => {
+test('fallbackVideoPrompt: placeholders and English consistency descriptions', () => {
   const p = fallbackVideoPrompt({
-    references: [{ label: '小明（人物形象）' }, { label: '小明的声音' }],
-    style: '国漫', characterDesc: '黑发少年', sceneDesc: '教室', subShots: '0-3秒：……',
+    references: [{ label: 'Lin Mo (character sheet)' }, { label: 'Lin Mo voice' }],
+    style: 'comic-drama', characterDesc: 'black-haired young man', sceneDesc: 'classroom', subShots: '0-3s: ...',
   });
-  assert.ok(p.includes('__MINIMAX_H3_REF_1__小明（人物形象）'));
-  assert.ok(p.includes('__MINIMAX_H3_REF_2__小明的声音'));
-  assert.ok(p.includes('角色保持一致：黑发少年'));
-  assert.ok(p.includes('画面风格：国漫'));
+  assert.ok(p.includes('__MINIMAX_H3_REF_1__Lin Mo (character sheet)'));
+  assert.ok(p.includes('__MINIMAX_H3_REF_2__Lin Mo voice'));
+  assert.ok(p.includes('Keep the character consistent: black-haired young man'));
+  assert.ok(p.includes('Visual style: comic-drama'));
+  assert.ok(!/[\u4e00-\u9fff]/.test(p), 'fallback prompt must not contain Chinese output text');
 });
 
-test('validateSubShots: 超出时长检测', () => {
-  assert.equal(validateSubShots(5, '0-8秒：……'), '子分镜提示词的时间（8 秒）超过了总时长（5 秒）');
-  assert.equal(validateSubShots(10, '0-5秒：……5-9秒：……'), null);
+test('validateSubShots: end time beyond duration (seconds/s/秒 all supported)', () => {
+  assert.equal(validateSubShots(5, '0-8s: ...'), 'Sub-shot timeline ends at 8s, which exceeds the shot duration of 5s');
+  assert.equal(validateSubShots(5, '0-8秒：……'), 'Sub-shot timeline ends at 8s, which exceeds the shot duration of 5s');
+  assert.equal(validateSubShots(10, '0-5s: ... 5-9s: ...'), null);
 });
 
 test('dialogueSpeakerNames: 解析说话人 + 约束常量', () => {
@@ -601,6 +603,8 @@ test('dialogueSpeakerNames: 解析说话人 + 约束常量', () => {
   assert.deepEqual(dialogueSpeakerNames('街道上行人稀少，橙红夕阳把影子拉得很长。'), []);
   // 半角冒号 + 台词内冒号不误切
   assert.deepEqual(dialogueSpeakerNames('小明:现在是3:30了'), ['小明']);
+  // English dialogue with stage directions and half-width colon
+  assert.deepEqual(dialogueSpeakerNames('Lin Mo (stepping forward): I know.\nSu Wan: You finally came.'), ['Lin Mo', 'Su Wan']);
   assert.equal(MAX_SPEAKERS_PER_SHOT, 2);
   assert.equal(MAX_AUDIO_REFS, 3);
 });
@@ -1901,28 +1905,28 @@ test('splitNovelIntoChapters：只认一级章节标题（一、等论文式序�
 
 // —— 剧本生成 / 改写提示词 ——
 
-test('buildChapterScriptMessages：generate 带小说原文与格式约束', () => {
-  const msgs = buildChapterScriptMessages({ chapterTitle: '第1章', novel: '小说正文', style: '水墨', mode: 'generate' });
+test('buildChapterScriptMessages: generate carries novel text and English format constraints', () => {
+  const msgs = buildChapterScriptMessages({ chapterTitle: 'Chapter 1', novel: 'Novel body text', style: 'ink wash', mode: 'generate' });
   assert.equal(msgs.length, 2);
-  assert.match(msgs[0].content, /【第N场｜时间｜地点】/);
-  assert.match(msgs[0].content, /不要输出 JSON/);
-  assert.match(msgs[0].content, /水墨/);
-  assert.match(msgs[1].content, /小说正文/);
-  assert.match(msgs[1].content, /完整剧本正文/);
+  assert.match(msgs[0].content, /\[Scene N \| Time \| Location\]/);
+  assert.match(msgs[0].content, /Output only the script body/);
+  assert.match(msgs[0].content, /English/);
+  assert.match(msgs[1].content, /Novel body text/);
+  assert.match(msgs[1].content, /complete English script/);
 });
 
-test('buildChapterScriptMessages：rewrite 带现有剧本与指令（空指令用默认要求）', () => {
-  const withInstruction = buildChapterScriptMessages({ chapterTitle: '第1章', script: '旧剧本', mode: 'rewrite', instruction: '增加反转' });
-  assert.match(withInstruction[1].content, /旧剧本/);
-  assert.match(withInstruction[1].content, /增加反转/);
-  const defaultValue = buildChapterScriptMessages({ chapterTitle: '第1章', script: '旧剧本', mode: 'rewrite' });
-  assert.match(defaultValue[1].content, /润色剧本/);
+test('buildChapterScriptMessages: rewrite carries existing script and instruction (English default)', () => {
+  const withInstruction = buildChapterScriptMessages({ chapterTitle: 'Chapter 1', script: 'Old script', mode: 'rewrite', instruction: 'Add a twist' });
+  assert.match(withInstruction[1].content, /Old script/);
+  assert.match(withInstruction[1].content, /Add a twist/);
+  const defaultValue = buildChapterScriptMessages({ chapterTitle: 'Chapter 1', script: 'Old script', mode: 'rewrite' });
+  assert.match(defaultValue[1].content, /Polish the script/);
 });
 
-test('buildChapterScriptMessages：超长小说原文被截断', () => {
-  const msgs = buildChapterScriptMessages({ chapterTitle: '第1章', novel: 'a'.repeat(12050), mode: 'generate' });
-  assert.match(msgs[1].content, /已截断/);
-  assert.ok(msgs[1].content.length < 12300, '截断后不应整段塞入');
+test('buildChapterScriptMessages: overlong novel text is truncated with English notice', () => {
+  const msgs = buildChapterScriptMessages({ chapterTitle: 'Chapter 1', novel: 'a'.repeat(12050), mode: 'generate' });
+  assert.match(msgs[1].content, /truncated/);
+  assert.ok(msgs[1].content.length < 12300, 'truncated source must not be passed through whole');
 });
 
 test('filterReferenceImages：shared 参考图在所有章节生效', () => {

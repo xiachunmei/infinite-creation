@@ -1,59 +1,54 @@
-# 站位连续性规则判定（continuity-rules）
+# Blocking Continuity Rules and Failure Checks
 
-五条铁律的判定细节与常见翻车点。写分镜 `sub_shots`/`visual` 与 `video_prompt` 时逐条自查。
+Six hard rules with concrete failure cases. Review them while writing `sub_shots` / `visual` and `video_prompt`. All descriptions are English.
 
-## 1. 180 度轴线规则
+## 1. 180-degree axis
 
-- **判定**：把同场两个主要说话/互动角色连一条假想线（轴线）。同一场景所有镜头的机位必须落在轴线的**同一侧**。
-- **为什么**：机位一旦跨到另一侧，画面里两人的左右关系会瞬间对调，观众以为两人换了位置。
-- **允许越轴的情况**：
-  - 先用一个「两人同框的全景」建立新机位关系，再切近景；
-  - 角色走位自然换边（走位本身被镜头交代）；
-  - 用骑轴镜头（机位在轴线上）过渡。
-- **翻车点**：A 镜从左侧拍、B 镜从右侧拍，中间没有全景交代 → 越轴。
+- **Check:** draw an imaginary line between the two main interacting characters. Every camera in the scene must stay on the same side of that line.
+- **Why:** crossing the line instantly swaps their left/right screen relationship, making the audience think the characters changed places.
+- **Allowed crossings:** first re-establish with a wide two-shot, show a motivated walk that changes sides, or use an on-axis transition shot.
+- **Failure:** shot A from the left, shot B from the right, with no establishing wide.
 
-## 2. 屏幕方向一致
+## 2. Screen direction
 
-- **判定**：同一角色在连续镜头中，出现在画面左侧就一直是左侧，右侧就一直是右侧。
-- **例外**：剧情明确要求走位移动（且写清路径），或场景切换（新场景重新定站位）。
-- **翻车点**：近景特写里为了构图好看，随手把角色从左挪到右 → 屏幕方向漂移。
+- **Check:** the same character stays on the same side of the frame across cuts.
+- **Exceptions:** plot-motivated movement with a visible path, or a scene change that rebuilds the map.
+- **Failure:** moving a character from left to right in a close-up purely for composition.
 
-## 3. 视线匹配
+## 3. Eyeline match
 
-- **判定**：面对面对话，一方看向左、另一方看向右，视线在画面中「相接」。写分镜时给每个说话/聆听角色标明确切朝向（面向左/右/前/背对镜头）。
-- **翻车点**：两人都写成「面向右」或都「面向左」→ 视线不交接，像各说各话。
-- **反应镜头注意**：拍聆听者反应时，其视线方向必须仍指向说话者所在的一侧。
+- **Check:** in face-to-face dialogue, one character looks screen-left and the other screen-right; their eyelines meet. State each speaker/listener's exact facing (left/right/front/back to camera).
+- **Failure:** both written as facing right or both facing left, so they appear to talk past each other.
+- **Reaction shots:** a listener's gaze must still point toward the speaker's side of the frame.
 
-## 4. 道具锚点一致
+## 4. Prop anchor consistency
 
-- **判定**：关键道具（会被拿取、特写、推动剧情的道具）相对角色/场景锚点的方位跨镜一致。
-- **翻车点**：上一镜茶壶在两人之间，下一镜特写茶壶却出现在窗边；或道具在角色左侧拿取、却从右侧递出。
-- **补充**：若道具因剧情被移动（拿起、递出、放下），该移动要在镜头里交代，之后更新道具锚点。
+- **Check:** key props (picked up, close-up, or plot-driving) keep their position relative to characters or scene anchors across shots.
+- **Failure:** the teapot moves from between the characters to the windowsill without a shot showing it; a prop is picked up on the left and handed over from the right.
+- **Addendum:** if the plot moves a prop, show the movement and update the prop anchor.
 
-## 5. 换位/走位显式交代
+## 5. Explicit repositioning
 
-- **判定**：任何「角色相对位置改变」都要有一个镜头明确呈现移动（起点→路径→终点），并在站位表里更新。
-- **翻车点**：上一镜 A 在左、下一镜 A 在右，中间没有走位镜头 → 观众以为剪辑穿帮。
+- **Check:** any change in relative character position needs a shot showing start → path → end, plus a map update.
+- **Failure:** character A is on the left in one shot and on the right in the next with no movement shot.
 
-## 6. 镜头间上下文承接（先判断转场，再决定是否参考）
+## 6. Shot-to-shot handoff (check transition first)
 
-- **先判断是否转场**：写分镜 N 前，比较它与分镜 N-1 的 `scene_name`/场景头与时间。
-  - 同场景且时间连续 → **参考站位**，进入下面的承接判定。
-  - 转场（场景头变化/地点切换/时间跳跃/淡入黑场等）→ **不参考上一镜位置**，为新场景重建站位表。
-- **判定（同场景连续时）**：分镜 N 的起幅站位必须等于分镜 N-1 的落幅站位。写分镜 N 前，先读分镜 N-1 的 `sub_shots` 结尾一段（落幅），提取「谁在左/右、面向哪、道具在哪、动作方向」，作为分镜 N 的起幅。
-- **为什么**：分镜二接着分镜一继续生成，若分镜二的起幅不接分镜一的落幅，画面会「跳」——人物/道具位置凭空变动。
-- **翻车点**：
-  - 分镜一结尾角色已走到窗边（画面右），分镜二却仍按站位表默认「角色在画面左」写起幅 → 位置跳变。
-  - 分镜一是角色 A 面向右说话，分镜二起幅写成 A 面向左 → 朝向跳变。
-- **续跑注意**：追加/续写新镜头时，用 `list_shots` 读回该章已有分镜，取最后一镜的落幅作为新镜头的起幅承接；若新镜头是新场景（转场），则跳过承接、重建站位表。
+- Before writing shot N, compare its `scene_name`/scene header and time with shot N-1:
+  - Same scene + continuous time → inherit blocking and run the handoff check.
+  - Transition (scene header change, location change, time jump, fade to black) → do not inherit; rebuild the map.
+- **Continuous-scene check:** shot N's opening frame equals shot N-1's closing frame. Read the last `sub_shots` entry of shot N-1 to extract who is left/right, facing where, where props are, and the action direction.
+- **Why:** if shot N does not start where shot N-1 ended, positions jump on screen.
+- **Failure cases:** shot 1 ends with a character at the window (screen-right) but shot 2 opens with the default "character screen-left"; shot 1 ends with A facing right, shot 2 opens with A facing left.
+- **Resume:** when appending shots, call `list_shots` to read the chapter's existing shots and use the last closing frame as the new opening; for a new scene, skip inheritance and rebuild the map.
 
-## 自查清单（写完全部镜头后）
+## Self-check list (after writing all shots)
 
-- [ ] 每个场景都有站位表（空间锚点/角色站位/道具锚点/轴线机位）。
-- [ ] 站位表已写入 bible 且未覆盖人物/衣橱内容。
-- [ ] 每个镜头的 `visual`/`sub_shots` 都写明了角色左右方位与朝向，无「同上/保持原样」。
-- [ ] 同场景连续镜头的角色左右关系一致；有变化则有走位镜头交代。
-- [ ] 每个分镜 N 的起幅站位已承接分镜 N-1 的落幅（角色左右方位/朝向/道具位置/动作方向）。
-- [ ] 对话双方视线方向相反且跨镜一致。
-- [ ] 关键道具方位一致；道具被移动时有镜头交代。
-- [ ] `video_prompt`（英文）里复述了站位与朝向，未与 `sub_shots` 矛盾。
+- [ ] Every scene has a blocking map (spatial anchors / character positions / prop anchors / axis and camera side).
+- [ ] The map was merged into `bible.md` without overwriting characters or wardrobe.
+- [ ] Every shot's `visual`/`sub_shots` states left/right positions and facing; no "same as above".
+- [ ] Same-scene continuous shots keep left/right relationships; any change has a movement shot.
+- [ ] Shot N opens from shot N-1's closing frame (positions, facing, props, action direction).
+- [ ] Dialogue partners face opposite directions consistently across shots.
+- [ ] Key prop positions are consistent; movement is shown.
+- [ ] `video_prompt` (English) restates blocking and facing without contradicting `sub_shots`.
