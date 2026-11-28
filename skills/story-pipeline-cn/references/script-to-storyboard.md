@@ -21,7 +21,7 @@ The user asks for a script storyboard, shot list, or shot breakdown, or provides
 
 ### Step 2 · Generate the shot list
 
-Aggregate continuous story segments into long takes (5–15s, max 15s). Combine continuous action and connected dialogue in the same scene into one take, using `sub_shots` for beats. Change shots only on scene or time/space breaks. **At most 2 speakers per shot; scenes with ≥3 alternating speakers must be split into multiple shots.**
+Aggregate continuous story segments into long takes (4–10s, max 10s; split longer segments into two shots). Combine continuous action and connected dialogue in the same scene into one take, using `sub_shots` for beats. Change shots only on scene or time/space breaks. **At most 2 speakers per shot; scenes with ≥3 alternating speakers must be split into multiple shots.**
 
 Choose shot size and camera using `style-guide.md`:
 

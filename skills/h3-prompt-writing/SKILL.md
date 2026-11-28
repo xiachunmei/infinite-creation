@@ -36,7 +36,7 @@ Read `references/ref-en.txt` for label rules, retention analysis, and complete e
 
 ## Tips for Better Results
 
-- Always match the total duration of the description to the requested video length (4–15 seconds).
+- Always match the total duration of the description to the requested video length (4–10 seconds). Anything longer must be split into two consecutive shots, each with its own prompt and timeline.
 - Keep reference labels consistent (e.g. `<Picture 1>`, `<Video 1>`, `<Audio 1>`) across every section.
 - Prefer concrete visual and audio details over abstract words like "cinematic" or "beautiful".
 - When using keyframes (I2VA / FL2VA / L2VA), clearly state how the first and/or last frame connects to the timeline.

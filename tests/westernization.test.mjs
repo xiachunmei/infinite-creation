@@ -33,6 +33,7 @@ test('Western aesthetic contract is strict and injected into all prompt builders
     'European-American facial structure',
     'Do not include Hanfu',
     'NEGATIVE GUIDANCE',
+    'all character names, place names, pet names, and work titles must be natural Western-English names',
   ]) {
     assert.ok(WESTERN_AESTHETIC_CONTRACT.includes(phrase), `contract missing: ${phrase}`);
   }
@@ -106,4 +107,21 @@ test('screenplay validator accepts Western English script format', () => {
   assert.ok(validator.includes('\\[(INT|EXT)\\]'));
   assert.match(validator, /CHARACTER: \\"line\\"/);
   assert.ok(!validator.includes('TIME_TAGS = "日|夜'));
+});
+
+test('novel generation enforces Western-English character names', () => {
+  const skill = read('skills/webnovel-writing/SKILL.md');
+  assert.match(skill, /## Character naming/);
+  assert.match(skill, /natural Western-English names/);
+  assert.match(skill, /Never keep Chinese, Japanese, Korean, or other Asian names/);
+
+  const agent = read('lib/agent/agent-loop.js');
+  assert.match(agent, /WESTERN-ENGLISH NAMES IRON RULE/);
+
+  const tools = read('lib/agent/tools.js');
+  assert.match(tools, /Natural Western-English character name/);
+
+  for (const phrase of ['Su Nian', 'Shen Zhiyi', 'Gu Qinghan', 'Lin Xiaoman', 'Xu Yan', 'Jiang Yue']) {
+    assert.ok(!read('data/projects/749806b2-688f-4fc2-bc1d-fc1baa761fcf/novel/characters.json').includes(phrase));
+  }
 });

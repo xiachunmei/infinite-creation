@@ -112,7 +112,7 @@ CREATE INDEX IF NOT EXISTS idx_change_logs_project ON change_logs(project_id, ts
 
 | 方法 | 路径 | 变更 |
 |------|------|------|
-| `PATCH` | `/api/projects/:id/shots/:sid` | 除 6 个 `*_ids` 外，接受分镜正文字段：`chapter/idx/scene_name/camera/visual/dialogue/narration/sub_shots/duration/references/resolution/aspect_ratio/video_prompt`（**不接受** `status/error/video_path/video_prompt_used/seed`，防伪造生成结果；`seed` 见 §二十）。数组字段的元素必须是字符串：塞对象当场 400，不再静默存 `"[object Object]"`。写入前过一遍业务校验：`duration` 1~15 秒、`dialogue` ≤ duration×5.5 字、单镜说话人 ≤2、`resolution`/`aspect_ratio` 走枚举；**跨字段校验只在本次真的改了它依赖的字段时做**（见 §二十一 修复 2） |
+| `PATCH` | `/api/projects/:id/shots/:sid` | 除 6 个 `*_ids` 外，接受分镜正文字段：`chapter/idx/scene_name/camera/visual/dialogue/narration/sub_shots/duration/references/resolution/aspect_ratio/video_prompt`（**不接受** `status/error/video_path/video_prompt_used/seed`，防伪造生成结果；`seed` 见 §二十）。数组字段的元素必须是字符串：塞对象当场 400，不再静默存 `"[object Object]"`。写入前过一遍业务校验：`duration` 1~10 秒（超过必须拆成两个分镜）、`dialogue` ≤ duration×5.5 字、单镜说话人 ≤2、`resolution`/`aspect_ratio` 走枚举；**跨字段校验只在本次真的改了它依赖的字段时做**（见 §二十一 修复 2） |
 | `PATCH` | `/api/projects/:id/chapters/:cid` | 新增 `script` 字段 |
 | `POST` | `/api/projects/:id/chapters` | `script` 可选 |
 | `POST` | `/api/projects`、`PATCH` `/api/projects/:id` | 新增项目级校验：`video_resolution`/`video_aspect_ratio` 走 `lib/shared` 同一份枚举（空串 = 默认 `480P`/`16:9`），非法值 400。分镜生成时取 `shot.resolution \|\| project.video_resolution`，项目这一层写错会让整个项目在渲染阶段才炸 |

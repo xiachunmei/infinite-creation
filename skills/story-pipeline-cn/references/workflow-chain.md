@@ -29,7 +29,7 @@ This skill **does not call image/video APIs**. It produces structured storyboard
 | `title` | `title` | English work title |
 | `art_style_prefix` | `art_style_prefix` | Must be filled |
 | `shots[].shot_id` (`S01_01`) | `shots[].shot_id` | Exact match |
-| `shots[].duration` | `shots[].duration` | Seconds; 2–15s |
+| `shots[].duration` | `shots[].duration` | Seconds; 2–10s (>10s must be split into two shots) |
 | `shots[].description_cn` | (no counterpart, human-readable) | **KEEP the key name** for compatibility but write its value in English |
 | `shots[].image_prompt` | `image_prompt` | English only |
 | `shots[].video_prompt` | `video_prompt` | English only, motion only |

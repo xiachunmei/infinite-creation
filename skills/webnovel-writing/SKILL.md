@@ -28,6 +28,17 @@ A brief description of the target novel. Default behavior:
 
 All prose, outlines, character notes, and module feedback are written in English. Runtime storage file names such as `总纲.md`, `卷纲.md`, and `章纲.md` are fixed API contracts; their **content** must be English.
 
+## Character naming
+
+Use natural Western-English names for every character, surname, nickname, pet name, place name, and in-work title. Replace source-language names instead of translating, transliterating, or romanizing them.
+
+Hard rules:
+- Use English/Western given names and surnames, e.g. `Sophie Bennett`, `Ethan Brooks`, `Serena Hayes`.
+- Never keep Chinese, Japanese, Korean, or other Asian names, even in pinyin/romanized form.
+- Never keep Asian honorifics such as `-jie`, `-san`, `-kun`; express relationships in natural English.
+- Apply the same Western-English name consistently across outlines, character cards, prose, dialogue tags, memory, and chapter titles.
+- If a saved project already contains Asian names, treat those names as source material to replace during any rewrite or continuation.
+
 ## Output principle
 
 Output only the layer currently needed. Do not dump everything at once.

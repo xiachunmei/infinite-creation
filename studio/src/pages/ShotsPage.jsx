@@ -249,8 +249,8 @@ export default function ShotsPage({ projectId, chapters = [], cursorId, onCursor
   // 手动修改视频时长（秒，1~15）：只改分镜时长，不触发生成。
   async function saveDuration(shotId, value) {
     const n = Number(value);
-    if (!Number.isFinite(n) || n < 1 || n > 15) {
-      toast.error('视频时长必须在 1~15 秒之间');
+    if (!Number.isFinite(n) || n < 1 || n > 10) {
+      toast.error('视频时长必须在 1~10 秒之间（超过请拆成两个分镜）');
       return;
     }
     setSavingEdit(shotId + ':duration');
@@ -747,7 +747,7 @@ export default function ShotsPage({ projectId, chapters = [], cursorId, onCursor
                               <div key={v.id} className="relative shrink-0">
                                 <button
                                   type="button"
-                                  disabled={v.id === '__legacy__' || shotBlocked}
+                                  disabled={v.id === '__legacy__'}
                                   onClick={() => selectVideo(s.id, v.id)}
                                   className={
                                     'flex w-full flex-col gap-0.5 rounded-lg border py-1.5 pl-2.5 pr-6 text-left transition-colors '

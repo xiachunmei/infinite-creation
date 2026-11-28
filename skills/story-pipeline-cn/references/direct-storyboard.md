@@ -36,7 +36,7 @@ The script handles multi-encoding read → paragraph segmentation/tagging → sc
 2. **Segment & tag:** scene header / chapter / dialogue / action / narration.
 3. **Group scenes:** by header or double blank lines; infer location type, time, and mood from English keywords.
 4. **Extract characters:** dialogue speakers + appearance/personality regexes; count appearances; build `CHAR_xxx` map.
-5. **Generate shots:** aggregate continuous segments into 2–15s takes (max 15s); never pad short lines into long shots. Combine continuous action + connected dialogue into one take; split only on scene/time/emotion breaks. At most 2 speakers per shot. Infer shot size; add camera/lighting/palette/sound from `style-guide.md`. Duration ≈ dialogue word count ÷ 2.5 + 1–3s action/emotion buffer, clamped to 2–15s; keep each shot's dialogue within a realistic speaking rate or split/compress it.
+5. **Generate shots:** aggregate continuous segments into 2–10s takes (max 10s; split longer segments into two shots); never pad short lines into long shots. Combine continuous action + connected dialogue into one take; split only on scene/time/emotion breaks. At most 2 speakers per shot. Infer shot size; add camera/lighting/palette/sound from `style-guide.md`. Duration ≈ dialogue word count ÷ 2.5 + 1–3s action/emotion buffer, clamped to 2–15s; keep each shot's dialogue within a realistic speaking rate or split/compress it.
 6. **Cards:** include English AI image prompts; no Chinese draft is produced.
 7. **Write and summarize:** write `storyboard.md` + `storyboard.json`, print statistics.
 

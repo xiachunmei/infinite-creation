@@ -202,8 +202,8 @@ export default function ShotsTab({ projectId, chapter: chapterProp = '', running
   // 保存手动修改后的分镜时长（秒，1~15）
   async function saveDuration(shotId, value) {
     const n = Number(value);
-    if (!Number.isFinite(n) || n < 1 || n > 15) {
-      toast.error('时长必须在 1~15 秒之间');
+    if (!Number.isFinite(n) || n < 1 || n > 10) {
+      toast.error('时长必须在 1~10 秒之间（超过请拆成两个分镜）');
       return;
     }
     setBusy('正在保存时长…');
@@ -383,8 +383,8 @@ export default function ShotsTab({ projectId, chapter: chapterProp = '', running
                         return (
                           <div key={v.id} style={{ position: 'relative', width: 210 }}>
                             {vids.length > 1 && (
-                              <label style={{ position: 'absolute', top: 6, left: 6, zIndex: 2, maxWidth: 'calc(100% - 12px)', display: 'inline-flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,0.55)', borderRadius: 6, padding: '2px 6px', cursor: running ? 'default' : 'pointer', overflow: 'hidden' }}>
-                                <input type="checkbox" checked={isSel} disabled={running} onChange={() => selectVideo(s.id, v.id)} style={{ flex: '0 0 auto' }} />
+                              <label style={{ position: 'absolute', top: 6, left: 6, zIndex: 2, maxWidth: 'calc(100% - 12px)', display: 'inline-flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,0.55)', borderRadius: 6, padding: '2px 6px', cursor: 'pointer', overflow: 'hidden' }}>
+                                <input type="checkbox" checked={isSel} onChange={() => selectVideo(s.id, v.id)} style={{ flex: '0 0 auto' }} />
                                 <span style={{ fontSize: 11, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>候选 {i + 1}{v.seed ? ' · ' + v.seed : ''}</span>
                               </label>
                             )}

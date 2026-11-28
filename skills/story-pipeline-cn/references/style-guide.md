@@ -92,7 +92,7 @@ Parentheses are performance/action cues and do not enter visual descriptions. `[
 
 ## 7. Duration reference (long-take mode)
 
-One main take = one continuous story segment (continuous action + connected dialogue in the same scene), **5–15s (max 15s)**. Use `sub_shots` to carry multiple beats on a timeline.
+One main take = one continuous story segment (continuous action + connected dialogue in the same scene), **4–10s (max 10s; split longer segments into two shots)**. Use `sub_shots` to carry multiple beats on a timeline.
 
 | Beat type | Duration |
 |---|---|

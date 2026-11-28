@@ -26,9 +26,11 @@ test('shared English output contract covers every creative artifact', () => {
     'TTS text/descriptions',
     'music lyrics',
     'translate and adapt its meaning into English',
+    'replace source-language proper nouns with natural Western-English names',
   ]) {
     assert.ok(ENGLISH_OUTPUT_CONTRACT.includes(phrase), `missing contract phrase: ${phrase}`);
   }
+  assert.ok(!ENGLISH_OUTPUT_CONTRACT.includes('romanize them consistently'), 'romanization rule must be removed');
 });
 
 test('direct LLM builders inject the English contract and English formats', () => {
@@ -40,7 +42,7 @@ test('direct LLM builders inject the English contract and English formats', () =
   assert.match(chapter[0].content, /\[Scene N \| Time \| Location\]/);
   assert.match(chapter[0].content, /colloquial English/);
 
-  const asset = buildAssetPromptMessages({ type: 'character', name: 'Lin Mo', description: 'young detective' });
+  const asset = buildAssetPromptMessages({ type: 'character', name: 'Ethan Reed', description: 'young detective' });
   assert.match(asset[0].content, /English prompts/);
   assert.match(asset[1].content, /entirely in English/);
 

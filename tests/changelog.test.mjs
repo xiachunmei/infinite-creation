@@ -252,7 +252,7 @@ test('pickShotFields：白名单外的字段一律报错，产物字段不可写
 // 结果是「写入合法、渲染阶段才炸」。测试盯着「写入点就拒绝」。
 
 test('分镜业务校验：时长区间 / 镜号 / 分辨率与宽高比枚举', () => {
-  assert.ok(pickShotFields({ duration: 60 }).errors.length, 'duration 超 15 秒应报错');
+  assert.ok(pickShotFields({ duration: 60 }).errors.length, 'duration 超 10 秒应报错');
   assert.ok(pickShotFields({ duration: 0 }).errors.length, 'duration 低于 1 秒应报错');
   assert.ok(pickShotFields({ idx: 0 }).errors.length, 'idx < 1 应报错');
   assert.ok(pickShotFields({ idx: -3 }).errors.length, '负 idx 应报错');
